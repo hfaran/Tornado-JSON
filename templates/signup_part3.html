@@ -1,0 +1,72 @@
+<!-- =============================
+ * Touchpoint Copyright 2013.
+ * @author: Ryan Wong
+ * @file: signup_part3.html
+ * Part 3 of sign up process (suggested skills)
+ * =============================== -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Touchpoint</title>
+	<link rel="stylesheet" type="text/css" href="{{ static_url("signup.css") }}">
+	<link rel="stylesheet" type="text/css" href="{{ static_url("bootstrap.css") }}">
+	<link rel="stylesheet" type="text/css" href="{{ static_url("style.css") }}">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="{{ static_url("signup.js") }}"></script>
+	
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'> 
+</head>
+
+<body>
+	<div class="background">
+		<img class="background" src="http://i.imgur.com/5Uz0vmKh.jpg">
+	</div>
+
+	<div class="headerBar">
+		<div class="contain900px">
+			<div class="logo">
+				<a class="logo" href="/"><h1 class="orange">touch&middot;point</h1></a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="viewport">
+		<div class="signupDetailBG"></div>
+			<div class="signupDetailsOutter">
+				<p class="signupCaption">Here are some suggested skills/topics.</p>
+				<p class="signupSubCaption">This will help us deliver content relevant to you.</p>
+				<div id="signupSkills" class="signupDetailsInner">
+					<div class="col-4 checkboxHeight">
+						<input type="checkbox" id="checker1" class="skillCheck">
+						<label for="checker1" class="skillName"> Internships</label>
+					</div>
+					<div class="col-4 checkboxHeight">
+						<input type="checkbox" id="checker2" class="skillCheck">
+						<label for="checker2" class="skillName"> Hardware</label>
+					</div>
+					<div class="col-4 checkboxHeight">
+						<input type="checkbox" id="checker3" class="skillCheck">
+						<label for="checker3" class="skillName"> Tech Startups</label>
+					</div>
+					<div class="col-4 checkboxHeight">
+						<input type="checkbox" id="checker4" class="skillCheck">
+						<label for="checker4" class="skillName"> Software</label>
+					</div>
+					<div class="col-4 checkboxHeight">
+						<input type="checkbox" id="checker5" class="skillCheck">
+						<label for="checker5" class="skillName"> Robotics</label>
+					</div>
+					<div class="col-4 checkboxHeight">
+						<input type="checkbox" id="checker6" class="skillCheck">
+						<label for="checker6" class="skillName"> Unix/Linux</label>
+					</div>
+				</div>
+				<button id="prev" class="greenButton signupNextButton">Prev</button>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
