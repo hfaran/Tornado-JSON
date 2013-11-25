@@ -8,6 +8,8 @@ def get_routes():
     """Create and return all routes for signup
 
     Routes are (url, RequestHandler) tuples
+
+    :returns: list of routes for signup
     """
     # Any routes which are not to be named as the lowercase
     #  name of their respective requesthandler should be entered here

@@ -1,7 +1,6 @@
 ## Getting Started
     ./install.bash
-    sudo mkdir /var/log/touchpoint
-    sudo ./touchpoint.py
+    ./touchpoint.py
     # Visit localhost:8888
 
 ## Places to visit

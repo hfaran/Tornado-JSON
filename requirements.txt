@@ -5,3 +5,4 @@ dataset
 torndb
 # libffi-dev is a prerequisite package for bcrypt on Debian/Ubuntu
 bcrypt
+jsonschema

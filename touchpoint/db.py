@@ -14,10 +14,10 @@ define("mysql_password", default="pooltable")
 class Connection(object):
 
     def __init__(self):
-        """Create torndb and dataset connections to database
-
-        * torndb should be used for custom SQL queries
-        * dataset is encouraged for simple find and insert queries
+        """
+        Create torndb and dataset connections to database
+            - torndb should be used for custom SQL queries
+            - dataset is encouraged for simple find and insert queries
         """
         self.__db_torndb = torndb.Connection(
             host=options.mysql_host,
@@ -39,8 +39,22 @@ class Connection(object):
 
         This method attempts to force proper parameterization of SQL
         queries to prevent SQL injection
-        * Any queries to the db MUST be made with this method
-        * This method does not yet support kwparameters (if needed, will add)
+            - Any queries to the db MUST be made with this method
+            - This method does not yet support kwparameters (if needed,
+                will add)
+
+        :type  method: str
+        :param method: The name of the torndb.Connection method you wish to
+            call.
+        :type  query: str
+        :param query: The query you wish to call `method` on
+        :type  parameters: list
+        :param parameters: The parameters to inserted into a query if it is
+            parameterized.
+        :type  force: bool
+        :param force: If set to `True`, overrides the check and parameterizes
+            anyway.
+        :returns: The result of the query
         """
         _method = getattr(self.__db_torndb, method)
         parameterized = any(c in query for c in ["%", "{"]) and not force
@@ -52,15 +66,19 @@ class Connection(object):
             return _method(query)
 
     def get_email_suffixes(self):
-        """Return list of email suffixes"""
+        """:returns: list of email suffixes"""
         return self.generic_query("query", "SELECT * FROM email_suffixes")
 
     def get_all_emails(self):
-        """Returns all email addresses in DB"""
+        """:returns: all email addresses in DB"""
         return self.generic_query("query", "SELECT email FROM persons")
 
     def create_person(self, kwargs):
-        """Writes a new person to the DB"""
+        """Writes a new person to the DB
+
+        :type  kwargs: dict
+        :param kwargs: Dictionary of required details to insert into DB
+        """
         # Parameterized query left here as an example
         # return self.generic_query(
         #     "execute",
@@ -82,5 +100,5 @@ class Connection(object):
             password=kwargs["password"],
             karma=0,
             time=int(time.time()),
-            )
+        )
         )

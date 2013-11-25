@@ -1,11 +1,10 @@
 import json
 import bcrypt
-import os
+
 from email_validation import valid_email_address
-from tornado.web import HTTPError
 
 from touchpoint.requesthandlers import ViewHandler, BaseHandler, APIHandler
-from touchpoint.utils import api_assert
+from touchpoint.utils import api_assert, io_schema
 
 
 class PublicHome(ViewHandler):
@@ -16,11 +15,18 @@ class PublicHome(ViewHandler):
 
 class SignUp(APIHandler):
 
+    # Populate this dict with "input_schema", "output_schema", and "doc"
+    #  for each implemented HTTP method
+    api_documentation = {}
+
     def _validate_email_suffix(self, email):
         """Validate email suffix
 
         Validates the suffix of email against all valid_suffixes.
-        Returns True for valid suffix, and False for invalid.
+
+        :type  email: str
+        :param email: email to be validated
+        :returns: True for valid suffix, and False for invalid
         """
         for suffix in [s["suffix"] for s in self.db_conn.get_email_suffixes()]:
             if any(map(email.endswith, [p + suffix for p in ["@", "."]])):
@@ -33,6 +39,9 @@ class SignUp(APIHandler):
         Validates email as a proper-form email address with allowed suffix.
         If email address is not valid, or if suffix is invalid,
         raise a 400. If email address has already been used, raises 409.
+
+        :type  email: str
+        :param email: email to be validated
         """
         api_assert(
             valid_email_address(email),
@@ -49,32 +58,56 @@ class SignUp(APIHandler):
             409, log_message="Someone else is already using this email"
         )
 
-    def post(self):
+    api_documentation["post"] = {
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "first": {"type": "string"},
+                "last": {"type": "string"},
+                "email": {"type": "string"},
+                "password": {"type": "string"},
+            },
+            "required": ["first", "last", "email", "password"],
+        },
+        "output_schema": {
+            "type": "string",
+        },
+        "doc": (
+            "The `password` field must match the following criteria; "
+            "while the API cannot verify that these steps have been taken, "
+            "it is important that the front-end interface implement these "
+            "for users' password security:\n\n"
+            "* Assert a minimum password length of 8 characters\n"
+            "* The original password must be salted and hashed before being "
+            "sent. This prevents against reverse lookup of common passwords "
+            "in rainbow tables.The salt must be `salt = email+\"touchpoint\"`"
+            " and then the Password field can be "
+            "`Password = bcrypt(salt+password)`."
+        ),
+    }
+
+    @io_schema("post")
+    def post(self, body):
         """POST RequestHandler
 
-        * Asserts request data contains required fields
-        * Hashes password with a random salt
-        * Stores a new person in the DB if all is well
-        """
-        json_body = json.loads(self.request.body)
+        - Hashes password with a random salt
+        - Stores a new person in the DB if all is well
 
-        # Assert that all required fields are present in the request
-        required_fields = ["first", "last", "email", "password"]
-        api_assert(
-            all(field in json_body.keys() for field in required_fields),
-            400, log_message="API request missing required fields"
-        )
+        :type  body: list or dict
+        :param body: json.loads(self.request.body)
+        :returns: Message of success as well as any related data
+        """
         # Validate email
-        self._validate_email(json_body["email"])
+        self._validate_email(body["email"])
         # Generate salt, hash password with salt
         salt = bcrypt.gensalt(rounds=12)  # default rounds are 12
-        json_body.update(
+        body.update(
             {"salt": salt,
-             "password": bcrypt.hashpw(str(json_body["password"]), salt)}
+             "password": bcrypt.hashpw(str(body["password"]), salt)}
         )
         # Add person to DB and write back on successful entry
-        self.db_conn.create_person(json_body)
-        self.success("Signup successful!")
+        self.db_conn.create_person(body)
+        return "Signup successful!"
 
 
 class SignUpFb(BaseHandler):
