@@ -1,19 +1,20 @@
 from setuptools import setup
 
 setup(
-    name="touchpoint",
+    name="Tornado-JSON",
     version='0.1',
-    author='Hamza Faran',  # Add other authors/remove?
-    author_email='hamza@hfaran.com',  # Add other authors/remove?
-    description=('Touchpoint Web App'),
-    packages=['touchpoint'],
+    author='Hamza Faran',
+    author_email='hamza@hfaran.com',
+    description=('A simple JSON API framework based on Tornado'),
+    packages=['tornado_json'],
     install_requires = [
-        # Populate this with packages from requirements.txt
+        "MySQL-python",
+        "tornado",
+        "dataset",
+        "torndb",
+        "jsonschema",
     ],
     data_files=[
         # Populate this with any files config files etc.
     ],
-    entry_points={
-        'console_scripts': ['touchpoint = touchpoint.main:main']
-    }
 )

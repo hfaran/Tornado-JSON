@@ -1,8 +1,5 @@
 MySQL-python
-py_email_validation
 tornado
 dataset
 torndb
-# libffi-dev is a prerequisite package for bcrypt on Debian/Ubuntu
-bcrypt
 jsonschema

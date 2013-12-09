@@ -3,8 +3,8 @@ import logging
 from tornado.web import RequestHandler
 from jsonschema import ValidationError
 
-from touchpoint.jsend import JSendMixin
-from touchpoint.utils import APIError
+from tornado_json.jsend import JSendMixin
+from tornado_json.utils import APIError
 
 
 class BaseHandler(RequestHandler):

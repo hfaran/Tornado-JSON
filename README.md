@@ -1,8 +1,3 @@
-## Getting Started
-    ./install.bash
-    ./touchpoint.py
-    # Visit localhost:8888
+## What Am I?
 
-## Places to visit
-* [Touchpoint Trello Board](https://trello.com/b/ZfdpE4q5/project-touchpoint-website)
-* [An instance of `dev` branch hosted on Hamza's droplet](http://192.241.246.65:8888)
+Tornado-JSON is a small extension of Tornado with the intent providing the tools necessary to get a JSON API up and running quickly

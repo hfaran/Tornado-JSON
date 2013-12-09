@@ -1,4 +1,4 @@
-# Forked from: http://tornadogists.org/6612013/
+"""Forked from: http://tornadogists.org/6612013/"""
 
 
 class JSendMixin(object):
