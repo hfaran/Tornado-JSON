@@ -14,9 +14,10 @@ class Application(tornado.web.Application):
     :param rotues: List of routes for the app
     :type  settings: dict
     :param settings: Settings for the app
+    :param  db_conn: Database connection
     """
 
-    def __init__(self, routes, settings):
+    def __init__(self, routes, settings, db_conn=None):
         # Generate API Documentation
         api_doc_gen(routes)
 
@@ -29,3 +30,5 @@ class Application(tornado.web.Application):
             routes,
             **settings
         )
+
+        self.db_conn = db_conn

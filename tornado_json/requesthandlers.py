@@ -15,8 +15,14 @@ class BaseHandler(RequestHandler):
 
     @property
     def db_conn(self):
-        """Returns database connection abstraction"""
-        return self.application.db_conn
+        """Returns database connection abstraction
+
+        If no database connection is available, raises an AttributeError
+        """
+        db_conn = self.application.db_conn
+        if not db_conn:
+            raise AttributeError("No database connection was provided.")
+        return db_conn
 
 
 class ViewHandler(BaseHandler):
