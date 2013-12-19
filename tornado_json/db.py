@@ -22,13 +22,13 @@ class MySQLConnection(object):
     """
 
     def __init__(self, host, database, user, password):
-        self.__db_torndb = torndb.Connection(
+        self._db_torndb = torndb.Connection(
             host=host,
             database=database,
             user=user,
             password=password,
         )
-        self.__db_dataset = dataset.connect(
+        self._db_dataset = dataset.connect(
             "mysql://{}:{}@{}/{}".format(
                 user,
                 password,
