@@ -1,0 +1,142 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tornado_json.routes &mdash; Tornado-JSON  documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Tornado-JSON  documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Tornado-JSON  documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for tornado_json.routes</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">pyclbr</span>
+
+
+<div class="viewcode-block" id="get_module_routes"><a class="viewcode-back" href="../../tornado_json.html#tornado_json.routes.get_module_routes">[docs]</a><span class="k">def</span> <span class="nf">get_module_routes</span><span class="p">(</span>
+        <span class="n">module_name</span><span class="p">,</span> <span class="n">custom_routes</span><span class="p">,</span> <span class="n">exclusions</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create and return routes for module_name</span>
+
+<span class="sd">    Routes are (url, RequestHandler) tuples</span>
+
+<span class="sd">    :returns: list of routes for module_name with respect to exclusions</span>
+<span class="sd">        and custom_routes. Returned routes are with URLs formatted such</span>
+<span class="sd">        that they are /-separated by module/class level and end with the</span>
+<span class="sd">        lowercase name of the RequestHandler</span>
+<span class="sd">    :type  module_name: str</span>
+<span class="sd">    :param module_name: Name of the module to get routes for</span>
+<span class="sd">    :type  custom_routes: [(str, RequestHandler), ... ]</span>
+<span class="sd">    :param custom_routes: List of routes that have custom URLs and therefore</span>
+<span class="sd">        should be automagically generated</span>
+<span class="sd">    :type  exclusions: [str, str, ...]</span>
+<span class="sd">    :param exclusions: List of RequestHandler names that routes should not be</span>
+<span class="sd">        generated for</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">custom_routes_s</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">__name__</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">custom_routes</span><span class="p">]</span>
+
+    <span class="c"># rhs is a dict of {classname: pyclbr.Class} key, value pairs</span>
+    <span class="n">rhs</span> <span class="o">=</span> <span class="n">pyclbr</span><span class="o">.</span><span class="n">readmodule</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+
+    <span class="c"># You better believe this is a list comprehension</span>
+    <span class="n">auto_routes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c"># URL, requesthandler tuple</span>
+        <span class="p">(</span>
+            <span class="s">&quot;{}/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)),</span> <span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()),</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">requesthandlers</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c"># foreach classname, pyclbr.Class in rhs</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">rhs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+        <span class="c"># Only add the pair to auto_routes if:</span>
+        <span class="c">#    * the superclass is in the list of supers we want</span>
+        <span class="c">#    * the requesthandler isn&#39;t already paired in custom_routes</span>
+        <span class="c">#    * the requesthandler isn&#39;t manually excluded</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="bp">True</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">super</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;ViewHandler&quot;</span><span class="p">,</span> <span class="s">&quot;APIHandler&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">custom_routes_s</span> <span class="o">+</span> <span class="n">exclusions</span><span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="n">routes</span> <span class="o">=</span> <span class="n">auto_routes</span> <span class="o">+</span> <span class="n">custom_routes</span>
+    <span class="k">return</span> <span class="n">routes</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Tornado-JSON  documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Hamza Faran.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
