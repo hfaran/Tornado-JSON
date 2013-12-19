@@ -1,6 +1,7 @@
 # TODO: Better organization for contents of this module
 
 import json
+import logging
 from jsonschema import validate, ValidationError
 
 from tornado.web import HTTPError
@@ -37,10 +38,22 @@ def io_schema(method_name):
     """
     def _decorator(rh_method):
         def _wrapper(self, *args, **kwargs):
-            # Validate the received input
-            input_ = json.loads(self.request.body)
-            validate(input_, type(self)
-                     .api_documentation[method_name]["input_schema"])
+            # Special case for GET request (since there is no data to validate)
+            if method_name.lower() not in ["get"]:
+                # If input is not valid JSON, fail
+                try:
+                    logging.error(self.request.body)
+                    input_ = json.loads(self.request.body)
+                except ValueError as e:
+                    logging.error(str(e))
+                    self.fail(str(e))
+                    return
+
+                # Validate the received input
+                validate(input_, type(self)
+                         .api_documentation[method_name]["input_schema"])
+            else:
+                input_ = None
 
             # Call the requesthandler method
             output = rh_method(self, input_)

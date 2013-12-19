@@ -1,4 +1,4 @@
-import tornado.web.Application
+import tornado.web
 
 from tornado_json.api_doc_gen import api_doc_gen
 
