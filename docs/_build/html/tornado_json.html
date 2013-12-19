@@ -78,6 +78,22 @@ app)</td>
 <em class="property">class </em><tt class="descclassname">tornado_json.application.</tt><tt class="descname">Application</tt><big>(</big><em>routes</em>, <em>settings</em><big>)</big><a class="reference internal" href="_modules/tornado_json/application.html#Application"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tornado_json.application.Application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tornado.web.Application</span></tt></p>
 <p>Entry-point for the app</p>
+<ul class="simple">
+<li>Generate API documentation using provided routes</li>
+<li>Initialize the application</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rotues</strong> &#8211; List of routes for the app</li>
+<li><strong>settings</strong> (<em>dict</em>) &#8211; Settings for the app</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -92,6 +108,21 @@ app)</td>
 <li>torndb should be used for custom SQL queries</li>
 <li>dataset is encouraged for simple find and insert queries</li>
 </ul>
+<p>Create torndb and dataset connections to database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>host</strong> (<em>str</em>) &#8211; &lt;IPAddr&gt;:&lt;port&gt; of MySQL server</li>
+<li><strong>database</strong> (<em>str</em>) &#8211; Name of database to connect to</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; MySQL username</li>
+<li><strong>password</strong> (<em>str</em>) &#8211; MySQL password</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="tornado_json.db.MySQLConnection.generic_query">
 <tt class="descname">generic_query</tt><big>(</big><em>method</em>, <em>query</em>, <em>parameters=None</em>, <em>force=False</em><big>)</big><a class="reference internal" href="_modules/tornado_json/db.html#MySQLConnection.generic_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tornado_json.db.MySQLConnection.generic_query" title="Permalink to this definition">¶</a></dt>

@@ -5,18 +5,18 @@ from tornado_json.api_doc_gen import api_doc_gen
 
 class Application(tornado.web.Application):
 
-    """Entry-point for the app"""
+    """Entry-point for the app
+
+    - Generate API documentation using provided routes
+    - Initialize the application
+
+    :type  routes: [(str, RequestHandler), ... ]
+    :param rotues: List of routes for the app
+    :type  settings: dict
+    :param settings: Settings for the app
+    """
 
     def __init__(self, routes, settings):
-        """
-        - Generate API documentation using provided routes
-        - Initialize the application
-
-        :type  routes: [(str, RequestHandler), ... ]
-        :param rotues: List of routes for the app
-        :type  settings: dict
-        :param settings: Settings for the app
-        """
         # Generate API Documentation
         api_doc_gen(routes)
 

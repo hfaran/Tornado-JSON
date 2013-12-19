@@ -8,21 +8,20 @@ class MySQLConnection(object):
 
     - torndb should be used for custom SQL queries
     - dataset is encouraged for simple find and insert queries
+
+    Create torndb and dataset connections to database
+
+    :type  host: str
+    :param host: <IPAddr>:<port> of MySQL server
+    :type  database: str
+    :param database: Name of database to connect to
+    :type  user: str
+    :param user: MySQL username
+    :type  password: str
+    :param password: MySQL password
     """
 
     def __init__(self, host, database, user, password):
-        """
-        Create torndb and dataset connections to database
-
-        :type  host: str
-        :param host: <IPAddr>:<port> of MySQL server
-        :type  database: str
-        :param database: Name of database to connect to
-        :type  user: str
-        :param user: MySQL username
-        :type  password: str
-        :param password: MySQL password
-        """
         self.__db_torndb = torndb.Connection(
             host=host,
             database=database,
