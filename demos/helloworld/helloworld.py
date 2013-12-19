@@ -1,3 +1,8 @@
+# The following so demo can be run without having to install package
+import sys
+sys.path.append("../../")
+#
+
 import tornado.ioloop
 
 from tornado_json.application import Application
