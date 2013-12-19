@@ -1,6 +1,14 @@
+**# This is by no means a mature package, so please excuse the mess while I get it together :)**
+
 ## Overview
 
 Tornado-JSON is a small extension of Tornado with the intent providing the tools necessary to get a JSON API up and running quickly. See `demos/helloworld/helloworld.py` for a quick example. RequestHandler Guidelines provided below should tell you why things are how they are.
+
+Some of the key features the included modules provide:
+* Input and output *schema validation* by decorating RequestHandlers
+* Automated *route generation*, if wanted, for modules
+* *Automated Public API documentation* using schemas and provided descriptions
+* Standardized output using the *[JSend](http://labs.omniti.com/labs/jsend)* specification
 
 
 ## Request Handler Guidelines
