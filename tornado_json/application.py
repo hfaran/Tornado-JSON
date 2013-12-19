@@ -1,6 +1,5 @@
 import tornado.web.Application
 
-from tornado_json import db
 from tornado_json.api_doc_gen import api_doc_gen
 
 
@@ -12,7 +11,6 @@ class Application(tornado.web.Application):
         """
         - Generate API documentation using provided routes
         - Initialize the application
-        - Create connection to the DB
 
         :type  routes: [(str, RequestHandler), ... ]
         :param rotues: List of routes for the app
@@ -31,5 +29,3 @@ class Application(tornado.web.Application):
             routes,
             **settings
         )
-
-        self.db_conn = db.Connection()
