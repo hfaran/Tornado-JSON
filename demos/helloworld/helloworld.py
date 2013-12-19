@@ -1,7 +1,9 @@
-# The following so demo can be run without having to install package
+#!/usr/bin/env python2.7
+
+# The following so demo can be run without having to install package #
 import sys
 sys.path.append("../../")
-#
+# Can be removed if Tornado-JSON is installed #
 
 import tornado.ioloop
 
