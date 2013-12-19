@@ -42,7 +42,6 @@ def io_schema(method_name):
             if method_name.lower() not in ["get"]:
                 # If input is not valid JSON, fail
                 try:
-                    logging.error(self.request.body)
                     input_ = json.loads(self.request.body)
                 except ValueError as e:
                     logging.error(str(e))
