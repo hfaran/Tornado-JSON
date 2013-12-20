@@ -87,4 +87,3 @@ class APIHandler(BaseHandler, JSendMixin):
                        data=exception.log_message if self.settings.get(
                            "debug") else None,
                        code=status_code)
-        self.finish()
