@@ -1,38 +1,29 @@
 #!/usr/bin/env python2.7
 
-# The following so demo can be run without having to install package #
+# ---- The following so demo can be run without having to install package ----#
 import sys
 sys.path.append("../../")
-# Can be removed if Tornado-JSON is installed #
+# ---- Can be removed if Tornado-JSON is installed ----#
 
 import tornado.ioloop
-
+from tornado_json.routes import get_routes
 from tornado_json.application import Application
-from tornado_json.requesthandlers import APIHandler
-from tornado_json.utils import io_schema
 
-
-class HelloWorldHandler(APIHandler):
-
-    apid = {
-        "get": {
-            "input_schema": None,
-            "output_schema": {
-                "type": "string",
-            },
-            "doc": "Shouts hello to the world!"
-        },
-
-    }
-
-    @io_schema
-    def get(self, body):
-        return "Hello world!"
+import helloworld
 
 
 def main():
-    routes = [(r"/", HelloWorldHandler)]
+    # Pass the web app's package the get_routes and it will generate
+    #   routes based on the submodule names and ending with lowercase
+    #   request handler name (with 'handler' removed from the end of the
+    #   name if it is the name).
+    # [("/api/helloworld", helloworld.api.HelloWorldHandler)]
+    routes = get_routes(helloworld)
+
+    # Create the application by passing routes and any settings
     application = Application(routes=routes, settings={})
+
+    # Start the application on port 7777
     application.listen(7777)
     tornado.ioloop.IOLoop.instance().start()
 

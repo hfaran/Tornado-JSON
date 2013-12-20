@@ -1,6 +1,6 @@
 **This documentation is automatically generated.**
 
-# /
+# /api/helloworld
 
     Content-Type: application/json
 

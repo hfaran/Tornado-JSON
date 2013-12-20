@@ -1,5 +1,7 @@
 import pyclbr
 import pkgutil
+import importlib
+from itertools import chain
 
 
 def get_routes(package):
@@ -14,8 +16,8 @@ def get_routes(package):
         routes from
     :returns: List of routes for all submodules of `package`
     """
-    return [get_module_routes(modname) for modname in
-            gen_submodule_names(package)]
+    return list(chain(*[get_module_routes(modname) for modname in
+                        gen_submodule_names(package)]))
 
 
 def gen_submodule_names(package):
@@ -41,8 +43,12 @@ def get_module_routes(
 
     :returns: list of routes for `module_name` with respect to `exclusions`
         and `custom_routes`. Returned routes are with URLs formatted such
-        that they are /-separated by module/class level and end with the
-        lowercase name of the RequestHandler
+        that they are forward-slash-separated by module/class level
+        and end with the lowercase name of the RequestHandler (it will also
+        remove 'handler' from the end of the name of the handler).
+        For example, a requesthandler with the name
+        `helloworld.api.HelloWorldHandler` would be assigned the url
+        `/api/helloworld`
     :type  module_name: str
     :param module_name: Name of the module to get routes for
     :type  custom_routes: [(str, RequestHandler), ... ]
@@ -57,6 +63,9 @@ def get_module_routes(
     if not exclusions:
         exclusions = []
 
+    # Import module so we can get its request handlers
+    module = importlib.import_module(module_name)
+
     # Generate list of RequestHandler names in custom_routes
     custom_routes_s = [c.__name__ for r, c in custom_routes]
 
@@ -67,8 +76,10 @@ def get_module_routes(
     auto_routes = [
         # URL, requesthandler tuple
         (
-            "{}/{}".format("/".join(module_name.split(".")), k.lower()),
-            getattr(requesthandlers, k)
+            "/{}/{}".format("/".join(module_name.split(".")[1:]),
+                            k.lower().replace('handler', '') if
+                            k.lower().endswith('handler') else k.lower()),
+            getattr(module, k)
         )
         # foreach classname, pyclbr.Class in rhs
         for k, v in rhs.iteritems()

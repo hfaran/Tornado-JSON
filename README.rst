@@ -10,8 +10,8 @@ Overview
 
 Tornado-JSON is a small extension of Tornado with the intent providing
 the tools necessary to get a JSON API up and running quickly. See
-``demos/helloworld/helloworld.py`` for a quick example. RequestHandler
-Guidelines provided below should tell you why things are how they are.
+``demos/helloworld/`` for a quick example. RequestHandler Guidelines
+provided below should tell you why things are how they are.
 
 Some of the key features the included modules provide:
 
