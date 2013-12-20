@@ -1,3 +1,6 @@
+**This is just a list of commands I've found useful for project maintenance**
+
+
 * Update README.rst
 
     ```$ pandoc -s -t rst --toc README.md -o README.rst```
