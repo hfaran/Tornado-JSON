@@ -1,10 +1,14 @@
 import os
+import sys
 __DIR__ = os.path.abspath(os.path.dirname(__file__))
-
 import codecs
 from setuptools import setup
-
 import tornado_json
+
+
+if not sys.version_info[:2] == (2, 7):
+    print "Sorry, only Python2.7 is supported."
+    exit()
 
 
 def read(filename):

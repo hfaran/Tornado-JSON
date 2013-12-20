@@ -12,11 +12,8 @@
 * Existing tests with `helloworld` are a little naive, add larger/more fringe tests
 * Coverage is currently poor, add more tests
 
-### `tox` for testing standardization
-* Current `tox.ini` is very basic, make more detailed if necessary
-
 ### Sphinx for auto-generated HTML documentation
-* ~~Generate basic documentation with Sphinx~~ 
+* ~~Generate basic documentation with Sphinx~~
 * Add project description etc. and more Sphinx spices
 
 ### TravisCI for continuous testing integration
