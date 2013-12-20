@@ -1,12 +1,17 @@
 ### `docs/`
-* Generate `docs/`
-* Customize etc.
+* ~~Generate basic documentation with Sphinx~~ 
+* Add project description etc.
 
-### `example/`
-* Write an example web app that uses Tornado-JSON (look at `touchpoint` for inspiration)
+### `demos/`
+* ~~Write helloworld example~~
+* Add a larger example (look at `touchpoint` for inspiration)
 
-### `test/`
-* Create tests [as per](http://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/)
+### `tornado_json/test/`
+* Populate this TODO [as per Jeff's awesome way](http://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/)
 
 ### `README`
-* Flesh out README more
+* ~~Flesh out README more~~
+* Organize README sectionally to highlight features with code examples (or something like that)
+
+### `setup.py`
+* Populate this TODO [as per Jeff's awesome way](http://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/)
