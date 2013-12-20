@@ -29,11 +29,11 @@ Some of the key features the included modules provide:
 ```
 `doc` is the **public** accompanying documentation that will be available on the wiki.
 
-* Use the `io_schema(method_name)` decorator on methods which will automatically validate the request body and output against the schemas in `api_documentation[method_name]`. Additionally, `return` the data from the request handler, rather than writing it back (the decorator will take care of that).
+* Use the `io_schema` decorator on methods which will automatically validate the request body and output against the schemas in `api_documentation[method_name]`. Additionally, `return` the data from the request handler, rather than writing it back (the decorator will take care of that).
 ```
     class ExampleHandler(APIHandler):
-        @io_schema("post")
-        def post( ... ):
+        @io_schema
+        def post(self, body):
             ...
             return data
 ```
@@ -41,8 +41,8 @@ Some of the key features the included modules provide:
 * Use `utils.api_assert` to fail when some the client does not meet some API pre-condition/requirement, e.g., an invalid or incomplete request is made. When using an assertion is not suitable, `raise APIError( ... )`; don't use JSend `fail` directly.
 ```
     class ExampleHandler(APIHandler):
-        @io_schema("post")
-        def post( ... ):
+        @io_schema
+        def post(self, body):
             ...
             api_assert(condition, status_code, log_message=log_message)
 ```

@@ -25,7 +25,7 @@ class HelloWorldHandler(APIHandler):
 
     }
 
-    @io_schema("get")
+    @io_schema
     def get(self, body):
         return "Hello world!"
 
