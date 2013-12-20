@@ -1,5 +1,5 @@
-MySQL-python
-tornado
-dataset
-torndb
-jsonschema
+MySQL-python>=1.2.4
+tornado>=3.1.1
+dataset>=0.3.14
+torndb>=0.1
+jsonschema>=2.3.0
