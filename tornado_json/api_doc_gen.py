@@ -60,4 +60,5 @@ def api_doc_gen(routes):
 
     # Documentation is written to the root folder
     with open("API_Documentation.md", "w+") as f:
-        f.write("\n\n\n".join(documentation))
+        f.write("**This documentation is automatically generated.**\n" +
+                "\n\n\n".join(documentation))
