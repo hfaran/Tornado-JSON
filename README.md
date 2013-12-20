@@ -6,7 +6,7 @@ Tornado-JSON is a small extension of Tornado with the intent providing the tools
 
 Some of the key features the included modules provide:
 * Input and output *schema validation* by decorating RequestHandlers
-* Automated *route generation*, if wanted, for modules
+* Automated *route generation* with `routes.get_routes(package)`
 * *Automated Public API documentation* using schemas and provided descriptions
 * Standardized output using the *[JSend](http://labs.omniti.com/labs/jsend)* specification
 

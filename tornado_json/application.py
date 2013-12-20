@@ -10,8 +10,8 @@ class Application(tornado.web.Application):
     - Generate API documentation using provided routes
     - Initialize the application
 
-    :type  routes: [(str, RequestHandler), ... ]
-    :param rotues: List of routes for the app
+    :type  routes: [(url, RequestHandler), ...]
+    :param routes: List of routes for the app
     :type  settings: dict
     :param settings: Settings for the app
     :param  db_conn: Database connection
