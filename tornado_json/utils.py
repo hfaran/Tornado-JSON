@@ -52,7 +52,7 @@ def io_schema(rh_method):
 
             # Validate the received input
             validate(input_, type(self)
-                     .api_documentation[method_name]["input_schema"])
+                     .apid[method_name]["input_schema"])
         else:
             input_ = None
 
@@ -68,7 +68,7 @@ def io_schema(rh_method):
                     "type": "object",
                     "properties": {
                         "result": type(self)
-                        .api_documentation[method_name]["output_schema"]
+                        .apid[method_name]["output_schema"]
                     },
                     "required": ["result"]
                 }

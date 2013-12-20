@@ -14,7 +14,7 @@ from tornado_json.utils import io_schema
 
 class HelloWorldHandler(APIHandler):
 
-    api_documentation = {
+    apid = {
         "get": {
             "input_schema": None,
             "output_schema": {

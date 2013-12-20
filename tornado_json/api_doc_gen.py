@@ -5,7 +5,7 @@ import json
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
-    provided information from `api_documentation` class-variable
+    provided information from `apid` class-variable
     in each handler that provides one.
 
     :type  routes: [(url, RequestHandler), ...]
@@ -42,17 +42,17 @@ def api_doc_gen(routes):
 {3}
 """.format(
                 method.upper(),
-                json.dumps(rh.api_documentation[method]
+                json.dumps(rh.apid[method]
                            ["input_schema"], indent=4),
-                json.dumps(rh.api_documentation[method]
+                json.dumps(rh.apid[method]
                            ["output_schema"], indent=4),
-                rh.api_documentation[method]["doc"],
-            ) for method in rh.api_documentation.keys()
+                rh.apid[method]["doc"],
+            ) for method in rh.apid.keys()
                     ]
                 )
             )
             documentation.append(route_doc)
-        # If a RequestHandler does not yet have an api_documentation variable
+        # If a RequestHandler does not yet have an apid variable
         #  just ignore it and continue
         except AttributeError as e:
             logging.info(str(e))

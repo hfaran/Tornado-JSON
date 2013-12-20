@@ -13,15 +13,15 @@ Some of the key features the included modules provide:
 
 ## Request Handler Guidelines
 
-* Create an `api_documentation` dict in each RequestHandler as a class-level variable, i.e.,
+* Create an `apid` dict in each RequestHandler as a class-level variable, i.e.,
 ```
     class ExampleHandler(APIHandler):
-        api_documentation = {}
+        apid = {}
 ```
 
-* For each HTTP method you implement, add a corresponding entry in `api_documentation`. The schemas must be valid JSON schemas; [readthedocs](https://python-jsonschema.readthedocs.org/en/latest/) for an example. Here is an example for POST:
+* For each HTTP method you implement, add a corresponding entry in `apid`. The schemas must be valid JSON schemas; [readthedocs](https://python-jsonschema.readthedocs.org/en/latest/) for an example. Here is an example for POST:
 ```
-    api_documentation["post"] = {
+    apid["post"] = {
         "input_schema": ...,
         "output_schema": ...,
         "doc": ...,
@@ -29,7 +29,7 @@ Some of the key features the included modules provide:
 ```
 `doc` is the **public** accompanying documentation that will be available on the wiki.
 
-* Use the `io_schema` decorator on methods which will automatically validate the request body and output against the schemas in `api_documentation[method_name]`. Additionally, `return` the data from the request handler, rather than writing it back (the decorator will take care of that).
+* Use the `io_schema` decorator on methods which will automatically validate the request body and output against the schemas in `apid[method_name]`. Additionally, `return` the data from the request handler, rather than writing it back (the decorator will take care of that).
 ```
     class ExampleHandler(APIHandler):
         @io_schema
