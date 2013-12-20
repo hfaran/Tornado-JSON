@@ -13,38 +13,42 @@ Some of the key features the included modules provide:
 
 ## Request Handler Guidelines
 
-* Create an `apid` dict in each RequestHandler as a class-level variable, i.e.,
-```
-    class ExampleHandler(APIHandler):
-        apid = {}
+Create an `apid` dict in each RequestHandler as a class-level variable, i.e.,
+
+```python
+class ExampleHandler(APIHandler):
+    apid = {}
 ```
 
-* For each HTTP method you implement, add a corresponding entry in `apid`. The schemas must be valid JSON schemas; [readthedocs](https://python-jsonschema.readthedocs.org/en/latest/) for an example. Here is an example for POST:
-```
-    apid["post"] = {
-        "input_schema": ...,
-        "output_schema": ...,
-        "doc": ...,
+For each HTTP method you implement, add a corresponding entry in `apid`. The schemas must be valid JSON schemas; [readthedocs](https://python-jsonschema.readthedocs.org/en/latest/) for an example. Here is an example for POST:
+
+```python
+apid["post"] = {
+    "input_schema": ...,
+    "output_schema": ...,
+    "doc": ...,
 }
 ```
 `doc` is the **public** accompanying documentation that will be available on the wiki.
 
-* Use the `io_schema` decorator on methods which will automatically validate the request body and output against the schemas in `apid[method_name]`. Additionally, `return` the data from the request handler, rather than writing it back (the decorator will take care of that).
-```
-    class ExampleHandler(APIHandler):
-        @io_schema
-        def post(self, body):
-            ...
-            return data
+Use the `io_schema` decorator on methods which will automatically validate the request body and output against the schemas in `apid[method_name]`. Additionally, `return` the data from the request handler, rather than writing it back (the decorator will take care of that).
+
+```python
+class ExampleHandler(APIHandler):
+    @io_schema
+    def post(self, body):
+        ...
+        return data
 ```
 
-* Use `utils.api_assert` to fail when some the client does not meet some API pre-condition/requirement, e.g., an invalid or incomplete request is made. When using an assertion is not suitable, `raise APIError( ... )`; don't use JSend `fail` directly.
-```
-    class ExampleHandler(APIHandler):
-        @io_schema
-        def post(self, body):
-            ...
-            api_assert(condition, status_code, log_message=log_message)
+Use `utils.api_assert` to fail when some the client does not meet some API pre-condition/requirement, e.g., an invalid or incomplete request is made. When using an assertion is not suitable, `raise APIError( ... )`; don't use JSend `fail` directly.
+
+```python
+class ExampleHandler(APIHandler):
+    @io_schema
+    def post(self, body):
+        ...
+        api_assert(condition, status_code, log_message=log_message)
 ```
 
 
