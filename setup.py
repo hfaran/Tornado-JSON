@@ -36,7 +36,6 @@ setup(
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Framework :: Tornado",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
