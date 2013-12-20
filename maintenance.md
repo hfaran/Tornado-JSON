@@ -16,3 +16,7 @@
 * Generate/update base docs/ folder with Sphinx
 
     ```$ sphinx-apidoc -F -o docs tornado_json```
+
+* Run tests from root project directory
+
+    ```$ py.test --cov="tornado_json" --cov-report=term --cov-report=html```
