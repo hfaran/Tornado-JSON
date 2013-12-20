@@ -13,8 +13,8 @@ class APIError(HTTPError):
 
 
 def api_assert(condition, *args, **kwargs):
-    """Asserts that condition is True, else raises an APIError with the
-    provided args and kwargs
+    """Asserts that `condition` is `True`, else raises an `APIError` with the
+    provided `args` and `kwargs`
 
     :type  condition: bool
     """
@@ -26,10 +26,10 @@ def io_schema(rh_method):
     """Decorator for RequestHandler schema validation
 
     This decorator:
-        - Validates request body against in_schema
-        - Calls the rh_method and gets output from it
-        - Validates output against out_schema
-        - Calls JSendMixin.success to write the validated output
+        - Validates request body against input schema of the method
+        - Calls the `rh_method` and gets output from it
+        - Validates output against output schema of the method
+        - Calls `JSendMixin.success` to write the validated output
 
     :type  rh_method: function
     :param rh_method: The RequestHandler method to be decorated

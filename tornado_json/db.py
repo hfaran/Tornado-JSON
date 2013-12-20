@@ -41,10 +41,10 @@ class MySQLConnection(object):
         """torndb.Connection.method(query, *parameters)
 
         This method attempts to force proper parameterization of SQL
-        queries to prevent SQL injection
-            - Any queries to the db MUST be made with this method
-            - This method does not yet support kwparameters (if needed,
-                will add)
+        queries to prevent SQL injection.
+
+        - Any direct queries to the database MUST be made with this method
+        - This method does not yet support kwparameters (if needed, will add)
 
         :type  method: str
         :param method: The name of the torndb.Connection method you wish to

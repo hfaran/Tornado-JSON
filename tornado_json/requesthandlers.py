@@ -10,7 +10,7 @@ from tornado_json.utils import APIError
 class BaseHandler(RequestHandler):
 
     """
-    The mother of all handlers; all handlers should be subclassed from this.
+    BaseHandler for all other RequestHandlers
     """
 
     @property

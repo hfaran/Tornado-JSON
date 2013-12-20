@@ -5,9 +5,9 @@ import pkgutil
 def get_routes(package):
     """
     This will walk `package` and generates routes from any and all
-    `APIHandler`s and `RequestHandlers` it finds. If you need to customize
-    or remove any routes, you can do so to the list of returned routes
-    that this generates.
+    `APIHandler` and `ViewHandler` subclasses it finds. If you need to
+    customize or remove any routes, you can do so to the list of
+    returned routes that this generates.
 
     :type  package: package
     :param package: The package containing RequestHandlers to generate
@@ -39,8 +39,8 @@ def get_module_routes(
 
     Routes are (url, RequestHandler) tuples
 
-    :returns: list of routes for module_name with respect to exclusions
-        and custom_routes. Returned routes are with URLs formatted such
+    :returns: list of routes for `module_name` with respect to `exclusions`
+        and `custom_routes`. Returned routes are with URLs formatted such
         that they are /-separated by module/class level and end with the
         lowercase name of the RequestHandler
     :type  module_name: str
