@@ -22,7 +22,6 @@ class JSendMixin(object):
             call. If the call returns no data, data should be set to null.
         """
         self.write({'status': 'success', 'data': data})
-        self.finish()
 
     def fail(self, data):
         """There was a problem with the data submitted, or some pre-condition
@@ -34,7 +33,6 @@ class JSendMixin(object):
             the response object's keys SHOULD correspond to those POST values.
         """
         self.write({'status': 'fail', 'data': data})
-        self.finish()
 
     def error(self, message, data=None, code=None):
         """An error occurred in processing the request, i.e. an exception was
@@ -56,4 +54,3 @@ class JSendMixin(object):
         if code:
             result['code'] = code
         self.write(result)
-        self.finish()

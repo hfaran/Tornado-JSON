@@ -95,6 +95,8 @@ documentation, simply run your app and the documentation will written to
 Dependencies
 ============
 
+*Python2.7 is the only supported version (as you might suspect).*
+
 These dependencies can be satisfied by running
 ``pip install -r requirements.txt``
 
