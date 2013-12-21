@@ -5,6 +5,8 @@
 Tornado-JSON
 ============
 
+|Build Status| |PyPI version| |Coverage Status|
+
 Overview
 --------
 
@@ -109,3 +111,10 @@ If you're using ``tornado_json.db``:
 
 -  torndb
 -  dataset
+
+.. |Build Status| image:: https://travis-ci.org/hfaran/Tornado-JSON.png?branch=dev
+   :target: https://travis-ci.org/hfaran/Tornado-JSON
+.. |PyPI version| image:: https://badge.fury.io/py/Tornado-JSON.png
+   :target: http://badge.fury.io/py/Tornado-JSON
+.. |Coverage Status| image:: https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=dev
+   :target: https://coveralls.io/r/hfaran/Tornado-JSON?branch=dev
