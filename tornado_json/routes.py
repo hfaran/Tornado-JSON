@@ -15,6 +15,7 @@ def get_routes(package):
     :param package: The package containing RequestHandlers to generate
         routes from
     :returns: List of routes for all submodules of `package`
+    :rtype: [(url, RequestHandler), ... ]
     """
     return list(chain(*[get_module_routes(modname) for modname in
                         gen_submodule_names(package)]))
@@ -26,6 +27,7 @@ def gen_submodule_names(package):
     :type  package: package
     :param package: The package to get submodule names of
     :returns: Iterator that yields names of all submodules of `package`
+    :rtype: Iterator that yields `str`
     """
     for importer, modname, ispkg in pkgutil.walk_packages(
         path=package.__path__,
@@ -49,6 +51,7 @@ def get_module_routes(
         For example, a requesthandler with the name
         `helloworld.api.HelloWorldHandler` would be assigned the url
         `/api/helloworld`
+    :rtype: [(url, RequestHandler), ... ]
     :type  module_name: str
     :param module_name: Name of the module to get routes for
     :type  custom_routes: [(str, RequestHandler), ... ]
