@@ -6,7 +6,7 @@ I'll be referencing the [`helloworld`](https://github.com/hfaran/Tornado-JSON/tr
 
 We want to do a lot of the same things we'd usually do when creating a Tornado app with a few differences.
 
-### helloworld.py
+### `helloworld.py`
 
 First, we'll import the required packages:
 
@@ -41,3 +41,41 @@ def main():
     tornado.ioloop.IOLoop.instance().start()
 ```
 
+### `helloworld/api.py`
+
+Now comes the fun part where we develop the actual web app. We'll import `APIHandler` (this is the handler you should subclass for API routes), and the `io_schema` decorator which will validate input and output schema for us.
+
+```python
+from tornado_json.requesthandlers import APIHandler
+from tornado_json.utils import io_schema
+
+class HelloWorldHandler(APIHandler):
+```
+
+Next, we'll define the `apid` class variable. `apid` is where we'll store the input and output schema for each HTTP method as well as the public API documentation for that route which will be automatically generated when you run the app (see the Documentation Generation section for details). Input and output schemas are as per the [JSON Schema](http://json-schema.org/) standard.
+
+```python
+    apid = {
+        "get": {
+            "input_schema": None,
+            "output_schema": {
+                "type": "string",
+            },
+            "doc": "Shouts hello to the world!"
+        },
+    }
+```
+
+Finally we'll write our `get` method which will write "Hello world!" back. Notice that rather than using `self.write` as we usually would, we simply return the data we want to write back, which will then be validated against the output schema and be written back according to the [JSend](http://labs.omniti.com/labs/jsend) specification. The `io_schema` decorator handles all of this so be sure to decorate any HTTP methods with it.
+
+Also, all HTTP methods **must** have a signature of exactly `(self, body)` as that is what `io_schema` will call them with (this is a JSON API after all, so we don't need parameterized methods and only their JSON body content).
+
+```python
+    @io_schema
+    def get(self, body):
+        return "Hello world!"
+```
+
+### Running our Hello World app
+
+Now, we can finally run the app `python helloworld.py`. You should be able to send a GET requrest to `localhost:7777/api/helloworld` and get a JSONic "Hello world!" back. Additionally, you'll notice an `API_Documentation.md` pop up in the directory, which contains the API Documentation you can give to users about your new and fantastic API.
