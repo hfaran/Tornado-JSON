@@ -3,6 +3,7 @@ import sys
 __DIR__ = os.path.abspath(os.path.dirname(__file__))
 import codecs
 from setuptools import setup
+from setuptools.command.test import test as TestCommand
 import tornado_json
 
 
@@ -20,6 +21,20 @@ install_requires = read("requirements.txt").split()
 long_description = read('README.rst')
 
 
+class Tox(TestCommand):
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        # import here, cause outside the eggs aren't loaded
+        import tox
+        errcode = tox.cmdline(self.test_args)
+        sys.exit(errcode)
+
+
 setup(
     name="Tornado-JSON",
     version=tornado_json.__version__,
@@ -31,6 +46,8 @@ setup(
     long_description=long_description,
     packages=['tornado_json'],
     install_requires = install_requires,
+    tests_require=['tox'],
+    cmdclass = {'test': Tox},
     data_files=[
         # Populate this with any files config files etc.
     ],
