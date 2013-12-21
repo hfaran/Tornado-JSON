@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/hfaran/Tornado-JSON.png?label=ready)](https://waffle.io/hfaran/Tornado-JSON)  
 # Tornado-JSON
 
 [![Build Status](https://travis-ci.org/hfaran/Tornado-JSON.png?branch=dev)](https://travis-ci.org/hfaran/Tornado-JSON)
