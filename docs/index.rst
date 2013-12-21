@@ -9,8 +9,11 @@ Welcome to tornado_json's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
+   installation
+   requesthandler_guidelines
+   docgen
    tornado_json
 
 
@@ -20,4 +23,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
