@@ -2,11 +2,11 @@
 
 ## A Simple Hello World JSON API
 
-I'll be referencing the [`helloworld`](https://github.com/hfaran/Tornado-JSON/tree/dev/demos/helloworld) example in the `demos` for this.
+I'll be referencing the [helloworld](https://github.com/hfaran/Tornado-JSON/tree/dev/demos/helloworld) example in the `demos` for this.
 
 We want to do a lot of the same things we'd usually do when creating a Tornado app with a few differences.
 
-### `helloworld.py`
+### helloworld.py
 
 First, we'll import the required packages:
 
@@ -41,7 +41,7 @@ def main():
     tornado.ioloop.IOLoop.instance().start()
 ```
 
-### `helloworld/api.py`
+### helloworld/api.py
 
 Now comes the fun part where we develop the actual web app. We'll import `APIHandler` (this is the handler you should subclass for API routes), and the `io_schema` decorator which will validate input and output schema for us.
 
@@ -78,4 +78,4 @@ Also, all HTTP methods **must** have a signature of exactly `(self, body)` as th
 
 ### Running our Hello World app
 
-Now, we can finally run the app `python helloworld.py`. You should be able to send a GET requrest to `localhost:7777/api/helloworld` and get a JSONic "Hello world!" back. Additionally, you'll notice an `API_Documentation.md` pop up in the directory, which contains the API Documentation you can give to users about your new and fantastic API.
+Now, we can finally run the app `python helloworld.py`. You should be able to send a GET request to `localhost:7777/api/helloworld` and get a JSONic "Hello world!" back. Additionally, you'll notice an `API_Documentation.md` pop up in the directory, which contains the API Documentation you can give to users about your new and fantastic API.

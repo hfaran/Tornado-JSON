@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    installation
+   using_tornado_json
    requesthandler_guidelines
    docgen
    tornado_json
