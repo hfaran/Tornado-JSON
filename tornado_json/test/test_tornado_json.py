@@ -6,6 +6,7 @@ try:
     sys.path.append('.')
     from tornado_json import routes
     from tornado_json import utils
+    from tornado_json import jsend
     sys.path.append('demos/helloworld')
     import helloworld
 except ImportError:
@@ -26,7 +27,7 @@ class MockRequestHandler(object):
     request = Request()
 
     def fail(message):
-        raise APIError(message)
+        raise utils.APIError(message)
 
     def success(self, message):
         raise SuccessException
@@ -150,3 +151,43 @@ class TestUtils(TestTornadoJSONBase):
             rh.get()
         with pytest.raises(SuccessException):
             rh.post()
+
+
+class TestJSendMixin(TestTornadoJSONBase):
+
+    """Tests the JSendMixin module"""
+
+    class MockJSendMixinRH(jsend.JSendMixin):
+
+        """Mock handler for testing JSendMixin"""
+        _buffer = None
+
+        def write(self, data):
+            self._buffer = data
+
+    @classmethod
+    @pytest.fixture(scope="class", autouse=True)
+    def setup(cls):
+        """Create mock handler instance"""
+        cls.jsend_rh = cls.MockJSendMixinRH()
+
+    def test_success(self):
+        """Tests JSendMixin.success"""
+        data = "Huzzah!"
+        self.jsend_rh.success(data)
+        assert self.jsend_rh._buffer == {'status': 'success', 'data': data}
+
+    def test_fail(self):
+        """Tests JSendMixin.fail"""
+        data = "Aww!"
+        self.jsend_rh.fail(data)
+        assert self.jsend_rh._buffer == {'status': 'fail', 'data': data}
+
+    def test_error(self):
+        """Tests JSendMixin.error"""
+        message = "Drats!"
+        data = "I am the plural form of datum."
+        code = 9001
+        self.jsend_rh.error(message=message, data=data, code=code)
+        assert self.jsend_rh._buffer == {
+            'status': 'error', 'message': message, 'data': data, 'code': code}
