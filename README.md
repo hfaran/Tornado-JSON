@@ -1,5 +1,9 @@
 # Tornado-JSON
 
+[![Build Status](https://travis-ci.org/hfaran/Tornado-JSON.png?branch=dev)](https://travis-ci.org/hfaran/Tornado-JSON)
+[![PyPI version](https://badge.fury.io/py/Tornado-JSON.png)](http://badge.fury.io/py/Tornado-JSON)
+[![Coverage Status](https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=dev)](https://coveralls.io/r/hfaran/Tornado-JSON?branch=dev)
+
 ## Overview
 
 Tornado-JSON is a small extension of Tornado with the intent providing the tools necessary to get a JSON API up and running quickly. See `demos/helloworld/` for a quick example. RequestHandler Guidelines provided below should tell you why things are how they are.
