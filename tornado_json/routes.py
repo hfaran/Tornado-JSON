@@ -80,7 +80,7 @@ def get_module_routes(
         # URL, requesthandler tuple
         (
             "/{}/{}".format("/".join(module_name.split(".")[1:]),
-                            k.lower().replace('handler', '') if
+                            k.lower().replace('handler', '', 1) if
                             k.lower().endswith('handler') else k.lower()),
             getattr(module, k)
         )

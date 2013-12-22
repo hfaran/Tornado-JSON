@@ -8,6 +8,6 @@ install:
     - "pip install coverage"
     - "pip install coveralls"
 script:
-    - "coverage run --source=tornado_json setup.py test"
+    coverage run --source=tornado_json setup.py test
 after_success:
     coveralls
