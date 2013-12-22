@@ -59,7 +59,7 @@ class MySQLConnection(object):
             anyway.
         :returns: The result of the query
         """
-        _method = getattr(self.__db_torndb, method)
+        _method = getattr(self._db_torndb, method)
         parameterized = any(c in query for c in ["%", "{"]) and not force
 
         if parameterized:
