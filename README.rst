@@ -5,7 +5,7 @@
 Tornado-JSON
 ============
 
-|Build Status| |PyPI version| |Coverage Status|
+|Build Status| |PyPI version| |Coverage Status| |Stories in Ready|
 
 Overview
 --------
@@ -58,3 +58,5 @@ If you're using ``tornado_json.db``:
    :target: http://badge.fury.io/py/Tornado-JSON
 .. |Coverage Status| image:: https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=dev
    :target: https://coveralls.io/r/hfaran/Tornado-JSON?branch=dev
+.. |Stories in Ready| image:: https://badge.waffle.io/hfaran/Tornado-JSON.png?label=ready
+   :target: http://waffle.io/hfaran/Tornado-JSON
