@@ -1,5 +1,8 @@
 import os
 import sys
+# Temporary patch for issue reported here:
+# https://groups.google.com/forum/#!topic/nose-users/fnJ-kAUbYHQ
+import multiprocessing  # TODO: Remove when Travis-CI updates 2.7 to 2.7.4+
 __DIR__ = os.path.abspath(os.path.dirname(__file__))
 import codecs
 from setuptools import setup
