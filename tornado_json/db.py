@@ -1,5 +1,14 @@
-import torndb
-import dataset
+try:
+    import torndb
+    import dataset
+except ImportError as e:
+    print (
+        "Install `torndb` and `dataset` packages from pip to use the"
+        " tornado_json.db module. These modules are not listed as dependencies"
+        " during installation as this module is considered non-essential to"
+        " Tornado-JSON as a whole."
+    )
+    raise e
 
 
 class MySQLConnection(object):
