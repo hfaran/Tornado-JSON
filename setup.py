@@ -28,13 +28,19 @@ class Tox(TestCommand):
 
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = []
+        # self.test_args = []
+        self.test_args = ['--verbose']
         self.test_suite = True
 
     def run_tests(self):
         # import here, cause outside the eggs aren't loaded
-        import tox
-        errcode = tox.cmdline(self.test_args)
+        # import tox
+        # errcode = tox.cmdline(self.test_args)
+
+        # Using pytest rather than tox because Travis-CI has issues with tox
+        import pytest
+        errcode = pytest.main(self.test_args)
+
         sys.exit(errcode)
 
 

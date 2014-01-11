@@ -10,4 +10,4 @@ install:
 script:
     coverage run --source=tornado_json setup.py test
 after_success:
-    coveralls
+    coveralls --verbose
