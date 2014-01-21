@@ -31,11 +31,11 @@ def api_doc_gen(routes):
                     [
 """## {0}
 ### Input
-```
+```json
 {1}
 ```
 ### Output
-```
+```json
 {2}
 ```
 

@@ -6,11 +6,11 @@
 
 ## GET
 ### Input
-```
+```json
 null
 ```
 ### Output
-```
+```json
 {
     "type": "string"
 }
