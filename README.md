@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/hfaran/Tornado-JSON.png?branch=dev)](https://travis-ci.org/hfaran/Tornado-JSON)
 [![PyPI version](https://badge.fury.io/py/Tornado-JSON.png)](http://badge.fury.io/py/Tornado-JSON)
-[![Coverage Status](https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=dev)](https://coveralls.io/r/hfaran/Tornado-JSON?branch=dev)
+[![Coverage Status](https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=dev)](https://coveralls.io/r/hfaran/Tornado-JSON?branch=master)
 [![Stories in Ready](https://badge.waffle.io/hfaran/Tornado-JSON.png?label=ready)](http://waffle.io/hfaran/Tornado-JSON)
 
 ## Overview
