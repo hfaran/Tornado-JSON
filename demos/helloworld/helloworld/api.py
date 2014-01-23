@@ -6,13 +6,17 @@ class HelloWorldHandler(APIHandler):
 
     apid = {
         "get": {
-            "input_schema": None,
+            "input_schema": [None],
             "output_schema": {
                 "type": "string",
             },
-            "doc": "Shouts hello to the world!"
+            "output_example": {
+                "status": "success",
+                "data": "Hello world!"
+            },
+            "input_example": [None],
+            "doc": "Shouts hello to the world!",
         },
-
     }
 
     @io_schema
