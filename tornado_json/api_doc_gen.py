@@ -30,14 +30,16 @@ def api_doc_gen(routes):
                 "\n\n".join(
                     [
 """## {0}
-### Input
+### Input Schema
 ```json
 {1}
 ```
-### Output
+{4}
+### Output Schema
 ```json
 {2}
 ```
+{5}
 
 {3}
 """.format(
@@ -47,6 +49,20 @@ def api_doc_gen(routes):
                 json.dumps(rh.apid[method]
                            ["output_schema"], indent=4),
                 rh.apid[method]["doc"],
+"""
+### Input Example
+```json
+{}
+```
+""".format(json.dumps(rh.apid[method]["input_example"], indent=4))
+                if rh.apid[method].get("input_example") else "",
+"""
+### Output Example
+```json
+{}
+```
+""".format(json.dumps(rh.apid[method]["output_example"], indent=4))
+                if rh.apid[method].get("output_example") else "",
             ) for method in rh.apid.keys()
                     ]
                 )
@@ -60,5 +76,8 @@ def api_doc_gen(routes):
 
     # Documentation is written to the root folder
     with open("API_Documentation.md", "w+") as f:
-        f.write("**This documentation is automatically generated.**\n" +
-                "\n\n\n".join(documentation))
+        f.write(
+            "**This documentation is automatically generated.**\n\n" +
+            "**Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**\n" +
+            "\n\n\n".join(documentation)
+        )
