@@ -5,7 +5,7 @@ A Simple Hello World JSON API
 -----------------------------
 
 I'll be referencing the
-`helloworld <https://github.com/hfaran/Tornado-JSON/tree/dev/demos/helloworld>`__
+`helloworld <https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld>`__
 example in the ``demos`` for this.
 
 We want to do a lot of the same things we'd usually do when creating a

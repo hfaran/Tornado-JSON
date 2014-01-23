@@ -12,7 +12,7 @@ Overview
 
 Tornado-JSON is a small extension of Tornado with the intent providing
 the tools necessary to get a JSON API up and running quickly. See
-`demos/helloworld/ <https://github.com/hfaran/Tornado-JSON/tree/dev/demos/helloworld>`__
+`demos/helloworld/ <https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld>`__
 for a quick example and the `accompanying
 walkthrough <http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html>`__
 in the documentation.
@@ -53,11 +53,11 @@ If you're using ``tornado_json.db``:
 -  torndb
 -  dataset
 
-.. |Build Status| image:: https://travis-ci.org/hfaran/Tornado-JSON.png?branch=dev
+.. |Build Status| image:: https://travis-ci.org/hfaran/Tornado-JSON.png?branch=master
    :target: https://travis-ci.org/hfaran/Tornado-JSON
 .. |PyPI version| image:: https://badge.fury.io/py/Tornado-JSON.png
    :target: http://badge.fury.io/py/Tornado-JSON
-.. |Coverage Status| image:: https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=dev
-   :target: https://coveralls.io/r/hfaran/Tornado-JSON?branch=dev
+.. |Coverage Status| image:: https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=master
+   :target: https://coveralls.io/r/hfaran/Tornado-JSON?branch=master
 .. |Stories in Ready| image:: https://badge.waffle.io/hfaran/Tornado-JSON.png?label=ready
    :target: http://waffle.io/hfaran/Tornado-JSON

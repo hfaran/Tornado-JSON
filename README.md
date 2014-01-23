@@ -1,13 +1,13 @@
 # Tornado-JSON
 
-[![Build Status](https://travis-ci.org/hfaran/Tornado-JSON.png?branch=dev)](https://travis-ci.org/hfaran/Tornado-JSON)
+[![Build Status](https://travis-ci.org/hfaran/Tornado-JSON.png?branch=master)](https://travis-ci.org/hfaran/Tornado-JSON)
 [![PyPI version](https://badge.fury.io/py/Tornado-JSON.png)](http://badge.fury.io/py/Tornado-JSON)
-[![Coverage Status](https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=dev)](https://coveralls.io/r/hfaran/Tornado-JSON?branch=master)
+[![Coverage Status](https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png?branch=master)](https://coveralls.io/r/hfaran/Tornado-JSON?branch=master)
 [![Stories in Ready](https://badge.waffle.io/hfaran/Tornado-JSON.png?label=ready)](http://waffle.io/hfaran/Tornado-JSON)
 
 ## Overview
 
-Tornado-JSON is a small extension of Tornado with the intent providing the tools necessary to get a JSON API up and running quickly. See [demos/helloworld/](https://github.com/hfaran/Tornado-JSON/tree/dev/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation.
+Tornado-JSON is a small extension of Tornado with the intent providing the tools necessary to get a JSON API up and running quickly. See [demos/helloworld/](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation.
 
 Some of the key features the included modules provide:
 

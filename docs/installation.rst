@@ -6,6 +6,6 @@ Simply run::
 
     pip install Tornado-JSON
 
-Alternatively, clone the GitHub repository (default branch is `dev`)::
+Alternatively, clone the GitHub repository::
 
     git clone https://github.com/hfaran/Tornado-JSON.git
