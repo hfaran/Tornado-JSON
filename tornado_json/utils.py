@@ -40,8 +40,8 @@ def io_schema(rh_method):
         # Get name of method
         method_name = rh_method.__name__
 
-        # Special case for GET request (since there is no data to validate)
-        if method_name not in ["get"]:
+        # Special case for GET, DELETE requests (since there is no data to validate)
+        if method_name not in ["get", "delete"]:
             # If input is not valid JSON, fail
             try:
                 input_ = json.loads(self.request.body)
