@@ -80,6 +80,9 @@ class APIHandler(BaseHandler, JSendMixin):
         # with log_message only written if debug mode is enabled
         exception = kwargs["exc_info"][1]
         if any(isinstance(exception, c) for c in [APIError, ValidationError]):
+            # ValidationError is always due to a malformed request
+            if isinstance(exception, ValidationError):
+                self.set_status(400)
             self.fail(exception.log_message if
                       hasattr(exception, "log_message") else str(exception))
         else:
