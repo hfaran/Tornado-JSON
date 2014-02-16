@@ -38,8 +38,6 @@ being said, use it at your own risk.*\
 Dependencies
 ============
 
-*Python2.7 is the only supported version (as you might suspect).*
-
 These dependencies can be satisfied by running
 ``pip install -r requirements.txt``
 

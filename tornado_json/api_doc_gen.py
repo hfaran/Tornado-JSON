@@ -63,7 +63,7 @@ def api_doc_gen(routes):
 ```
 """.format(json.dumps(rh.apid[method]["output_example"], indent=4))
                 if rh.apid[method].get("output_example") else "",
-            ) for method in rh.apid.keys()
+            ) for method in list(rh.apid.keys())
                     ]
                 )
             )

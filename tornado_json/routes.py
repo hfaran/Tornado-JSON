@@ -4,6 +4,7 @@ import importlib
 import inspect
 import types
 from itertools import chain
+from functools import reduce
 
 
 def get_routes(package):
@@ -98,10 +99,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         # method = getattr(getattr(module, cls_name), method_name)
         wrapped_method = reduce(getattr, [module, cls_name, method_name])
         method = extract_method(wrapped_method)
-        return filter(
-            lambda a: a not in ["self"],
-            inspect.getargspec(method).args
-        )
+        return [a for a in inspect.getargspec(method).args if a not in ["self"]]
 
     if not custom_routes:
         custom_routes = []
@@ -138,7 +136,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             ] if has_method(module, k, method_name)
         ]))
         # foreach classname, pyclbr.Class in rhs
-        for k, v in rhs.iteritems()
+        for k, v in rhs.items()
         # Only add the pair to auto_routes if:
         #    * the superclass is in the list of supers we want
         #    * the requesthandler isn't already paired in custom_routes

@@ -9,7 +9,7 @@ try:
     from tornado_json import jsend
     sys.path.append('demos/helloworld')
     import helloworld
-except ImportError:
+except ImportError as e:
     print("Please run `py.test` from the root project directory")
     exit(1)
 
@@ -44,12 +44,12 @@ class TestRoutes(TestTornadoJSONBase):
 
     def test_get_routes(self):
         """Tests routes.get_routes"""
-        assert routes.get_routes(
-            helloworld) == [
+        assert sorted(routes.get_routes(
+            helloworld)) == sorted([
             ("/api/helloworld", helloworld.api.HelloWorldHandler),
             ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
              helloworld.api.Greeting)
-        ]
+        ])
 
     def test_gen_submodule_names(self):
         """Tests routes.gen_submodule_names"""
@@ -58,12 +58,12 @@ class TestRoutes(TestTornadoJSONBase):
 
     def test_get_module_routes(self):
         """Tests routes.get_module_routes"""
-        assert routes.get_module_routes(
-            'helloworld.api') == [
+        assert sorted(routes.get_module_routes(
+            'helloworld.api')) == sorted([
             ("/api/helloworld", helloworld.api.HelloWorldHandler),
             ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
              helloworld.api.Greeting)
-        ]
+        ])
 
 
 class TestUtils(TestTornadoJSONBase):
