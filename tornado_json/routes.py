@@ -2,6 +2,7 @@ import pyclbr
 import pkgutil
 import importlib
 import inspect
+import types
 from itertools import chain
 
 
@@ -66,11 +67,24 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         generated for
     """
     def extract_method(wrapped_method):
-        """Gets original method if wrapped_method was decorated"""
+        """Gets original method if wrapped_method was decorated
+
+        :rtype: any([types.FunctionType, types.MethodType])
+        """
         # If method was decorated with io_schema, the original method
         #   is available as orig_func thanks to our container decorator
         return wrapped_method.orig_func if \
             hasattr(wrapped_method, "orig_func") else wrapped_method
+
+    def has_method(module, cls_name, method_name):
+        def is_method(method):
+            method = extract_method(method)
+            # Can be either a method or a function
+            return type(method) in [types.MethodType, types.FunctionType]
+        return all([
+            method_name in vars(getattr(module, cls_name)),
+            is_method(reduce(getattr, [module, cls_name, method_name]))
+        ])
 
     def yield_args(module, cls_name, method_name):
         """Get signature of `module.cls_name.method_name`
@@ -121,7 +135,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             )
             for method_name in [
                 "get", "put", "post", "patch", "delete", "head", "options"
-            ] if method_name in vars(getattr(module, k))
+            ] if has_method(module, k, method_name)
         ]
         # foreach classname, pyclbr.Class in rhs
         for k, v in rhs.iteritems()
