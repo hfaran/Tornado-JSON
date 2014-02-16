@@ -65,6 +65,13 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
     :param exclusions: List of RequestHandler names that routes should not be
         generated for
     """
+    def extract_method(wrapped_method):
+        """Gets original method if wrapped_method was decorated"""
+        # If method was decorated with io_schema, the original method
+        #   is available as orig_func thanks to our container decorator
+        return wrapped_method.orig_func if \
+            hasattr(wrapped_method, "orig_func") else wrapped_method
+
     def yield_args(module, cls_name, method_name):
         """Get signature of `module.cls_name.method_name`
 
@@ -76,10 +83,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         """
         # method = getattr(getattr(module, cls_name), method_name)
         wrapped_method = reduce(getattr, [module, cls_name, method_name])
-        # If method was decorated with io_schema, the original method
-        #   is available as orig_func thanks to our container decorator
-        method = wrapped_method.orig_func if \
-            hasattr(wrapped_method, "orig_func") else wrapped_method
+        method = extract_method(wrapped_method)
         return filter(
             lambda a: a not in ["self"],
             inspect.getargspec(method).args
