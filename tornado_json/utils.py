@@ -22,6 +22,20 @@ def api_assert(condition, *args, **kwargs):
         raise APIError(*args, **kwargs)
 
 
+def container(dec):
+    """Meta-decorator (for decorating decorators)
+
+    Keeps around original decorated function as a property `orig_func`
+    Credits: http://stackoverflow.com/a/1167248/1798683
+    """
+    def meta_decorator(f):
+        decorator = dec(f)
+        decorator.orig_func = f
+        return decorator
+    return meta_decorator
+
+
+@container
 def io_schema(rh_method):
     """Decorator for RequestHandler schema validation
 

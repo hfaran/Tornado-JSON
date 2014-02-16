@@ -45,8 +45,11 @@ class TestRoutes(TestTornadoJSONBase):
     def test_get_routes(self):
         """Tests routes.get_routes"""
         assert routes.get_routes(
-            helloworld) == [("/api/helloworld",
-                             helloworld.api.HelloWorldHandler)]
+            helloworld) == [
+            ("/api/helloworld", helloworld.api.HelloWorldHandler),
+            ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
+             helloworld.api.Greeting)
+        ]
 
     def test_gen_submodule_names(self):
         """Tests routes.gen_submodule_names"""
@@ -56,8 +59,11 @@ class TestRoutes(TestTornadoJSONBase):
     def test_get_module_routes(self):
         """Tests routes.get_module_routes"""
         assert routes.get_module_routes(
-            'helloworld.api') == [("/api/helloworld",
-                                   helloworld.api.HelloWorldHandler)]
+            'helloworld.api') == [
+            ("/api/helloworld", helloworld.api.HelloWorldHandler),
+            ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
+             helloworld.api.Greeting)
+        ]
 
 
 class TestUtils(TestTornadoJSONBase):
@@ -126,8 +132,9 @@ class TestUtils(TestTornadoJSONBase):
         }
 
         @utils.io_schema
-        def get(self):
-            return "I am the handler you are looking for."
+        def get(self, fname, lname):
+            return "I am the handler you are looking for, {} {}".format(
+                fname, lname)
 
         @utils.io_schema
         def post(self):
@@ -140,7 +147,7 @@ class TestUtils(TestTornadoJSONBase):
 
         # Expect a TypeError to be raised because of invalid output
         with pytest.raises(TypeError):
-            th.get()
+            th.get("Duke", "Flywalker")
 
         # Expect a validation error because of invalid input
         with pytest.raises(ValidationError):
@@ -148,7 +155,7 @@ class TestUtils(TestTornadoJSONBase):
 
         # Both of these should succeed as the body matches the schema
         with pytest.raises(SuccessException):
-            rh.get()
+            rh.get("J", "S")
         with pytest.raises(SuccessException):
             rh.post()
 

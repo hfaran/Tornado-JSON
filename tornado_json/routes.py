@@ -1,6 +1,7 @@
 import pyclbr
 import pkgutil
 import importlib
+import inspect
 from itertools import chain
 
 
@@ -36,9 +37,7 @@ def gen_submodule_names(package):
         yield modname
 
 
-def get_module_routes(
-        module_name, custom_routes=None, exclusions=None
-):
+def get_module_routes(module_name, custom_routes=None, exclusions=None):
     """Create and return routes for module_name
 
     Routes are (url, RequestHandler) tuples
@@ -61,6 +60,26 @@ def get_module_routes(
     :param exclusions: List of RequestHandler names that routes should not be
         generated for
     """
+    def yield_args(module, cls_name, method_name):
+        """Get signature of `module.cls_name.method_name`
+
+        Confession: This function doesn't actually `yield` the arguments,
+            just returns a list. Trust me, it's better that way.
+
+        :returns: List of arg names from method_name except "self"
+        :rtype: list
+        """
+        # method = getattr(getattr(module, cls_name), method_name)
+        wrapped_method = reduce(getattr, [module, cls_name, method_name])
+        # If method was decorated with io_schema, the original method
+        #   is available as orig_func thanks to our container decorator
+        method = wrapped_method.orig_func if \
+            hasattr(wrapped_method, "orig_func") else wrapped_method
+        return filter(
+            lambda a: a not in ["self"],
+            inspect.getargspec(method).args
+        )
+
     if not custom_routes:
         custom_routes = []
     if not exclusions:
@@ -76,14 +95,25 @@ def get_module_routes(
     rhs = pyclbr.readmodule(module_name)
 
     # You better believe this is a list comprehension
-    auto_routes = [
-        # URL, requesthandler tuple
-        (
-            "/{}/{}".format("/".join(module_name.split(".")[1:]),
-                            k.lower().replace('handler', '', 1) if
-                            k.lower().endswith('handler') else k.lower()),
-            getattr(module, k)
-        )
+    auto_routes = list(chain(*[
+        [
+            # URL, requesthandler tuple
+            (
+                "/{}/{}{}".format(
+                    "/".join(module_name.split(".")[1:]),
+                    k.lower().replace('handler', '', 1) if
+                    k.lower().endswith('handler') else k.lower(),
+                    "/{}/?$".format("/".join(
+                        ["(?P<{}>[a-zA-Z0-9_]+)".format(argname) for argname
+                         in yield_args(module, k, method_name)]
+                    )) if yield_args(module, k, method_name) else ""
+                ),
+                getattr(module, k)
+            )
+            for method_name in [
+                "get", "put", "post", "patch", "delete", "head", "options"
+            ] if method_name in vars(getattr(module, k))
+        ]
         # foreach classname, pyclbr.Class in rhs
         for k, v in rhs.iteritems()
         # Only add the pair to auto_routes if:
@@ -94,7 +124,7 @@ def get_module_routes(
             True for s in v.super if s in ["ViewHandler", "APIHandler"]
         )
         and k not in (custom_routes_s + exclusions)
-    ]
+    ]))
 
     routes = auto_routes + custom_routes
     return routes
