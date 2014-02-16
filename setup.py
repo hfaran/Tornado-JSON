@@ -10,11 +10,6 @@ from setuptools.command.test import test as TestCommand
 import tornado_json
 
 
-if not sys.version_info[:2] == (2, 7):
-    print "Sorry, only Python2.7 is supported."
-    exit()
-
-
 def read(filename):
     """Read and return `filename` in root dir of project and return string"""
     return codecs.open(os.path.join(__DIR__, filename), 'r').read()

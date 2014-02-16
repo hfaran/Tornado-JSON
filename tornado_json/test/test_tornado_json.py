@@ -9,7 +9,7 @@ try:
     from tornado_json import jsend
     sys.path.append('demos/helloworld')
     import helloworld
-except ImportError:
+except ImportError as e:
     print("Please run `py.test` from the root project directory")
     exit(1)
 

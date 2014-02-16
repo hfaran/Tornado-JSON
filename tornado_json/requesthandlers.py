@@ -63,7 +63,7 @@ class APIHandler(BaseHandler, JSendMixin):
         self.clear()
 
         # If exc_info is not in kwargs, something is very fubar
-        if not "exc_info" in kwargs.keys():
+        if not "exc_info" in list(kwargs.keys()):
             logging.error("exc_info not provided")
             self.set_status(500)
             self.error(message="Internal Server Error", code=500)

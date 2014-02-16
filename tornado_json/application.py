@@ -22,7 +22,7 @@ class Application(tornado.web.Application):
         api_doc_gen(routes)
 
         # Unless gzip was specifically set to False in settings, enable it
-        if "gzip" not in settings.keys():
+        if "gzip" not in list(settings.keys()):
             settings["gzip"] = True
 
         tornado.web.Application.__init__(
