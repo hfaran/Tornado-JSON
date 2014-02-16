@@ -4,7 +4,9 @@ import json
 import logging
 from jsonschema import validate, ValidationError
 
+from tornado import gen
 from tornado.web import HTTPError
+from tornado.concurrent import Future
 
 
 class APIError(HTTPError):
@@ -50,11 +52,13 @@ def io_schema(rh_method):
     :returns: The decorated method
     """
 
+    @gen.coroutine
     def _wrapper(self, *args, **kwargs):
         # Get name of method
         method_name = rh_method.__name__
 
-        # Special case for GET, DELETE requests (since there is no data to validate)
+        # Special case for GET, DELETE requests (since there is no data to
+        # validate)
         if method_name not in ["get", "delete"]:
             # If input is not valid JSON, fail
             try:
@@ -75,6 +79,10 @@ def io_schema(rh_method):
         setattr(self, "body", input_)
         # Call the requesthandler method
         output = rh_method(self, *args, **kwargs)
+        # If the rh_method returned a Future a la `raise Return(value)`
+        #   we grab the output.
+        if isinstance(output, Future):
+            output = yield output
 
         # We wrap output in an object before validating in case
         #  output is a string (and ergo not a validatable JSON object)
