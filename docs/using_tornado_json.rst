@@ -108,7 +108,7 @@ Running our Hello World app
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now, we can finally run the app ``python helloworld.py``. You should be
-able to send a GET request to ``localhost:7777/api/helloworld`` and get
+able to send a GET request to ``localhost:8888/api/helloworld`` and get
 a JSONic "Hello world!" back. Additionally, you'll notice an
 ``API_Documentation.md`` pop up in the directory, which contains the API
 Documentation you can give to users about your new and fantastic API.

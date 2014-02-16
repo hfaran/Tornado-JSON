@@ -39,7 +39,7 @@ care of that).
 
     class ExampleHandler(APIHandler):
         @io_schema
-        def post(self, body):
+        def post(self):
             ...
             return data
 
@@ -57,6 +57,6 @@ made. When using an assertion is not suitable,
 
     class ExampleHandler(APIHandler):
         @io_schema
-        def post(self, body):
+        def post(self):
             ...
             api_assert(condition, status_code, log_message=log_message)

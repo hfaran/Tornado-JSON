@@ -17,14 +17,6 @@ tornado_json Package
     :undoc-members:
     :show-inheritance:
 
-:mod:`db` Module
-----------------
-
-.. automodule:: tornado_json.db
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 :mod:`jsend` Module
 -------------------
 
