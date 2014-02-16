@@ -39,6 +39,7 @@ class Greeting(APIHandler):
     #   method, Tornado-JSON will generate a route that matches the extra
     #   arguments; here, you can GET /api/greeting/Greg and you will
     #   get a response back that says, "Greetings, Greg!"
+    # You can match the regex equivalent of `\w+`.
     @io_schema
     def get(self, name):
         return "Greetings, {}!".format(name)

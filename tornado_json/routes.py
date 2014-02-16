@@ -49,7 +49,12 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         remove 'handler' from the end of the name of the handler).
         For example, a requesthandler with the name
         `helloworld.api.HelloWorldHandler` would be assigned the url
-        `/api/helloworld`
+        `/api/helloworld`.
+        Additionally, if a method has extra arguments aside from `self` in
+        its signature, routes with URL patterns will be generated to
+        match `r"(?P<{}>[a-zA-Z0-9_]+)".format(argname)` for each
+        argument. The aforementioned regex will match ONLY values
+        with alphanumeric+underscore characters.
     :rtype: [(url, RequestHandler), ... ]
     :type  module_name: str
     :param module_name: Name of the module to get routes for
