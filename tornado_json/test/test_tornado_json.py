@@ -93,11 +93,11 @@ class TestUtils(TestTornadoJSONBase):
         }
 
         @utils.io_schema
-        def get(self, body):
+        def get(self):
             return "I am not the handler you are looking for."
 
         @utils.io_schema
-        def post(self, body):
+        def post(self):
             return "Fission mailed."
 
     class ReasonableHandler(MockRequestHandler):
@@ -126,11 +126,11 @@ class TestUtils(TestTornadoJSONBase):
         }
 
         @utils.io_schema
-        def get(self, body):
+        def get(self):
             return "I am the handler you are looking for."
 
         @utils.io_schema
-        def post(self, body):
+        def post(self):
             return "Mail received."
 
     def test_io_schema(self):

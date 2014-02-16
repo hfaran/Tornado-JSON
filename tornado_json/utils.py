@@ -57,7 +57,7 @@ def io_schema(rh_method):
             input_ = None
 
         # Call the requesthandler method
-        output = rh_method(self, input_)
+        output = rh_method(self, *args, **kwargs)
 
         # We wrap output in an object before validating in case
         #  output is a string (and ergo not a validatable JSON object)

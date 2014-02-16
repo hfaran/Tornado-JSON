@@ -98,11 +98,6 @@ validated against the output schema and be written back according to the
 ``io_schema`` decorator handles all of this so be sure to decorate any
 HTTP methods with it.
 
-Also, all HTTP methods **must** have a signature of exactly
-``(self, body)`` as that is what ``io_schema`` will call them with (this
-is a JSON API after all, so we don't need parameterized methods and only
-their JSON body content).
-
 .. code:: python
 
         @io_schema
