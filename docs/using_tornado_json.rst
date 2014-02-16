@@ -101,7 +101,7 @@ HTTP methods with it.
 .. code:: python
 
         @io_schema
-        def get(self, body):
+        def get(self):
             return "Hello world!"
 
 Running our Hello World app
