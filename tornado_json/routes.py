@@ -119,7 +119,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
 
     # You better believe this is a list comprehension
     auto_routes = list(chain(*[
-        [
+        list(set([
             # URL, requesthandler tuple
             (
                 "/{}/{}{}".format(
@@ -136,7 +136,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             for method_name in [
                 "get", "put", "post", "patch", "delete", "head", "options"
             ] if has_method(module, k, method_name)
-        ]
+        ]))
         # foreach classname, pyclbr.Class in rhs
         for k, v in rhs.iteritems()
         # Only add the pair to auto_routes if:
