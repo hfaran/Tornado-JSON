@@ -23,8 +23,8 @@ def main():
     # Create the application by passing routes and any settings
     application = Application(routes=routes, settings={})
 
-    # Start the application on port 7777
-    application.listen(7777)
+    # Start the application on port 8888
+    application.listen(8888)
     tornado.ioloop.IOLoop.instance().start()
 
 

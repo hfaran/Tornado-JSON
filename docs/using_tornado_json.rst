@@ -49,8 +49,8 @@ been initially automatically generated.
         # Create the application by passing routes and any settings
         application = Application(routes=routes, settings={})
 
-        # Start the application on port 7777
-        application.listen(7777)
+        # Start the application on port 8888
+        application.listen(8888)
         tornado.ioloop.IOLoop.instance().start()
 
 helloworld/api.py
@@ -97,11 +97,6 @@ validated against the output schema and be written back according to the
 `JSend <http://labs.omniti.com/labs/jsend>`__ specification. The
 ``io_schema`` decorator handles all of this so be sure to decorate any
 HTTP methods with it.
-
-Also, all HTTP methods **must** have a signature of exactly
-``(self, body)`` as that is what ``io_schema`` will call them with (this
-is a JSON API after all, so we don't need parameterized methods and only
-their JSON body content).
 
 .. code:: python
 
