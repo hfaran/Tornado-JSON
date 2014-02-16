@@ -2,6 +2,35 @@
 
 **Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**
 
+# `/api/asynchelloworld`
+
+    Content-Type: application/json
+
+## GET
+### Input Schema
+```json
+null
+```
+
+### Output Schema
+```json
+{
+    "type": "string"
+}
+```
+
+### Output Example
+```json
+"Hello (asynchronous) world!"
+```
+
+
+Shouts hello to the world (asynchronously)!
+
+
+
+
+
 # `/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$`
 
     Content-Type: application/json
@@ -9,16 +38,7 @@
 ## GET
 ### Input Schema
 ```json
-[
-    null
-]
-```
-
-### Input Example
-```json
-[
-    null
-]
+null
 ```
 
 ### Output Schema
@@ -47,16 +67,7 @@ Greets you.
 ## GET
 ### Input Schema
 ```json
-[
-    null
-]
-```
-
-### Input Example
-```json
-[
-    null
-]
+null
 ```
 
 ### Output Schema
