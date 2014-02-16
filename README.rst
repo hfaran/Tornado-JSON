@@ -33,7 +33,7 @@ Some of the key features the included modules provide:
 \ *Warning: Tornado-JSON is still very much a work in progress. No
 guarantees on backwards-compatibility made, however, I try not to do
 that since, as a user, I hate breaking it at least as much as you. That
-being said, use it at your own risk.*\ 
+being said, use it at your own risk.*\
 
 Dependencies
 ============
@@ -43,15 +43,9 @@ Dependencies
 These dependencies can be satisfied by running
 ``pip install -r requirements.txt``
 
-Required:
-
 -  tornado
 -  jsonschema
 
-If you're using ``tornado_json.db``:
-
--  torndb
--  dataset
 
 .. |Build Status| image:: https://travis-ci.org/hfaran/Tornado-JSON.png?branch=master
    :target: https://travis-ci.org/hfaran/Tornado-JSON

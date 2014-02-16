@@ -27,12 +27,5 @@ Some of the key features the included modules provide:
 
 These dependencies can be satisfied by running `pip install -r requirements.txt`
 
-Required:
-
 * tornado
 * jsonschema
-
-If you're using `tornado_json.db`:
-
-* torndb
-* dataset
