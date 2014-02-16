@@ -23,6 +23,8 @@ Some of the key features the included modules provide:
 
 # Dependencies
 
+*Python2.7 and Python3.3 are supported.*
+
 These dependencies can be satisfied by running `pip install -r requirements.txt`
 
 * tornado
