@@ -70,6 +70,9 @@ def io_schema(rh_method):
         else:
             input_ = None
 
+        # A json.loads'd version of self.request["body"] is now available
+        #   as self.body
+        setattr(self, "body", input_)
         # Call the requesthandler method
         output = rh_method(self, *args, **kwargs)
 

@@ -138,6 +138,8 @@ class TestUtils(TestTornadoJSONBase):
 
         @utils.io_schema
         def post(self):
+            # Test that self.body is available as expected
+            assert self.body == {"I am a": "JSON object"}
             return "Mail received."
 
     def test_io_schema(self):
