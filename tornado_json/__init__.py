@@ -5,4 +5,4 @@
 # Alternatively, just put the version in a text file or something to avoid
 #   this.
 
-__version__ = '0.10'
+__version__ = '0.11'
