@@ -42,7 +42,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Tornado-JSON'
-copyright = u'2013, Hamza Faran'
+copyright = u'2014, Hamza Faran'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -255,7 +255,7 @@ texinfo_documents = [
 epub_title = u'Tornado-JSON'
 epub_author = u'Hamza Faran'
 epub_publisher = u'Hamza Faran'
-epub_copyright = u'2013, Hamza Faran'
+epub_copyright = u'2014, Hamza Faran'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
