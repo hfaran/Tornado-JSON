@@ -127,3 +127,15 @@ class Greeting(APIHandler):
     @io_schema
     def get(self, name):
         return "Greetings, {}!".format(name)
+
+
+class FreeWilledHandler(APIHandler):
+
+    # And of course, you aren't forced to use schema validation;
+    #   if you want your handlers to do something more custom,
+    #   they definitely can.
+    def get(self):
+        self.success("I don't need no stinkin' schema validation.")
+        # If you're feeling really bold, you could even skip JSend
+        #   altogether and do the following EVIL thing:
+        # self.write("I'm writing back a string that isn't JSON! Take that!")

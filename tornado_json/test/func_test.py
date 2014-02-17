@@ -1,6 +1,7 @@
 import sys
 import json
 from tornado.testing import AsyncHTTPTestCase
+from mock import Mock
 
 try:
     sys.path.append('.')
@@ -8,6 +9,7 @@ try:
     from tornado_json import utils
     from tornado_json import jsend
     from tornado_json import application
+    from tornado_json import requesthandlers
     sys.path.append('demos/helloworld')
     import helloworld
 except ImportError as e:
@@ -29,6 +31,7 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         return application.Application(
             routes=routes.get_routes(helloworld),
             settings={},
+            db_conn=Mock()
         )
 
     def test_synchronous_handler(self):

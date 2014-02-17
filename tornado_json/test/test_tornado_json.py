@@ -51,7 +51,8 @@ class TestRoutes(TestTornadoJSONBase):
             ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
             ("/api/postit", helloworld.api.PostIt),
             ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
-             helloworld.api.Greeting)
+             helloworld.api.Greeting),
+            ("/api/freewilled", helloworld.api.FreeWilledHandler)
         ])
 
     def test_gen_submodule_names(self):
@@ -67,7 +68,8 @@ class TestRoutes(TestTornadoJSONBase):
             ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
             ("/api/postit", helloworld.api.PostIt),
             ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
-             helloworld.api.Greeting)
+             helloworld.api.Greeting),
+            ("/api/freewilled", helloworld.api.FreeWilledHandler)
         ])
 
 
