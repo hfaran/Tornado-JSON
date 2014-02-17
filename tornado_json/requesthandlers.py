@@ -60,15 +60,11 @@ class APIHandler(BaseHandler, JSendMixin):
         :type  status_code: int
         :param status_code: HTTP status code
         """
+        def get_exc_message(exception):
+            return exception.log_message if \
+                hasattr(exception, "log_message") else str(exception)
+
         self.clear()
-
-        # If exc_info is not in kwargs, something is very fubar
-        if not "exc_info" in list(kwargs.keys()):
-            logging.error("exc_info not provided")
-            self.set_status(500)
-            self.error(message="Internal Server Error", code=500)
-            self.finish()
-
         self.set_status(status_code)
 
         # Any APIError exceptions raised will result in a JSend fail written
@@ -83,10 +79,11 @@ class APIHandler(BaseHandler, JSendMixin):
             # ValidationError is always due to a malformed request
             if isinstance(exception, ValidationError):
                 self.set_status(400)
-            self.fail(exception.log_message if
-                      hasattr(exception, "log_message") else str(exception))
+            self.fail(get_exc_message(exception))
         else:
-            self.error(message=self._reason,
-                       data=exception.log_message if self.settings.get(
-                           "debug") else None,
-                       code=status_code)
+            self.error(
+                message=self._reason,
+                data=get_exc_message(exception) if self.settings.get("debug")
+                else None,
+                code=status_code
+            )

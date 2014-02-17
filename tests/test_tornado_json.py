@@ -49,8 +49,10 @@ class TestRoutes(TestTornadoJSONBase):
             helloworld)) == sorted([
             ("/api/helloworld", helloworld.api.HelloWorldHandler),
             ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
-            ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
-             helloworld.api.Greeting)
+            ("/api/postit", helloworld.api.PostIt),
+            ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$",
+             helloworld.api.Greeting),
+            ("/api/freewilled", helloworld.api.FreeWilledHandler)
         ])
 
     def test_gen_submodule_names(self):
@@ -64,8 +66,10 @@ class TestRoutes(TestTornadoJSONBase):
             'helloworld.api')) == sorted([
             ("/api/helloworld", helloworld.api.HelloWorldHandler),
             ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
-            ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
-             helloworld.api.Greeting)
+            ("/api/postit", helloworld.api.PostIt),
+            ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$",
+             helloworld.api.Greeting),
+            ("/api/freewilled", helloworld.api.FreeWilledHandler)
         ])
 
 
@@ -145,9 +149,10 @@ class TestUtils(TestTornadoJSONBase):
             assert self.body == {"I am a": "JSON object"}
             return "Mail received."
 
-    # TODO: Test io_schema functionally instead; pytest.raises does
+    # DONE: Test io_schema functionally instead; pytest.raises does
     #   not seem to be catching errors being thrown after change
     #   to async compatible code.
+    # The following test left here as antiquity.
     # def test_io_schema(self):
     #     """Tests the utils.io_schema decorator"""
     #     th = self.TerribleHandler()

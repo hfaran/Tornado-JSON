@@ -20,3 +20,4 @@
 * Run tests from root project directory
 
     ```$ py.test --cov="tornado_json" --cov-report=term --cov-report=html```
+    ```$ nosetests --with-cov --cov-report term-missing --cov tornado_json tests/```

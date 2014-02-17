@@ -62,15 +62,21 @@ def io_schema(rh_method):
         if method_name not in ["get", "delete"]:
             # If input is not valid JSON, fail
             try:
-                input_ = json.loads(self.request.body)
+                # TODO: Assuming UTF-8 encoding for all requests,
+                #   find a nice way of determining this from charset
+                #   in headers if provided
+                encoding = "UTF-8"
+                input_ = json.loads(self.request.body.decode(encoding))
             except ValueError as e:
-                logging.error(str(e))
-                self.fail(str(e))
-                return
+                raise ValidationError(
+                    "Input is malformed; could not decode JSON object."
+                )
 
             # Validate the received input
-            validate(input_, type(self)
-                     .apid[method_name]["input_schema"])
+            validate(
+                input_,
+                type(self).apid[method_name]["input_schema"]
+            )
         else:
             input_ = None
 
