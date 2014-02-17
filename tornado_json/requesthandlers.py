@@ -60,6 +60,10 @@ class APIHandler(BaseHandler, JSendMixin):
         :type  status_code: int
         :param status_code: HTTP status code
         """
+        def get_exc_message(exception):
+            return exception.log_message if \
+                hasattr(exception, "log_message") else str(exception)
+
         self.clear()
         self.set_status(status_code)
 
@@ -75,14 +79,11 @@ class APIHandler(BaseHandler, JSendMixin):
             # ValidationError is always due to a malformed request
             if isinstance(exception, ValidationError):
                 self.set_status(400)
-            self.fail(
-                exception.log_message if
-                hasattr(exception, "log_message") else str(exception)
-            )
+            self.fail(get_exc_message(exception))
         else:
             self.error(
                 message=self._reason,
-                data=exception.log_message if self.settings.get("debug")
+                data=get_exc_message(exception) if self.settings.get("debug")
                 else None,
                 code=status_code
             )

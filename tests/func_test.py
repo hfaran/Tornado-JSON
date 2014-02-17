@@ -1,13 +1,11 @@
 import sys
 import json
 from tornado.testing import AsyncHTTPTestCase
-from mock import Mock
 
 try:
     sys.path.append('.')
     from tornado_json import routes
     from tornado_json import utils
-    from tornado_json import jsend
     from tornado_json import application
     from tornado_json import requesthandlers
     sys.path.append('demos/helloworld')
@@ -23,6 +21,26 @@ def jd(obj):
 
 def jl(s):
     return json.loads(s.decode("utf-8"))
+
+
+class DummyView(requesthandlers.ViewHandler):
+
+    """Dummy ViewHandler for coverage"""
+
+    def delete(self):
+        # Reference db_conn to test for AttributeError
+        self.db_conn
+
+
+class DBTestHandler(requesthandlers.APIHandler):
+
+    """APIHandler for testing db_conn"""
+
+    def get(self):
+        # Set application.db_conn to test if db_conn BaseHandler
+        #   property works
+        self.application.db_conn = {"data": "Nothing to see here."}
+        self.success(self.db_conn.get("data"))
 
 
 class ExplodingHandler(requesthandlers.APIHandler):
@@ -63,33 +81,15 @@ class APIFunctionalTest(AsyncHTTPTestCase):
 
     def get_app(self):
         rts = routes.get_routes(helloworld)
-        rts += [("/api/explodinghandler", ExplodingHandler)]
+        rts += [
+            ("/api/explodinghandler", ExplodingHandler),
+            ("/views/someview", DummyView),
+            ("/api/dbtest", DBTestHandler)
+        ]
         return application.Application(
             routes=rts,
-            settings={},
-            db_conn=Mock()
-        )
-
-    def test_write_error(self):
-        # Test malformed output
-        r = self.fetch(
-            "/api/explodinghandler"
-        )
-        self.assertEqual(r.code, 500)
-        self.assertEqual(
-            jl(r.body)["status"],
-            "error"
-        )
-        # Test malformed input
-        r = self.fetch(
-            "/api/explodinghandler",
-            method="POST",
-            body='"Yup", "this is going to end badly."]'
-        )
-        self.assertEqual(r.code, 400)
-        self.assertEqual(
-            jl(r.body)["status"],
-            "fail"
+            settings={"debug": True},
+            db_conn=None
         )
 
     def test_synchronous_handler(self):
@@ -136,4 +136,51 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         self.assertEqual(
             jl(r.body)["data"],
             "Greetings, John Smith!"
+        )
+
+    def test_write_error(self):
+        # Test malformed output
+        r = self.fetch(
+            "/api/explodinghandler"
+        )
+        self.assertEqual(r.code, 500)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "error"
+        )
+        # Test malformed input
+        r = self.fetch(
+            "/api/explodinghandler",
+            method="POST",
+            body='"Yup", "this is going to end badly."]'
+        )
+        self.assertEqual(r.code, 400)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "fail"
+        )
+
+    def test_view_db_conn(self):
+        r = self.fetch(
+            "/views/someview",
+            method="DELETE"
+        )
+        self.assertEqual(r.code, 500)
+        self.assertTrue(
+            "No database connection was provided." in r.body.decode("UTF-8")
+        )
+
+    def test_db_conn(self):
+        r = self.fetch(
+            "/api/dbtest",
+            method="GET"
+        )
+        self.assertEqual(r.code, 200)
+        print(r.body)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "success"
+        )
+        self.assertTrue(
+            "Nothing to see here." in jl(r.body)["data"]
         )
