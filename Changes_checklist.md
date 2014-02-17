@@ -3,6 +3,7 @@
 * Examples should be updated to reflect changes
 * Documentation should be updated to reflect changes
 * Update changelog in `docs` with changes
+* If any changes have been made to `README.md`, ensure changes are mirrored to `README.rst` with `pandoc`
 
 ## Before Doing a Release
 * Bump the version in `__init__.py`
