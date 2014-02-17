@@ -130,10 +130,10 @@ class APIFunctionalTest(AsyncHTTPTestCase):
 
     def test_url_pattern_route(self):
         r = self.fetch(
-            "/api/greeting/Martian"
+            "/api/greeting/John/Smith"
         )
         self.assertEqual(r.code, 200)
         self.assertEqual(
             jl(r.body)["data"],
-            "Greetings, Martian!"
+            "Greetings, John Smith!"
         )

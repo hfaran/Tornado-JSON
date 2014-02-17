@@ -31,7 +31,7 @@ Shouts hello to the world (asynchronously)!
 
 
 
-# `/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$`
+# `/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$`
 
     Content-Type: application/json
 
@@ -50,7 +50,7 @@ null
 
 ### Output Example
 ```json
-"Greetings, Greg!"
+"Greetings, Named Person!"
 ```
 
 

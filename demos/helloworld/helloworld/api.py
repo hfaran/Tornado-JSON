@@ -114,19 +114,19 @@ class Greeting(APIHandler):
         "output_schema": {
             "type": "string",
         },
-        "output_example": "Greetings, Greg!",
+        "output_example": "Greetings, Named Person!",
         "input_example": None,
         "doc": "Greets you.",
     }
 
     # When you include extra arguments in the signature of an HTTP
     #   method, Tornado-JSON will generate a route that matches the extra
-    #   arguments; here, you can GET /api/greeting/Greg and you will
-    #   get a response back that says, "Greetings, Greg!"
+    #   arguments; here, you can GET /api/greeting/John/Smith and you will
+    #   get a response back that says, "Greetings, John Smith!"
     # You can match the regex equivalent of `\w+`.
     @io_schema
-    def get(self, name):
-        return "Greetings, {}!".format(name)
+    def get(self, fname, lname):
+        return "Greetings, {} {}!".format(fname, lname)
 
 
 class FreeWilledHandler(APIHandler):
