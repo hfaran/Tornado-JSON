@@ -5,7 +5,7 @@ import json
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
-    provided information from `apid` class-variable
+    provided information from ``apid`` class-variable
     in each handler that provides one.
 
     :type  routes: [(url, RequestHandler), ...]

@@ -2,6 +2,7 @@
 
 import json
 import logging
+from functools import wraps
 from jsonschema import validate, ValidationError
 
 from tornado import gen
@@ -11,12 +12,14 @@ from tornado.concurrent import Future
 
 class APIError(HTTPError):
 
-    """Equivalent to RequestHandler.HTTPError except for in name"""
+    """Equivalent to ``RequestHandler.HTTPError`` except for in name"""
 
 
 def api_assert(condition, *args, **kwargs):
-    """Asserts that `condition` is `True`, else raises an `APIError` with the
-    provided `args` and `kwargs`
+    """Assertion to fail with if not ``condition``
+
+    Asserts that ``condition`` is ``True``, else raises an ``APIError``
+    with the provided ``args`` and ``kwargs``
 
     :type  condition: bool
     """
@@ -27,9 +30,14 @@ def api_assert(condition, *args, **kwargs):
 def container(dec):
     """Meta-decorator (for decorating decorators)
 
-    Keeps around original decorated function as a property `orig_func`
-    Credits: http://stackoverflow.com/a/1167248/1798683
+    Keeps around original decorated function as a property ``orig_func``
+
+    :param dec: Decorator to decorate
+    :type  dec: function
+    :returns: Decorated decorator
     """
+    # Credits: http://stackoverflow.com/a/1167248/1798683
+    @wraps(dec)
     def meta_decorator(f):
         decorator = dec(f)
         decorator.orig_func = f
@@ -42,14 +50,17 @@ def io_schema(rh_method):
     """Decorator for RequestHandler schema validation
 
     This decorator:
+
         - Validates request body against input schema of the method
-        - Calls the `rh_method` and gets output from it
+        - Calls the ``rh_method`` and gets output from it
         - Validates output against output schema of the method
-        - Calls `JSendMixin.success` to write the validated output
+        - Calls ``JSendMixin.success`` to write the validated output
 
     :type  rh_method: function
     :param rh_method: The RequestHandler method to be decorated
     :returns: The decorated method
+    :raises ValidationError: If input is invalid as per the schema or malformed
+    :raises TypeError: If the output is invalid as per the schema or malformed
     """
 
     @gen.coroutine

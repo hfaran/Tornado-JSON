@@ -9,9 +9,7 @@ from tornado_json.utils import APIError
 
 class BaseHandler(RequestHandler):
 
-    """
-    BaseHandler for all other RequestHandlers
-    """
+    """BaseHandler for all other RequestHandlers"""
 
     @property
     def db_conn(self):
@@ -38,11 +36,11 @@ class ViewHandler(BaseHandler):
 
 class APIHandler(BaseHandler, JSendMixin):
 
-    """
-    RequestHandler for API calls
-      - Sets header as application/json
-      - Provides custom write_error that writes error back as JSON
-         rather than as the standard HTML template
+    """RequestHandler for API calls
+
+    - Sets header as ``application/json``
+    - Provides custom write_error that writes error back as JSON \
+    rather than as the standard HTML template
     """
 
     def initialize(self):
@@ -54,7 +52,7 @@ class APIHandler(BaseHandler, JSendMixin):
     def write_error(self, status_code, **kwargs):
         """Override of RequestHandler.write_error
 
-        Calls `error()` or `fail()` from JSendMixin depending on which
+        Calls ``error()`` or ``fail()`` from JSendMixin depending on which
         exception was raised with provided reason and status code.
 
         :type  status_code: int
