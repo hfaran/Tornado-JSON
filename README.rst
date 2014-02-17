@@ -27,6 +27,27 @@ Some of the key features the included modules provide:
 -  Standardized output using the
    `JSend <http://labs.omniti.com/labs/jsend>`__ specification
 
+Probably want an example? Here's a somewhat contrivedly simple handler.
+Read on for more details or `dive in to some demos right away. <https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld>`__
+
+.. code:: python
+
+   class HelloWorldHandler(APIHandler):
+
+       apid = {}
+       apid["get"] = {
+           "input_schema": None,
+           "output_schema": {"type": "string"},
+           "input_example": None,
+           "output_example": "Hello world!",
+           "doc": """Shouts hello to the world!""",
+       }
+
+       @io_schema
+       def get(self):
+           return "Hello world!"
+
+
 `Read the Docs for documentation! <http://tornado-json.readthedocs.org/en/latest/index.html#>`__
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

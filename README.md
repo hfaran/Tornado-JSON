@@ -16,6 +16,26 @@ Some of the key features the included modules provide:
 * *Automated Public API documentation* using schemas and provided descriptions
 * Standardized output using the [JSend](http://labs.omniti.com/labs/jsend) specification
 
+Probably want an example? Here's a somewhat contrivedly simple handler.
+Read on for more details or [dive in to some demos right away](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld)
+
+```python
+class HelloWorldHandler(APIHandler):
+
+   apid = {}
+   apid["get"] = {
+       "input_schema": None,
+       "output_schema": {"type": "string"},
+       "input_example": None,
+       "output_example": "Hello world!",
+       "doc": """Shouts hello to the world!""",
+   }
+
+   @io_schema
+   def get(self):
+       return "Hello world!"
+```
+
 ### [Read the Docs for documentation!](http://tornado-json.readthedocs.org/en/latest/index.html#)
 
 <sub>*Warning: Tornado-JSON is still very much a work in progress. No guarantees on backwards-compatibility made, however, I try not to do that since, as a user, I hate breaking it at least as much as you. That being said, use it at your own risk.*</sub>
