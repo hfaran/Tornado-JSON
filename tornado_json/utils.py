@@ -68,13 +68,15 @@ def io_schema(rh_method):
                 encoding = "UTF-8"
                 input_ = json.loads(self.request.body.decode(encoding))
             except ValueError as e:
-                logging.error(str(e))
-                self.fail(str(e))
-                return
+                raise ValidationError(
+                    "Input is malformed; could not decode JSON object."
+                )
 
             # Validate the received input
-            validate(input_, type(self)
-                     .apid[method_name]["input_schema"])
+            validate(
+                input_,
+                type(self).apid[method_name]["input_schema"]
+            )
         else:
             input_ = None
 

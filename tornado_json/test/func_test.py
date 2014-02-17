@@ -84,7 +84,7 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         r = self.fetch(
             "/api/explodinghandler",
             method="POST",
-            body=jd("This is going to end badly.")
+            body='"Yup", "this is going to end badly."]'
         )
         self.assertEqual(r.code, 400)
         self.assertEqual(

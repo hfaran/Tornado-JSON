@@ -75,10 +75,14 @@ class APIHandler(BaseHandler, JSendMixin):
             # ValidationError is always due to a malformed request
             if isinstance(exception, ValidationError):
                 self.set_status(400)
-            self.fail(exception.log_message if
-                      hasattr(exception, "log_message") else str(exception))
+            self.fail(
+                exception.log_message if
+                hasattr(exception, "log_message") else str(exception)
+            )
         else:
-            self.error(message=self._reason,
-                       data=exception.log_message if self.settings.get(
-                           "debug") else None,
-                       code=status_code)
+            self.error(
+                message=self._reason,
+                data=exception.log_message if self.settings.get("debug")
+                else None,
+                code=status_code
+            )
