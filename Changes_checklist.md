@@ -2,6 +2,7 @@
 * Builds should not be broken
 * Examples should be updated to reflect changes
 * Documentation should be updated to reflect changes
+* Update changelog in `docs` with changes
 
 ## Before Doing a Release
 * Bump the version in `__init__.py`
@@ -10,3 +11,4 @@
 
 ## After the Release
 * Trigger a new documentation build on readthedocs
+* Mark active the new version on RTD (or otherwise do any version management as necessary)
