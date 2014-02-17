@@ -25,13 +25,71 @@ def jl(s):
     return json.loads(s.decode("utf-8"))
 
 
+class ExplodingHandler(requesthandlers.APIHandler):
+
+    apid = {
+        "get": {
+            "input_schema": "This doesn't matter because GET request",
+            "output_schema": {
+                "type": "number",
+            },
+            "doc": """
+This handler is used for testing purposes and is explosive.
+"""
+        },
+        "post": {
+            "input_schema": {
+                "type": "number",
+            },
+            "output_schema": {
+                "type": "number",
+            },
+            "doc": """
+This handler is used for testing purposes and is explosive.
+"""
+        },
+    }
+
+    @utils.io_schema
+    def get(self):
+        return "I am not the handler you are looking for."
+
+    @utils.io_schema
+    def post(self):
+        return "Fission mailed."
+
+
 class APIFunctionalTest(AsyncHTTPTestCase):
 
     def get_app(self):
+        rts = routes.get_routes(helloworld)
+        rts += [("/api/explodinghandler", ExplodingHandler)]
         return application.Application(
-            routes=routes.get_routes(helloworld),
+            routes=rts,
             settings={},
             db_conn=Mock()
+        )
+
+    def test_write_error(self):
+        # Test malformed output
+        r = self.fetch(
+            "/api/explodinghandler"
+        )
+        self.assertEqual(r.code, 500)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "error"
+        )
+        # Test malformed input
+        r = self.fetch(
+            "/api/explodinghandler",
+            method="POST",
+            body=jd("This is going to end badly.")
+        )
+        self.assertEqual(r.code, 400)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "fail"
         )
 
     def test_synchronous_handler(self):
