@@ -7,7 +7,7 @@
 
 ## Overview
 
-Tornado-JSON is a small extension of Tornado with the intent providing the tools necessary to get a JSON API up and running quickly. See [demos/helloworld/](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation.
+Tornado-JSON is a small extension of [Tornado](http://www.tornadoweb.org/en/stable/) with the intent providing the tools necessary to get a JSON API up and running quickly. See [demos/helloworld/](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation.
 
 Some of the key features the included modules provide:
 

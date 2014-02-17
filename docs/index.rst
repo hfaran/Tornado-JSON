@@ -3,10 +3,45 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to tornado_json's documentation!
+Tornado-JSON
 ========================================
 
-Contents:
+``Tornado-JSON`` is a small extension of `Tornado <http://www.tornadoweb.org/en/stable/>`__ with the intent providing
+the tools necessary to get a JSON API up and running quickly.
+
+Some of the key features the included modules provide:
+
+-  Input and output `JSON Schema <http://json-schema.org/>`__ validation
+   by decorating RequestHandlers
+-  Automated *route generation* with ``routes.get_routes(package)``
+-  *Automated Public API documentation* using schemas and provided
+   descriptions
+-  Standardized output using the
+   `JSend <http://labs.omniti.com/labs/jsend>`__ specification
+
+Probably want an example? Here's a somewhat contrivedly simple handler.
+Read on for more details or `dive in to some demos right away. <https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld>`__
+
+.. code:: python
+
+   class HelloWorldHandler(APIHandler):
+
+       apid = {}
+       apid["get"] = {
+           "input_schema": None,
+           "output_schema": {"type": "string"},
+           "input_example": None,
+           "output_example": "Hello world!",
+           "doc": """Shouts hello to the world!""",
+       }
+
+       @io_schema
+       def get(self):
+           return "Hello world!"
+
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
@@ -17,6 +52,12 @@ Contents:
    docgen
    changelog
    tornado_json
+
+
+\ *Warning: Tornado-JSON is still very much a work in progress. No
+guarantees on backwards-compatibility made, however, I try not to do
+that since, as a user, I hate breaking it at least as much as you. That
+being said, use it at your own risk.*\
 
 
 Indices and tables

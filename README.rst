@@ -10,7 +10,7 @@ Tornado-JSON
 Overview
 --------
 
-Tornado-JSON is a small extension of Tornado with the intent providing
+Tornado-JSON is a small extension of `Tornado <http://www.tornadoweb.org/en/stable/>`__ with the intent providing
 the tools necessary to get a JSON API up and running quickly. See
 `demos/helloworld/ <https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld>`__
 for a quick example and the `accompanying

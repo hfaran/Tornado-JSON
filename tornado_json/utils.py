@@ -32,8 +32,11 @@ def container(dec):
 
     Keeps around original decorated function as a property ``orig_func``
 
-    Credits: http://stackoverflow.com/a/1167248/1798683
+    :param dec: Decorator to decorate
+    :type  dec: function
+    :returns: Decorated decorator
     """
+    # Credits: http://stackoverflow.com/a/1167248/1798683
     @wraps(dec)
     def meta_decorator(f):
         decorator = dec(f)
@@ -56,6 +59,8 @@ def io_schema(rh_method):
     :type  rh_method: function
     :param rh_method: The RequestHandler method to be decorated
     :returns: The decorated method
+    :raises ValidationError: If input is invalid as per the schema or malformed
+    :raises TypeError: If the output is invalid as per the schema or malformed
     """
 
     @gen.coroutine

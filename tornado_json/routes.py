@@ -93,7 +93,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         Confession: This function doesn't actually ``yield`` the arguments,
             just returns a list. Trust me, it's better that way.
 
-        :returns: List of arg names from method_name except "self"
+        :returns: List of arg names from method_name except ``self``
         :rtype: list
         """
         # method = getattr(getattr(module, cls_name), method_name)
