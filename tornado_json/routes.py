@@ -9,15 +9,15 @@ from functools import reduce
 
 def get_routes(package):
     """
-    This will walk `package` and generates routes from any and all
-    `APIHandler` and `ViewHandler` subclasses it finds. If you need to
+    This will walk ``package`` and generates routes from any and all
+    ``APIHandler`` and ``ViewHandler`` subclasses it finds. If you need to
     customize or remove any routes, you can do so to the list of
     returned routes that this generates.
 
     :type  package: package
     :param package: The package containing RequestHandlers to generate
         routes from
-    :returns: List of routes for all submodules of `package`
+    :returns: List of routes for all submodules of ``package``
     :rtype: [(url, RequestHandler), ... ]
     """
     return list(chain(*[get_module_routes(modname) for modname in
@@ -29,8 +29,8 @@ def gen_submodule_names(package):
 
     :type  package: package
     :param package: The package to get submodule names of
-    :returns: Iterator that yields names of all submodules of `package`
-    :rtype: Iterator that yields `str`
+    :returns: Iterator that yields names of all submodules of ``package``
+    :rtype: Iterator that yields ``str``
     """
     for importer, modname, ispkg in pkgutil.walk_packages(
         path=package.__path__,
@@ -44,17 +44,17 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
 
     Routes are (url, RequestHandler) tuples
 
-    :returns: list of routes for `module_name` with respect to `exclusions`
-        and `custom_routes`. Returned routes are with URLs formatted such
+    :returns: list of routes for ``module_name`` with respect to ``exclusions``
+        and ``custom_routes``. Returned routes are with URLs formatted such
         that they are forward-slash-separated by module/class level
         and end with the lowercase name of the RequestHandler (it will also
         remove 'handler' from the end of the name of the handler).
         For example, a requesthandler with the name
-        `helloworld.api.HelloWorldHandler` would be assigned the url
-        `/api/helloworld`.
-        Additionally, if a method has extra arguments aside from `self` in
+        ``helloworld.api.HelloWorldHandler`` would be assigned the url
+        ``/api/helloworld``.
+        Additionally, if a method has extra arguments aside from ``self`` in
         its signature, routes with URL patterns will be generated to
-        match `r"(?P<{}>[a-zA-Z0-9_]+)".format(argname)` for each
+        match ``r"(?P<{}>[a-zA-Z0-9_]+)".format(argname)`` for each
         argument. The aforementioned regex will match ONLY values
         with alphanumeric+underscore characters.
     :rtype: [(url, RequestHandler), ... ]
@@ -88,9 +88,9 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         ])
 
     def yield_args(module, cls_name, method_name):
-        """Get signature of `module.cls_name.method_name`
+        """Get signature of ``module.cls_name.method_name``
 
-        Confession: This function doesn't actually `yield` the arguments,
+        Confession: This function doesn't actually ``yield`` the arguments,
             just returns a list. Trust me, it's better that way.
 
         :returns: List of arg names from method_name except "self"

@@ -40,7 +40,7 @@ class APIHandler(BaseHandler, JSendMixin):
 
     """
     RequestHandler for API calls
-      - Sets header as application/json
+      - Sets header as ``application/json``
       - Provides custom write_error that writes error back as JSON
          rather than as the standard HTML template
     """
@@ -54,7 +54,7 @@ class APIHandler(BaseHandler, JSendMixin):
     def write_error(self, status_code, **kwargs):
         """Override of RequestHandler.write_error
 
-        Calls `error()` or `fail()` from JSendMixin depending on which
+        Calls ``error()`` or ``fail()`` from JSendMixin depending on which
         exception was raised with provided reason and status code.
 
         :type  status_code: int

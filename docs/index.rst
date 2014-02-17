@@ -15,6 +15,7 @@ Contents:
    using_tornado_json
    requesthandler_guidelines
    docgen
+   changelog
    tornado_json
 
 
