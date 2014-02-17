@@ -112,3 +112,15 @@ able to send a GET request to ``localhost:8888/api/helloworld`` and get
 a JSONic "Hello world!" back. Additionally, you'll notice an
 ``API_Documentation.md`` pop up in the directory, which contains the API
 Documentation you can give to users about your new and fantastic API.
+
+
+Further Examples
+----------------
+
+See `helloworld <https://github.com/hfaran/Tornado-JSON/blob/master/demos/helloworld/helloworld/api.py>`__
+for further RequestHandler examples with features including:
+
+* Asynchronous methods in RequestHandlers
+* POSTing (or PUTing, PATCHing etc.) data; `self.body`
+* How to generate routes with URL patterns for RequestHandler methods with arguments
+* and possibly more!
