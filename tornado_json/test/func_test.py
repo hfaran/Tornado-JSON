@@ -51,6 +51,22 @@ class APIFunctionalTest(AsyncHTTPTestCase):
             "Hello (asynchronous) world!"
         )
 
+    def test_post_request(self):
+        r = self.fetch(
+            "/api/postit",
+            method="POST",
+            body=jd({
+                "title": "Very Important Post-It Note",
+                "body": "Equally important message",
+                "index": 0
+            })
+        )
+        self.assertEqual(r.code, 200)
+        self.assertEqual(
+            jl(r.body)["data"]["message"],
+            "Very Important Post-It Note was posted."
+        )
+
     def test_url_pattern_route(self):
         r = self.fetch(
             "/api/greeting/Martian"

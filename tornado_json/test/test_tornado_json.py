@@ -49,6 +49,7 @@ class TestRoutes(TestTornadoJSONBase):
             helloworld)) == sorted([
             ("/api/helloworld", helloworld.api.HelloWorldHandler),
             ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
+            ("/api/postit", helloworld.api.PostIt),
             ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
              helloworld.api.Greeting)
         ])
@@ -64,6 +65,7 @@ class TestRoutes(TestTornadoJSONBase):
             'helloworld.api')) == sorted([
             ("/api/helloworld", helloworld.api.HelloWorldHandler),
             ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
+            ("/api/postit", helloworld.api.PostIt),
             ("/api/greeting/(?P<name>[a-zA-Z0-9_]+)/?$",
              helloworld.api.Greeting)
         ])
