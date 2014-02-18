@@ -16,9 +16,31 @@ Some of the key features the included modules provide:
 * **Automated GitHub Markdown-formatted API documentation** using schemas and provided descriptions
 * **Standardized JSON output** using the **[JSend](http://labs.omniti.com/labs/jsend)** specification
 
-## Getting Started
+## Getting Started/FAQ
 
-Check out the [Hello World demo](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation. And then [**explore Tornado-JSON on readthedocs for the rest!**](http://tornado-json.readthedocs.org/en/latest/index.html#)
+**How do I use this thing?**
+
+* Check out the [Hello World demo](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation. And then [**explore Tornado-JSON on readthedocs for the rest!**](http://tornado-json.readthedocs.org/en/latest/index.html#)
+
+**Okay, but how do I install it?**
+
+* For the possibly stable
+
+```
+pip install Tornado-JSON
+```
+
+* For the latest and greatest
+
+```
+git clone https://github.com/hfaran/Tornado-JSON.git
+cd Tornado-JSON
+sudo python setup.py install
+```
+
+**Neat, but `x` sucks, `y` is ugly, and `z` could be better.**
+
+* You would be awesome for [opening an issue about it](https://github.com/hfaran/Tornado-JSON/issues/new), and I'll promise my best to take a look.
 
 
 ## Dependencies
