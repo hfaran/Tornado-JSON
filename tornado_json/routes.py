@@ -72,7 +72,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
 
         :rtype: any([types.FunctionType, types.MethodType])
         """
-        # If method was decorated with io_schema, the original method
+        # If method was decorated with validate, the original method
         #   is available as orig_func thanks to our container decorator
         return wrapped_method.orig_func if \
             hasattr(wrapped_method, "orig_func") else wrapped_method

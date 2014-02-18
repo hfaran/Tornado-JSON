@@ -1,7 +1,7 @@
 from tornado import gen
 
 from tornado_json.requesthandlers import APIHandler
-from tornado_json.utils import io_schema
+from tornado_json.schema import validate
 
 
 class HelloWorldHandler(APIHandler):
@@ -17,12 +17,12 @@ class HelloWorldHandler(APIHandler):
         "doc": "Shouts hello to the world!",
     }
 
-    # Decorate any HTTP methods with the `io_schema` decorator
+    # Decorate any HTTP methods with the `validate` decorator
     #   to validate input to it and output from it as per the
     #   the schema for the method defined in `apid`
     # Simply use `return` rather than `self.write` to write back
     #   your output.
-    @io_schema
+    @validate
     def get(self):
         return "Hello world!"
 
@@ -43,13 +43,13 @@ class AsyncHelloWorld(APIHandler):
     def hello(self, callback=None):
         callback("Hello (asynchronous) world!")
 
-    @io_schema
+    @validate
     @gen.coroutine
     def get(self):
         # Asynchronously yield a result from a method
         res = yield gen.Task(self.hello)
 
-        # When using the io_schema decorator asynchronously,
+        # When using the validate decorator asynchronously,
         #   we can return the output desired by raising
         #   `tornado.gen.Return(value)` which returns a
         #   Future that the decorator will yield.
@@ -97,9 +97,9 @@ POST the required parameters to post a Post-It note
 """
     }
 
-    @io_schema
+    @validate
     def post(self):
-        # io_schema will JSON-decode `self.request.body` for us
+        # validate will JSON-decode `self.request.body` for us
         #   and set self.body as the result, so we can use that here
         return {
             "message": "{} was posted.".format(self.body["title"])
@@ -124,7 +124,7 @@ class Greeting(APIHandler):
     #   arguments; here, you can GET /api/greeting/John/Smith and you will
     #   get a response back that says, "Greetings, John Smith!"
     # You can match the regex equivalent of `\w+`.
-    @io_schema
+    @validate
     def get(self, fname, lname):
         return "Greetings, {} {}!".format(fname, lname)
 

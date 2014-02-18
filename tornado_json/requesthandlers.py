@@ -4,7 +4,7 @@ from tornado.web import RequestHandler
 from jsonschema import ValidationError
 
 from tornado_json.jsend import JSendMixin
-from tornado_json.utils import APIError
+from tornado_json.exceptions import APIError
 
 
 class BaseHandler(RequestHandler):
