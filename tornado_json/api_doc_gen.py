@@ -71,8 +71,7 @@ def api_doc_gen(routes):
         # If a RequestHandler does not yet have an apid variable
         #  just ignore it and continue
         except AttributeError as e:
-            logging.info(str(e))
-            continue
+            logging.debug(str(e))
 
     # Documentation is written to the root folder
     with open("API_Documentation.md", "w+") as f:
