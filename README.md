@@ -11,7 +11,7 @@ Tornado-JSON is a small extension of [Tornado](http://www.tornadoweb.org/en/stab
 
 Some of the key features the included modules provide:
 
-* Input and output [JSON Schema](http://json-schema.org/) validation by decorating RequestHandlers with `io_schema`
+* Input and output [JSON Schema](http://json-schema.org/) validation by decorating RequestHandlers with `schema.validate`
 * Automated *route generation* with `routes.get_routes(package)`
 * *Automated Public API documentation* using schemas and provided descriptions
 * Standardized output using the [JSend](http://labs.omniti.com/labs/jsend) specification

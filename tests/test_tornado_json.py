@@ -6,7 +6,8 @@ from tornado.testing import AsyncHTTPTestCase
 try:
     sys.path.append('.')
     from tornado_json import routes
-    from tornado_json import utils
+    from tornado_json import schema
+    from tornado_json import exceptions
     from tornado_json import jsend
     sys.path.append('demos/helloworld')
     import helloworld
@@ -28,7 +29,7 @@ class MockRequestHandler(object):
     request = Request()
 
     def fail(message):
-        raise utils.APIError(message)
+        raise exceptions.APIError(message)
 
     def success(self, message):
         raise SuccessException
@@ -78,15 +79,15 @@ class TestUtils(TestTornadoJSONBase):
     """Tests the utils module"""
 
     def test_api_assert(self):
-        """Test utils.api_assert"""
-        with pytest.raises(utils.APIError):
-            utils.api_assert(False, 400)
+        """Test exceptions.api_assert"""
+        with pytest.raises(exceptions.APIError):
+            exceptions.api_assert(False, 400)
 
-        utils.api_assert(True, 400)
+        exceptions.api_assert(True, 400)
 
     class TerribleHandler(MockRequestHandler):
 
-        """This 'handler' is used in test_io_schema"""
+        """This 'handler' is used in test_validate"""
 
         apid = {
             "get": {
@@ -105,17 +106,17 @@ class TestUtils(TestTornadoJSONBase):
             },
         }
 
-        @utils.io_schema
+        @schema.validate
         def get(self):
             return "I am not the handler you are looking for."
 
-        @utils.io_schema
+        @schema.validate
         def post(self):
             return "Fission mailed."
 
     class ReasonableHandler(MockRequestHandler):
 
-        """This 'handler' is used in test_io_schema"""
+        """This 'handler' is used in test_validate"""
 
         apid = {
             "get": {
@@ -138,23 +139,23 @@ class TestUtils(TestTornadoJSONBase):
             },
         }
 
-        @utils.io_schema
+        @schema.validate
         def get(self, fname, lname):
             return "I am the handler you are looking for, {} {}".format(
                 fname, lname)
 
-        @utils.io_schema
+        @schema.validate
         def post(self):
             # Test that self.body is available as expected
             assert self.body == {"I am a": "JSON object"}
             return "Mail received."
 
-    # DONE: Test io_schema functionally instead; pytest.raises does
+    # DONE: Test validate functionally instead; pytest.raises does
     #   not seem to be catching errors being thrown after change
     #   to async compatible code.
     # The following test left here as antiquity.
-    # def test_io_schema(self):
-    #     """Tests the utils.io_schema decorator"""
+    # def test_validate(self):
+    #     """Tests the schema.validate decorator"""
     #     th = self.TerribleHandler()
     #     rh = self.ReasonableHandler()
 

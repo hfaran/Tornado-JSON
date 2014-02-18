@@ -29,7 +29,7 @@ for an example. Here is an example for POST:
 ``doc`` is the **public** accompanying documentation that will be
 available on the wiki.
 
-Use the ``io_schema`` decorator on methods which will automatically
+Use the ``schema.validate`` decorator on methods which will automatically
 validate the request body and output against the schemas in
 ``apid[method_name]``. Additionally, ``return`` the data from the
 request handler, rather than writing it back (the decorator will take
@@ -38,7 +38,7 @@ care of that).
 .. code:: python
 
     class ExampleHandler(APIHandler):
-        @io_schema
+        @schema.validate
         def post(self):
             ...
             return data
@@ -48,15 +48,15 @@ Assertions
 ----------
 
 
-Use ``utils.api_assert`` to fail when some the client does not meet some
+Use ``exceptions.api_assert`` to fail when some the client does not meet some
 API pre-condition/requirement, e.g., an invalid or incomplete request is
 made. When using an assertion is not suitable,
-``raise APIError( ... )``; don't use JSend ``fail`` directly.
+``raise APIError( ... )``; don't use ``self.fail`` directly.
 
 .. code:: python
 
     class ExampleHandler(APIHandler):
-        @io_schema
+        @schema.validate
         def post(self):
             ...
             api_assert(condition, status_code, log_message=log_message)

@@ -58,13 +58,13 @@ helloworld/api.py
 
 Now comes the fun part where we develop the actual web app. We'll import
 ``APIHandler`` (this is the handler you should subclass for API routes),
-and the ``io_schema`` decorator which will validate input and output
+and the ``schema.validate`` decorator which will validate input and output
 schema for us.
 
 .. code:: python
 
     from tornado_json.requesthandlers import APIHandler
-    from tornado_json.utils import io_schema
+    from tornado_json import schema
 
     class HelloWorldHandler(APIHandler):
         """Hello!"""
@@ -95,12 +95,12 @@ back. Notice that rather than using ``self.write`` as we usually would,
 we simply return the data we want to write back, which will then be
 validated against the output schema and be written back according to the
 `JSend <http://labs.omniti.com/labs/jsend>`__ specification. The
-``io_schema`` decorator handles all of this so be sure to decorate any
+``schema.validate`` decorator handles all of this so be sure to decorate any
 HTTP methods with it.
 
 .. code:: python
 
-        @io_schema
+        @schema.validate
         def get(self):
             return "Hello world!"
 

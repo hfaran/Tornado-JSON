@@ -16,7 +16,7 @@ in the documentation.
 Some of the key features the included modules provide:
 
 -  Input and output `JSON Schema <http://json-schema.org/>`__ validation
-   by decorating RequestHandlers with ``io_schema``
+   by decorating RequestHandlers with ``schema.validate``
 -  Automated *route generation* with ``routes.get_routes(package)``
 -  *Automated Public API documentation* using schemas and provided
    descriptions
