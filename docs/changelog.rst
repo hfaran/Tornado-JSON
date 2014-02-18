@@ -4,6 +4,16 @@ Changelog
 _
 ---------
 
+
+v0.20 - Refactor of ``utils`` module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Functions that did not belong in ``utils`` were moved to more relevant modules. This change changes the interface for Tornado-JSON in quite a big way. The following changes were made (that are not backwards compatible).
+
+* ``api_assert`` and ``APIError`` were moved to ``tornado_json.exceptions``
+* ``io_schema`` was renamed ``validate`` and moved to ``tornado_json.schema``
+
+
 v0.14 - Bugfixes thanks to 100% coverage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
