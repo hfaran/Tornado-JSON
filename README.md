@@ -7,21 +7,21 @@
 
 ## Overview
 
-Tornado-JSON is a small extension of [Tornado](http://www.tornadoweb.org/en/stable/) with the intent providing the tools necessary to get a JSON API up and running quickly. See [demos/helloworld/](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation.
+Tornado-JSON is a small extension of [Tornado](http://www.tornadoweb.org/en/stable/) with the intent of providing the tools necessary to get a JSON API up and running quickly.
 
 Some of the key features the included modules provide:
 
-* Input and output [JSON Schema](http://json-schema.org/) validation by decorating RequestHandlers with `schema.validate`
-* Automated *route generation* with `routes.get_routes(package)`
-* *Automated Public API documentation* using schemas and provided descriptions
-* Standardized output using the [JSend](http://labs.omniti.com/labs/jsend) specification
+* Input and output **[JSON Schema](http://json-schema.org/) validation** by decorating RequestHandlers with `@schema.validate`
+* **Automated route generation** with `routes.get_routes(package)`
+* **Automated GitHub Markdown-formatted API documentation** using schemas and provided descriptions
+* **Standardized JSON output** using the **[JSend](http://labs.omniti.com/labs/jsend)** specification
 
-### [Read the Docs for documentation!](http://tornado-json.readthedocs.org/en/latest/index.html#)
+## Getting Started
 
-<sub>*Warning: Tornado-JSON is still very much a work in progress. No guarantees on backwards-compatibility made, however, I try not to do that since, as a user, I hate breaking it at least as much as you. That being said, use it at your own risk.*</sub>
+Check out the [Hello World demo](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation. And then [**explore Tornado-JSON on readthedocs for the rest!**](http://tornado-json.readthedocs.org/en/latest/index.html#)
 
 
-# Dependencies
+## Dependencies
 
 *Python2.7 and Python3.3 are supported.*
 
@@ -29,3 +29,8 @@ These dependencies can be satisfied by running `pip install -r requirements.txt`
 
 * [tornado](http://www.tornadoweb.org/en/stable/)
 * [jsonschema](https://python-jsonschema.readthedocs.org/en/latest/)
+
+
+<br>
+**Obligatory Disclaimer**<br>
+<sub>*Warning: Tornado-JSON is still very much a work in progress. No guarantees on backwards-compatibility made, however, I try not to do that since, as a user, I hate breaking it at least as much as you. That being said, use it at your own risk.*</sub>
