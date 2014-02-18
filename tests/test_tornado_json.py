@@ -6,7 +6,6 @@ from tornado.testing import AsyncHTTPTestCase
 try:
     sys.path.append('.')
     from tornado_json import routes
-    #from tornado_json import utils
     from tornado_json import schema
     from tornado_json import exceptions
     from tornado_json import jsend
