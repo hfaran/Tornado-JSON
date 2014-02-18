@@ -22,7 +22,7 @@ in the documentation.
 Some of the key features the included modules provide:
 
 -  Input and output `JSON Schema <http://json-schema.org/>`__ validation
-   by decorating RequestHandlers with ``validate``
+   by decorating RequestHandlers with ``schema.validate``
 -  Automated *route generation* with ``routes.get_routes(package)``
 -  *Automated Public API documentation* using schemas and provided
    descriptions
@@ -35,7 +35,7 @@ Some of the key features the included modules provide:
 \ *Warning: Tornado-JSON is still very much a work in progress. No
 guarantees on backwards-compatibility made, however, I try not to do
 that since, as a user, I hate breaking it at least as much as you. That
-being said, use it at your own risk.*\
+being said, use it at your own risk.*\ 
 
 Dependencies
 ============
