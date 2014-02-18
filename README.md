@@ -27,5 +27,5 @@ Some of the key features the included modules provide:
 
 These dependencies can be satisfied by running `pip install -r requirements.txt`
 
-* tornado
-* jsonschema
+* [tornado](http://www.tornadoweb.org/en/stable/)
+* [jsonschema](https://python-jsonschema.readthedocs.org/en/latest/)
