@@ -13,7 +13,7 @@ Some of the key features the included modules provide:
 
 * Input and output **[JSON Schema](http://json-schema.org/) validation** by decorating RequestHandlers with `@schema.validate`
 * **Automated route generation** with `routes.get_routes(package)`
-* **Automated GitHub Markdown-formatted API documentation** using schemas and provided descriptions
+* **Automated [GFM](https://help.github.com/articles/github-flavored-markdown)-formatted API documentation** using schemas and provided descriptions
 * **Standardized JSON output** using the **[JSend](http://labs.omniti.com/labs/jsend)** specification
 
 ## Getting Started/FAQ
@@ -41,6 +41,10 @@ sudo python setup.py install
 **Neat, but `x` sucks, `y` is ugly, and `z` could be better.**
 
 * You would be awesome for [opening an issue about it](https://github.com/hfaran/Tornado-JSON/issues/new), and I'll promise my best to take a look.
+ 
+**You completely changed the interface in a recent update; what gives?**
+
+* But newer is so much better! Seriously though, `Tornado-JSON` is, at the moment, still very much a work in progress. Updates will be made that will break the existing interface (and replace it with a shiny, new, much better one). All in the name of making it better! (And progress etc.)
 
 
 ## Dependencies
@@ -51,8 +55,3 @@ These dependencies can be satisfied by running `pip install -r requirements.txt`
 
 * [tornado](http://www.tornadoweb.org/en/stable/)
 * [jsonschema](https://python-jsonschema.readthedocs.org/en/latest/)
-
-
-<br>
-**Obligatory Disclaimer**<br>
-<sub>*Warning: Tornado-JSON is still very much a work in progress. No guarantees on backwards-compatibility made, however, I try not to do that since, as a user, I hate breaking it at least as much as you. That being said, use it at your own risk.*</sub>
