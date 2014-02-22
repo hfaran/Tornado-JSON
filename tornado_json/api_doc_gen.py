@@ -20,13 +20,13 @@ def api_doc_gen(routes):
             #  the hard part is, we don't know what it is without initializing
             #  an instance, so just leave as-is for now
             route_doc = """
-## `{0}`
+## {0}
 
     Content-Type: application/json
 
 {1}
 """.format(
-                url,
+                "".join(['\\' + c if c in list("\\`*_{}[]()<>#+-.!:|") else c for c in url]),  # Escape markdown literals
                 "\n\n".join(
                     [
 """### {0}
