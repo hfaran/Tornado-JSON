@@ -41,6 +41,7 @@ def api_doc_gen(routes):
 ```
 {5}
 
+### Notes
 {3}
 """.format(
                 method.upper(),
@@ -78,5 +79,5 @@ def api_doc_gen(routes):
         f.write(
             "**This documentation is automatically generated.**\n\n" +
             "**Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**\n" +
-            "\n\n\n".join(documentation)
+            "\n<br>\n<br>\n".join(documentation)
         )

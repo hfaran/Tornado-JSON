@@ -25,11 +25,12 @@ null
 ```
 
 
+### Notes
 Shouts hello to the world (asynchronously)!
 
 
-
-
+<br>
+<br>
 
 # `/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$`
 
@@ -54,11 +55,12 @@ null
 ```
 
 
+### Notes
 Greets you.
 
 
-
-
+<br>
+<br>
 
 # `/api/helloworld`
 
@@ -83,11 +85,12 @@ null
 ```
 
 
+### Notes
 Shouts hello to the world!
 
 
-
-
+<br>
+<br>
 
 # `/api/postit`
 
@@ -141,6 +144,7 @@ Shouts hello to the world!
 ```
 
 
+### Notes
 
 POST the required parameters to post a Post-It note
 
