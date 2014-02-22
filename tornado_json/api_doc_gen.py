@@ -20,7 +20,7 @@ def api_doc_gen(routes):
             #  the hard part is, we don't know what it is without initializing
             #  an instance, so just leave as-is for now
             route_doc = """
-# `{0}`
+## `{0}`
 
     Content-Type: application/json
 
@@ -29,20 +29,22 @@ def api_doc_gen(routes):
                 url,
                 "\n\n".join(
                     [
-"""## {0}
-### Input Schema
+"""### {0}
+**Input Schema**
 ```json
 {1}
 ```
 {4}
-### Output Schema
+**Output Schema**
 ```json
 {2}
 ```
 {5}
 
-### Notes
+**Notes**
+
 {3}
+
 """.format(
                 method.upper(),
                 json.dumps(rh.apid[method]
@@ -51,14 +53,14 @@ def api_doc_gen(routes):
                            ["output_schema"], indent=4),
                 rh.apid[method]["doc"],
 """
-### Input Example
+**Input Example**
 ```json
 {}
 ```
 """.format(json.dumps(rh.apid[method]["input_example"], indent=4))
                 if rh.apid[method].get("input_example") else "",
 """
-### Output Example
+**Output Example**
 ```json
 {}
 ```
