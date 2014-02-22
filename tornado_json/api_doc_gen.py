@@ -1,5 +1,25 @@
 import logging
 import json
+from jsonschema import validate, ValidationError
+
+
+def _validate_example(rh, method, example_type):
+    """Validates example against schema
+
+    :returns: Formatted example if example exists and validates, otherwise None
+    :raises ValidationError: If example does not validate against the schema
+    """
+    if not rh.apid[method].get(example_type + "_example"):
+        return None
+    else:
+        try:
+            validate(rh.apid[method][example_type + "_example"], rh.apid[method][example_type + "_schema"])
+        except ValidationError as e:
+            raise ValidationError("{}_example for {}.{} could not be validated.\n{}".format(
+                example_type, rh.__name__, method, str(e)
+            ))
+
+    return json.dumps(rh.apid[method][example_type + "_example"], indent=4)
 
 
 def api_doc_gen(routes):
@@ -57,15 +77,13 @@ def api_doc_gen(routes):
 ```json
 {}
 ```
-""".format(json.dumps(rh.apid[method]["input_example"], indent=4))
-                if rh.apid[method].get("input_example") else "",
+""".format(_validate_example(rh, method, "input")) if _validate_example(rh, method, "input") else "",
 """
 **Output Example**
 ```json
 {}
 ```
-""".format(json.dumps(rh.apid[method]["output_example"], indent=4))
-                if rh.apid[method].get("output_example") else "",
+""".format(_validate_example(rh, method, "output")) if _validate_example(rh, method, "output") else "",
             ) for method in list(rh.apid.keys())
                     ]
                 )
