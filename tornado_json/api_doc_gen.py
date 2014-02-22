@@ -20,28 +20,31 @@ def api_doc_gen(routes):
             #  the hard part is, we don't know what it is without initializing
             #  an instance, so just leave as-is for now
             route_doc = """
-# `{0}`
+# {0}
 
     Content-Type: application/json
 
 {1}
 """.format(
-                url,
+                "".join(['\\' + c if c in list("\\`*_{}[]()<>#+-.!:|") else c for c in url]),  # Escape markdown literals
                 "\n\n".join(
                     [
 """## {0}
-### Input Schema
+**Input Schema**
 ```json
 {1}
 ```
 {4}
-### Output Schema
+**Output Schema**
 ```json
 {2}
 ```
 {5}
 
+**Notes**
+
 {3}
+
 """.format(
                 method.upper(),
                 json.dumps(rh.apid[method]
@@ -50,14 +53,14 @@ def api_doc_gen(routes):
                            ["output_schema"], indent=4),
                 rh.apid[method]["doc"],
 """
-### Input Example
+**Input Example**
 ```json
 {}
 ```
 """.format(json.dumps(rh.apid[method]["input_example"], indent=4))
                 if rh.apid[method].get("input_example") else "",
 """
-### Output Example
+**Output Example**
 ```json
 {}
 ```
@@ -78,5 +81,5 @@ def api_doc_gen(routes):
         f.write(
             "**This documentation is automatically generated.**\n\n" +
             "**Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**\n" +
-            "\n\n\n".join(documentation)
+            "\n<br>\n<br>\n".join(documentation)
         )

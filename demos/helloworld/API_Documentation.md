@@ -2,99 +2,108 @@
 
 **Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**
 
-# `/api/asynchelloworld`
+# /api/asynchelloworld
 
     Content-Type: application/json
 
 ## GET
-### Input Schema
+**Input Schema**
 ```json
 null
 ```
 
-### Output Schema
+**Output Schema**
 ```json
 {
     "type": "string"
 }
 ```
 
-### Output Example
+**Output Example**
 ```json
 "Hello (asynchronous) world!"
 ```
 
 
+**Notes**
+
 Shouts hello to the world (asynchronously)!
 
 
 
+<br>
+<br>
 
-
-# `/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$`
+# /api/greeting/\(?P\<fname\>\[a\-zA\-Z0\-9\_\]\+\)/\(?P\<lname\>\[a\-zA\-Z0\-9\_\]\+\)/?$
 
     Content-Type: application/json
 
 ## GET
-### Input Schema
+**Input Schema**
 ```json
 null
 ```
 
-### Output Schema
+**Output Schema**
 ```json
 {
     "type": "string"
 }
 ```
 
-### Output Example
+**Output Example**
 ```json
 "Greetings, Named Person!"
 ```
 
 
+**Notes**
+
 Greets you.
 
 
 
+<br>
+<br>
 
-
-# `/api/helloworld`
+# /api/helloworld
 
     Content-Type: application/json
 
 ## GET
-### Input Schema
+**Input Schema**
 ```json
 null
 ```
 
-### Output Schema
+**Output Schema**
 ```json
 {
     "type": "string"
 }
 ```
 
-### Output Example
+**Output Example**
 ```json
 "Hello world!"
 ```
 
 
+**Notes**
+
 Shouts hello to the world!
 
 
 
+<br>
+<br>
 
-
-# `/api/postit`
+# /api/postit
 
     Content-Type: application/json
 
 ## POST
-### Input Schema
+**Input Schema**
 ```json
 {
     "type": "object", 
@@ -112,7 +121,7 @@ Shouts hello to the world!
 }
 ```
 
-### Input Example
+**Input Example**
 ```json
 {
     "body": "Equally important message", 
@@ -121,7 +130,7 @@ Shouts hello to the world!
 }
 ```
 
-### Output Schema
+**Output Schema**
 ```json
 {
     "type": "object", 
@@ -133,7 +142,7 @@ Shouts hello to the world!
 }
 ```
 
-### Output Example
+**Output Example**
 ```json
 {
     "message": "Very Important Post-It Note was posted."
@@ -141,11 +150,14 @@ Shouts hello to the world!
 ```
 
 
+**Notes**
+
 
 POST the required parameters to post a Post-It note
 
 * `title`: Title of the note
 * `body`: Body of the note
 * `index`: An easy index with which to find the note
+
 
 
