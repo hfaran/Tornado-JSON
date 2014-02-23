@@ -48,12 +48,12 @@ class TestRoutes(TestTornadoJSONBase):
         """Tests routes.get_routes"""
         assert sorted(routes.get_routes(
             helloworld)) == sorted([
-            ("/api/helloworld", helloworld.api.HelloWorldHandler),
-            ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
-            ("/api/postit", helloworld.api.PostIt),
+            ("/api/helloworld/?", helloworld.api.HelloWorldHandler),
+            ("/api/asynchelloworld/?", helloworld.api.AsyncHelloWorld),
+            ("/api/postit/?", helloworld.api.PostIt),
             ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$",
              helloworld.api.Greeting),
-            ("/api/freewilled", helloworld.api.FreeWilledHandler)
+            ("/api/freewilled/?", helloworld.api.FreeWilledHandler)
         ])
 
     def test_gen_submodule_names(self):
@@ -65,12 +65,12 @@ class TestRoutes(TestTornadoJSONBase):
         """Tests routes.get_module_routes"""
         assert sorted(routes.get_module_routes(
             'helloworld.api')) == sorted([
-            ("/api/helloworld", helloworld.api.HelloWorldHandler),
-            ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
-            ("/api/postit", helloworld.api.PostIt),
+            ("/api/helloworld/?", helloworld.api.HelloWorldHandler),
+            ("/api/asynchelloworld/?", helloworld.api.AsyncHelloWorld),
+            ("/api/postit/?", helloworld.api.PostIt),
             ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$",
              helloworld.api.Greeting),
-            ("/api/freewilled", helloworld.api.FreeWilledHandler)
+            ("/api/freewilled/?", helloworld.api.FreeWilledHandler)
         ])
 
 
