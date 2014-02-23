@@ -101,14 +101,36 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         method = extract_method(wrapped_method)
         return [a for a in inspect.getargspec(method).args if a not in ["self"]]
 
-    def generate_auto_route(module, module_name, cls_name, method_name):
+    def generate_auto_route(module, module_name, cls_name, method_name, url_name):
+        """Generate URL for auto_route
 
-        def get_handler_name(cls_name):
-            if cls_name.lower().endswith('handler'):
-                return cls_name.lower().replace('handler', '', 1)
-            return cls_name.lower()
+        :rtype: str
+        :returns: Constructed URL based on given arguments
+        """
+        def get_handler_name():
+            """Get handler identifier for URL
 
-        def get_arg_route(module, cls_name, method_name):
+            For the special case where ``url_name`` is
+            ``__self__``, the handler is named a lowercase
+            value of its own name with 'handler' removed
+            from the ending if give; otherwise, we
+            simply use the provided ``url_name``
+            """
+            if url_name == "__self__":
+                if cls_name.lower().endswith('handler'):
+                    return cls_name.lower().replace('handler', '', 1)
+                return cls_name.lower()
+            else:
+                return url_name
+
+        def get_arg_route():
+            """Get remainder of URL determined by method argspec
+
+            :returns: Remainder of URL which matches `\w+` regex
+                with groups named by the method's argument spec.
+                If there are no arguments given, returns ``""``.
+            :rtype: str
+            """
             if yield_args(module, cls_name, method_name):
                 return "/{}/?$".format("/".join(
                     ["(?P<{}>[a-zA-Z0-9_]+)".format(argname) for argname
@@ -118,8 +140,8 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
 
         return "/{}/{}{}".format(
             "/".join(module_name.split(".")[1:]),
-            get_handler_name(cls_name),
-            get_arg_route(module, cls_name, method_name)
+            get_handler_name(),
+            get_arg_route()
         )
 
     if not custom_routes:
@@ -138,26 +160,42 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
 
     # You better believe this is a list comprehension
     auto_routes = list(chain(*[
-        list(set([
-            # URL, requesthandler tuple
-            (
-                generate_auto_route(module, module_name, k, method_name),
-                getattr(module, k)
-            )
+        list(set(chain(*[
+            # Generate a route for each "name" specified in the
+            #   __url_names__ attribute of the handler
+            [
+                # URL, requesthandler tuple
+                (
+                    generate_auto_route(module, module_name, cls_name, method_name, url_name),
+                    getattr(module, cls_name)
+                ) for url_name in getattr(module, cls_name).__url_names__
+            # Add routes for each custom URL specified in the
+            #   __urls__ attribute of the handler
+            ] + [
+                (
+                    url,
+                    getattr(module, cls_name)
+                ) for url in getattr(module, cls_name).__urls__
+            ]
+            # We create a route for each HTTP method in the handler
+            #   so that we catch all possible routes if different
+            #   HTTP methods have different argspecs and are expecting
+            #   to catch different routes. Any duplicate routes
+            #   are removed from the set() comparison.
             for method_name in [
                 "get", "put", "post", "patch", "delete", "head", "options"
-            ] if has_method(module, k, method_name)
-        ]))
+            ] if has_method(module, cls_name, method_name)
+        ])))
         # foreach classname, pyclbr.Class in rhs
-        for k, v in rhs.items()
+        for cls_name, cls in rhs.items()
         # Only add the pair to auto_routes if:
         #    * the superclass is in the list of supers we want
         #    * the requesthandler isn't already paired in custom_routes
         #    * the requesthandler isn't manually excluded
         if any(
-            True for s in v.super if s in ["ViewHandler", "APIHandler"]
+            True for s in cls.super if s in ["ViewHandler", "APIHandler"]
         )
-        and k not in (custom_routes_s + exclusions)
+        and cls_name not in (custom_routes_s + exclusions)
     ]))
 
     routes = auto_routes + custom_routes

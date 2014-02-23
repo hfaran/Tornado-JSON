@@ -12,7 +12,7 @@ class BaseHandler(RequestHandler):
     """BaseHandler for all other RequestHandlers"""
 
     __url_names__ = ["__self__"]
-    __urls__ = ["__self__"]
+    __urls__ = []
 
     @property
     def db_conn(self):
