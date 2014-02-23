@@ -101,6 +101,27 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         method = extract_method(wrapped_method)
         return [a for a in inspect.getargspec(method).args if a not in ["self"]]
 
+    def generate_auto_route(module, module_name, cls_name, method_name):
+
+        def get_handler_name(cls_name):
+            if cls_name.lower().endswith('handler'):
+                return cls_name.lower().replace('handler', '', 1)
+            return cls_name.lower()
+
+        def get_arg_route(module, cls_name, method_name):
+            if yield_args(module, cls_name, method_name):
+                return "/{}/?$".format("/".join(
+                    ["(?P<{}>[a-zA-Z0-9_]+)".format(argname) for argname
+                     in yield_args(module, cls_name, method_name)]
+                ))
+            return ""
+
+        return "/{}/{}{}".format(
+            "/".join(module_name.split(".")[1:]),
+            get_handler_name(cls_name),
+            get_arg_route(module, cls_name, method_name)
+        )
+
     if not custom_routes:
         custom_routes = []
     if not exclusions:
@@ -120,15 +141,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         list(set([
             # URL, requesthandler tuple
             (
-                "/{}/{}{}".format(
-                    "/".join(module_name.split(".")[1:]),
-                    k.lower().replace('handler', '', 1) if
-                    k.lower().endswith('handler') else k.lower(),
-                    "/{}/?$".format("/".join(
-                        ["(?P<{}>[a-zA-Z0-9_]+)".format(argname) for argname
-                         in yield_args(module, k, method_name)]
-                    )) if yield_args(module, k, method_name) else ""
-                ),
+                generate_auto_route(module, module_name, k, method_name),
                 getattr(module, k)
             )
             for method_name in [
