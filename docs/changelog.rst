@@ -5,6 +5,15 @@ _
 ---------
 
 
+v0.30 - URL Annotations
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* Added ``__urls__`` and ``__url_names__`` attributes to allow flexible creation of custom URLs that make creating REST APIs etc. easy
+* Added a REST API demo as an example for URL annotations
+* Added URL annotations documentation
+* Refactored and improved route generation in ``routes``
+
+
 v0.20 - Refactor of ``utils`` module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
