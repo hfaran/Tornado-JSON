@@ -3,9 +3,9 @@
 * Examples should be updated to reflect changes
 * Documentation should be updated to reflect changes
 * If any changes have been made to `README.md`, ensure changes are mirrored to `README.rst` with `pandoc`
-* Update changelog in `docs` with changes
 
 ## Before Doing a Release
+* Update changelog in `docs` with changes
 * Bump the version in `__init__.py`
 * Publish a [new release on GitHub](https://github.com/hfaran/Tornado-JSON/releases)
 * Upload to [PyPI](https://pypi.python.org/pypi/Tornado-JSON)
