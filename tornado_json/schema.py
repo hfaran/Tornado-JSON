@@ -30,10 +30,12 @@ def validate(rh_method):
         # Get name of method
         method_name = rh_method.__name__
 
-        # Special case for GET, DELETE requests (since there is no data to
-        # validate)
-        if method_name not in ["get", "delete"]:
-            # If input is not valid JSON, fail
+        input_schema = type(self).apid[method_name]["input_schema"]
+        # In case the specified input_schema is ``None``, we
+        #   don't json.loads the input, but just set it to ``None``
+        #   instead.
+        if input_schema is not None:
+            # Attempt to json.loads the input
             try:
                 # TODO: Assuming UTF-8 encoding for all requests,
                 #   find a nice way of determining this from charset
@@ -44,11 +46,10 @@ def validate(rh_method):
                 raise jsonschema.ValidationError(
                     "Input is malformed; could not decode JSON object."
                 )
-
             # Validate the received input
             jsonschema.validate(
                 input_,
-                type(self).apid[method_name]["input_schema"]
+                input_schema
             )
         else:
             input_ = None

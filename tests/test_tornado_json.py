@@ -103,7 +103,7 @@ class TestUtils(TestTornadoJSONBase):
 
         apid = {
             "get": {
-                "input_schema": "This doesn't matter because GET request",
+                "input_schema": None,
                 "output_schema": {
                     "type": "number",
                 },

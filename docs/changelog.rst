@@ -5,6 +5,12 @@ _
 ---------
 
 
+v0.31 - On input schema of ``None``, input is presumed to be ``None``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Rather than forcing an input schema of ``None`` with ``GET`` and ``DELETE`` methods, whether input is JSON-decoded or not, is dependent on whether the provided input schema is ``None`` or not. This means that ``get`` and ``delete`` methods can now have request bodies if desired.
+
+
 v0.30 - URL Annotations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
