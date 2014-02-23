@@ -32,6 +32,7 @@ Some of the key features the included modules provide:
    using_tornado_json
    requesthandler_guidelines
    docgen
+   restapi
    changelog
    tornado_json
 

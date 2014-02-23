@@ -10,7 +10,9 @@ try:
     from tornado_json import exceptions
     from tornado_json import jsend
     sys.path.append('demos/helloworld')
+    sys.path.append('demos/rest_api')
     import helloworld
+    import cars
 except ImportError as e:
     print("Please run `py.test` from the root project directory")
     exit(1)
@@ -48,12 +50,22 @@ class TestRoutes(TestTornadoJSONBase):
         """Tests routes.get_routes"""
         assert sorted(routes.get_routes(
             helloworld)) == sorted([
-            ("/api/helloworld", helloworld.api.HelloWorldHandler),
-            ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
-            ("/api/postit", helloworld.api.PostIt),
-            ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$",
+            ("/api/helloworld/?", helloworld.api.HelloWorldHandler),
+            ("/api/asynchelloworld/?", helloworld.api.AsyncHelloWorld),
+            ("/api/postit/?", helloworld.api.PostIt),
+            ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/"
+             "(?P<lname>[a-zA-Z0-9_]+)/?$",
              helloworld.api.Greeting),
-            ("/api/freewilled", helloworld.api.FreeWilledHandler)
+            ("/api/freewilled/?", helloworld.api.FreeWilledHandler)
+        ])
+        assert sorted(routes.get_routes(
+            cars)) == sorted([
+            ("/api/cars/?", cars.api.MakeListHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/?$",
+             cars.api.ModelHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/"
+             "(?P<year>[a-zA-Z0-9_]+)/?$", cars.api.YearHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/?$", cars.api.MakeHandler),
         ])
 
     def test_gen_submodule_names(self):
@@ -64,13 +76,13 @@ class TestRoutes(TestTornadoJSONBase):
     def test_get_module_routes(self):
         """Tests routes.get_module_routes"""
         assert sorted(routes.get_module_routes(
-            'helloworld.api')) == sorted([
-            ("/api/helloworld", helloworld.api.HelloWorldHandler),
-            ("/api/asynchelloworld", helloworld.api.AsyncHelloWorld),
-            ("/api/postit", helloworld.api.PostIt),
-            ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/(?P<lname>[a-zA-Z0-9_]+)/?$",
-             helloworld.api.Greeting),
-            ("/api/freewilled", helloworld.api.FreeWilledHandler)
+            "cars.api")) == sorted([
+            ("/api/cars/?", cars.api.MakeListHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/?$",
+             cars.api.ModelHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/"
+             "(?P<year>[a-zA-Z0-9_]+)/?$", cars.api.YearHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/?$", cars.api.MakeHandler),
         ])
 
 
@@ -159,15 +171,15 @@ class TestUtils(TestTornadoJSONBase):
     #     th = self.TerribleHandler()
     #     rh = self.ReasonableHandler()
 
-    #     # Expect a TypeError to be raised because of invalid output
+    # Expect a TypeError to be raised because of invalid output
     #     with pytest.raises(TypeError):
     #         th.get("Duke", "Flywalker")
 
-    #     # Expect a validation error because of invalid input
+    # Expect a validation error because of invalid input
     #     with pytest.raises(ValidationError):
     #         th.post()
 
-    #     # Both of these should succeed as the body matches the schema
+    # Both of these should succeed as the body matches the schema
     #     with pytest.raises(SuccessException):
     #         rh.get("J", "S")
     #     with pytest.raises(SuccessException):
