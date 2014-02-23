@@ -9,8 +9,6 @@ import tornado.ioloop
 from tornado_json.routes import get_routes
 from tornado_json.application import Application
 
-import helloworld
-
 
 def main():
     # Pass the web app's package the get_routes and it will generate
@@ -18,6 +16,7 @@ def main():
     #   request handler name (with 'handler' removed from the end of the
     #   name if it is the name).
     # [("/api/helloworld", helloworld.api.HelloWorldHandler)]
+    import helloworld
     routes = get_routes(helloworld)
 
     # Create the application by passing routes and any settings

@@ -136,13 +136,30 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
                     ["(?P<{}>[a-zA-Z0-9_]+)".format(argname) for argname
                      in yield_args(module, cls_name, method_name)]
                 ))
-            return ""
+            return r"/?"
 
         return "/{}/{}{}".format(
             "/".join(module_name.split(".")[1:]),
             get_handler_name(),
             get_arg_route()
         )
+
+    def is_handler_subclass(cls):
+        """Determines if ``cls`` is indeed a subclass of either
+        ViewHandler or APIHandler
+        """
+        if isinstance(cls, pyclbr.Class):
+            return is_handler_subclass(cls.super)
+        elif isinstance(cls, list):
+            return any(is_handler_subclass(s) for s in cls)
+        elif isinstance(cls, str):
+            return cls in ["ViewHandler", "APIHandler"]
+        else:
+            raise TypeError(
+                "Unexpected pyclbr.Class.super type `{}`".format(
+                    type(cls)
+                )
+            )
 
     if not custom_routes:
         custom_routes = []
@@ -166,11 +183,13 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             [
                 # URL, requesthandler tuple
                 (
-                    generate_auto_route(module, module_name, cls_name, method_name, url_name),
+                    generate_auto_route(
+                        module, module_name, cls_name, method_name, url_name
+                    ),
                     getattr(module, cls_name)
                 ) for url_name in getattr(module, cls_name).__url_names__
-            # Add routes for each custom URL specified in the
-            #   __urls__ attribute of the handler
+                # Add routes for each custom URL specified in the
+                #   __urls__ attribute of the handler
             ] + [
                 (
                     url,
@@ -192,9 +211,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         #    * the superclass is in the list of supers we want
         #    * the requesthandler isn't already paired in custom_routes
         #    * the requesthandler isn't manually excluded
-        if any(
-            True for s in cls.super if s in ["ViewHandler", "APIHandler"]
-        )
+        if is_handler_subclass(cls)
         and cls_name not in (custom_routes_s + exclusions)
     ]))
 
