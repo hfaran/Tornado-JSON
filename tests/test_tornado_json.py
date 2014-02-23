@@ -10,6 +10,7 @@ try:
     from tornado_json import exceptions
     from tornado_json import jsend
     sys.path.append('demos/helloworld')
+    sys.path.append('demos/rest_api')
     import helloworld
 except ImportError as e:
     print("Please run `py.test` from the root project directory")
