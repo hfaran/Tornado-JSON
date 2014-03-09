@@ -5,6 +5,14 @@ _
 ---------
 
 
+v0.40 - Replace ``apid`` with parameterized ``schema.validate``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* The ``apid`` class-variable is no longer used
+* Schemas are passed as arguments to ``schema.validate``
+* Method docstrings are used in public API documentation, in place of ``apid[method]["doc"]``
+
+
 v0.31 - On input schema of ``None``, input is presumed to be ``None``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -34,6 +34,15 @@ Shouts hello to the world (asynchronously)!
 <br>
 <br>
 
+# /api/freewilled/?
+
+    Content-Type: application/json
+
+
+
+<br>
+<br>
+
 # /api/greeting/\(?P\<fname\>\[a\-zA\-Z0\-9\_\]\+\)/\(?P\<lname\>\[a\-zA\-Z0\-9\_\]\+\)/?$
 
     Content-Type: application/json
@@ -152,12 +161,10 @@ Shouts hello to the world!
 
 **Notes**
 
-
 POST the required parameters to post a Post-It note
 
 * `title`: Title of the note
 * `body`: Body of the note
 * `index`: An easy index with which to find the note
-
 
 

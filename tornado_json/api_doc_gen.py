@@ -1,6 +1,10 @@
-import logging
 import json
+import inspect
 from jsonschema import validate, ValidationError
+
+from tornado_json.utils import is_method
+from tornado_json.constants import HTTP_METHODS
+from tornado_json.requesthandlers import APIHandler
 
 
 def _validate_example(rh, method, example_type):
@@ -9,24 +13,40 @@ def _validate_example(rh, method, example_type):
     :returns: Formatted example if example exists and validates, otherwise None
     :raises ValidationError: If example does not validate against the schema
     """
-    if not rh.apid[method].get(example_type + "_example"):
-        return None
-    else:
-        try:
-            validate(rh.apid[method][example_type + "_example"], rh.apid[method][example_type + "_schema"])
-        except ValidationError as e:
-            raise ValidationError("{}_example for {}.{} could not be validated.\n{}".format(
-                example_type, rh.__name__, method, str(e)
-            ))
+    example = getattr(method, example_type + "_example")
+    schema = getattr(method, example_type + "_schema")
 
-    return json.dumps(rh.apid[method][example_type + "_example"], indent=4)
+    if example is None:
+        return None
+
+    try:
+        validate(example, schema)
+    except ValidationError as e:
+        raise ValidationError(
+            "{}_example for {}.{} could not be validated.\n{}".format(
+                example_type, rh.__name__, method.__name__, str(e)
+            )
+        )
+
+    return json.dumps(example, indent=4)
+
+
+def _get_rh_methods(rh):
+    """Yield all HTTP methods in ``rh`` that are decorated
+    with schema.validate"""
+    for k, v in vars(rh).items():
+        if all([
+            k in HTTP_METHODS,
+            is_method(v),
+            hasattr(v, "input_schema")
+        ]):
+            yield (k, v)
 
 
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
-    provided information from ``apid`` class-variable
-    in each handler that provides one.
+    provided schemas in RequestHandler methods and their docstrings.
 
     :type  routes: [(url, RequestHandler), ...]
     :param routes: List of routes (this is ideally all possible routes of the
@@ -35,20 +55,24 @@ def api_doc_gen(routes):
     documentation = []
     # Iterate over routes sorted by url
     for url, rh in sorted(routes, key=lambda a: a[0]):
-        try:
-            # Content-type is hard-coded but ideally should be retrieved;
-            #  the hard part is, we don't know what it is without initializing
-            #  an instance, so just leave as-is for now
-            route_doc = """
+        # Content-type is hard-coded but ideally should be retrieved;
+        #  the hard part is, we don't know what it is without initializing
+        #  an instance, so just leave as-is for now
+
+        # BEGIN ROUTE_DOC #
+        route_doc = """
 # {0}
 
     Content-Type: application/json
 
 {1}
 """.format(
-                "".join(['\\' + c if c in list("\\`*_{}[]()<>#+-.!:|") else c for c in url]),  # Escape markdown literals
-                "\n\n".join(
-                    [
+            # Escape markdown literals
+            "".join(
+                ['\\' + c if c in list("\\`*_{}[]()<>#+-.!:|") else c
+                 for c in url]),
+            "\n\n".join(
+                [
 """## {0}
 **Input Schema**
 ```json
@@ -66,38 +90,38 @@ def api_doc_gen(routes):
 {3}
 
 """.format(
-                method.upper(),
-                json.dumps(rh.apid[method]
-                           ["input_schema"], indent=4),
-                json.dumps(rh.apid[method]
-                           ["output_schema"], indent=4),
-                rh.apid[method]["doc"],
+            method_name.upper(),
+            json.dumps(method.input_schema, indent=4),
+            json.dumps(method.output_schema, indent=4),
+            inspect.getdoc(method),
 """
 **Input Example**
 ```json
 {}
 ```
-""".format(_validate_example(rh, method, "input")) if _validate_example(rh, method, "input") else "",
+""".format(_validate_example(rh, method, "input")) if _validate_example(
+            rh, method, "input") else "",
 """
 **Output Example**
 ```json
 {}
 ```
-""".format(_validate_example(rh, method, "output")) if _validate_example(rh, method, "output") else "",
-            ) for method in list(rh.apid.keys())
-                    ]
-                )
+""".format(_validate_example(rh, method, "output")) if _validate_example(
+            rh, method, "output") else "",
+        ) for method_name, method in _get_rh_methods(rh)
+                ]
             )
+        )
+        # END ROUTE_DOC #
+
+        if issubclass(rh, APIHandler):
             documentation.append(route_doc)
-        # If a RequestHandler does not yet have an apid variable
-        #  just ignore it and continue
-        except AttributeError as e:
-            logging.debug(str(e))
 
     # Documentation is written to the root folder
     with open("API_Documentation.md", "w+") as f:
         f.write(
             "**This documentation is automatically generated.**\n\n" +
-            "**Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**\n" +
+            "**Output schemas only represent `data` and not the full output; "
+            "see output examples and the JSend specification.**\n" +
             "\n<br>\n<br>\n".join(documentation)
         )

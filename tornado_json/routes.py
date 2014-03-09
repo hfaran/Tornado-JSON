@@ -2,9 +2,12 @@ import pyclbr
 import pkgutil
 import importlib
 import inspect
-import types
 from itertools import chain
 from functools import reduce
+
+
+from tornado_json.constants import HTTP_METHODS
+from tornado_json.utils import extract_method, is_method, is_handler_subclass
 
 
 def get_routes(package):
@@ -67,21 +70,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
     :param exclusions: List of RequestHandler names that routes should not be
         generated for
     """
-    def extract_method(wrapped_method):
-        """Gets original method if wrapped_method was decorated
-
-        :rtype: any([types.FunctionType, types.MethodType])
-        """
-        # If method was decorated with validate, the original method
-        #   is available as orig_func thanks to our container decorator
-        return wrapped_method.orig_func if \
-            hasattr(wrapped_method, "orig_func") else wrapped_method
-
     def has_method(module, cls_name, method_name):
-        def is_method(method):
-            method = extract_method(method)
-            # Can be either a method or a function
-            return type(method) in [types.MethodType, types.FunctionType]
         return all([
             method_name in vars(getattr(module, cls_name)),
             is_method(reduce(getattr, [module, cls_name, method_name]))
@@ -144,23 +133,6 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             get_arg_route()
         )
 
-    def is_handler_subclass(cls):
-        """Determines if ``cls`` is indeed a subclass of either
-        ViewHandler or APIHandler
-        """
-        if isinstance(cls, pyclbr.Class):
-            return is_handler_subclass(cls.super)
-        elif isinstance(cls, list):
-            return any(is_handler_subclass(s) for s in cls)
-        elif isinstance(cls, str):
-            return cls in ["ViewHandler", "APIHandler"]
-        else:
-            raise TypeError(
-                "Unexpected pyclbr.Class.super type `{}`".format(
-                    type(cls)
-                )
-            )
-
     if not custom_routes:
         custom_routes = []
     if not exclusions:
@@ -201,9 +173,8 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             #   HTTP methods have different argspecs and are expecting
             #   to catch different routes. Any duplicate routes
             #   are removed from the set() comparison.
-            for method_name in [
-                "get", "put", "post", "patch", "delete", "head", "options"
-            ] if has_method(module, cls_name, method_name)
+            for method_name in HTTP_METHODS if has_method(
+                module, cls_name, method_name)
         ])))
         # foreach classname, pyclbr.Class in rhs
         for cls_name, cls in rhs.items()
