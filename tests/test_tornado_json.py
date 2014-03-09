@@ -101,28 +101,12 @@ class TestUtils(TestTornadoJSONBase):
 
         """This 'handler' is used in test_validate"""
 
-        apid = {
-            "get": {
-                "input_schema": None,
-                "output_schema": {
-                    "type": "number",
-                },
-            },
-            "post": {
-                "input_schema": {
-                    "type": "number",
-                },
-                "output_schema": {
-                    "type": "number",
-                },
-            },
-        }
-
-        @schema.validate
+        @schema.validate(output_schema={"type": "number"})
         def get(self):
             return "I am not the handler you are looking for."
 
-        @schema.validate
+        @schema.validate(output_schema={"type": "number"},
+                         input_schema={"type": "number"})
         def post(self):
             return "Fission mailed."
 
@@ -130,33 +114,23 @@ class TestUtils(TestTornadoJSONBase):
 
         """This 'handler' is used in test_validate"""
 
-        apid = {
-            "get": {
-                "input_schema": None,
-                "output_schema": {
-                    "type": "string",
-                },
-            },
-            "post": {
-                "input_schema": {
-                    "type": "object",
-                    "properties": {
-                        "I am a": {"type": "string"},
-                    },
-                    "required": ["I am a"],
-                },
-                "output_schema": {
-                    "type": "string",
-                },
-            },
-        }
-
-        @schema.validate
+        @schema.validate(output_schema={"type": "number"})
         def get(self, fname, lname):
             return "I am the handler you are looking for, {} {}".format(
                 fname, lname)
 
-        @schema.validate
+        @schema.validate(
+            input_schema={
+                "type": "object",
+                "properties": {
+                    "I am a": {"type": "string"},
+                },
+                "required": ["I am a"],
+            },
+            output_schema={
+                "type": "string",
+            }
+        )
         def post(self):
             # Test that self.body is available as expected
             assert self.body == {"I am a": "JSON object"}

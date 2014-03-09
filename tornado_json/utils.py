@@ -40,7 +40,10 @@ def is_method(method):
 
 
 def is_handler_subclass(cls, classnames=("ViewHandler", "APIHandler")):
-    """Determines if ``cls`` is indeed a subclass of classnames"""
+    """Determines if ``cls`` is indeed a subclass of ``classnames``
+
+    This function should only be used with ``cls`` from ``pyclbr.readmodule``
+    """
     if isinstance(cls, pyclbr.Class):
         return is_handler_subclass(cls.super)
     elif isinstance(cls, list):

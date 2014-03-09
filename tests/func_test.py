@@ -45,35 +45,26 @@ class DBTestHandler(requesthandlers.APIHandler):
 
 class ExplodingHandler(requesthandlers.APIHandler):
 
-    apid = {
-        "get": {
-            "input_schema": None,
-            "output_schema": {
-                "type": "number",
-            },
-            "doc": """
-This handler is used for testing purposes and is explosive.
-"""
-        },
-        "post": {
-            "input_schema": {
-                "type": "number",
-            },
-            "output_schema": {
-                "type": "number",
-            },
-            "doc": """
-This handler is used for testing purposes and is explosive.
-"""
-        },
-    }
-
-    @schema.validate
+    @schema.validate(**{
+        "input_schema": None,
+        "output_schema": {
+            "type": "number",
+        }
+    })
     def get(self):
+        """This handler is used for testing purposes and is explosive."""
         return "I am not the handler you are looking for."
 
-    @schema.validate
+    @schema.validate(**{
+        "input_schema": {
+            "type": "number",
+        },
+        "output_schema": {
+            "type": "number",
+        }
+    })
     def post(self):
+        """This handler is used for testing purposes and is explosive."""
         return "Fission mailed."
 
 
