@@ -1,7 +1,5 @@
 import sys
 import pytest
-from jsonschema import ValidationError
-from tornado.testing import AsyncHTTPTestCase
 
 try:
     sys.path.append('.')
