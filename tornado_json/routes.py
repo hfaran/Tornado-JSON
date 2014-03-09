@@ -7,7 +7,7 @@ from functools import reduce
 
 
 from tornado_json.constants import HTTP_METHODS
-from tornado_json.utils import extract_method, is_method
+from tornado_json.utils import extract_method, is_method, is_handler_subclass
 
 
 def get_routes(package):
@@ -132,23 +132,6 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             get_handler_name(),
             get_arg_route()
         )
-
-    def is_handler_subclass(cls):
-        """Determines if ``cls`` is indeed a subclass of either
-        ViewHandler or APIHandler
-        """
-        if isinstance(cls, pyclbr.Class):
-            return is_handler_subclass(cls.super)
-        elif isinstance(cls, list):
-            return any(is_handler_subclass(s) for s in cls)
-        elif isinstance(cls, str):
-            return cls in ["ViewHandler", "APIHandler"]
-        else:
-            raise TypeError(
-                "Unexpected pyclbr.Class.super type `{}`".format(
-                    type(cls)
-                )
-            )
 
     if not custom_routes:
         custom_routes = []

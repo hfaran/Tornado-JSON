@@ -4,6 +4,7 @@ from jsonschema import validate, ValidationError
 
 from tornado_json.utils import is_method
 from tornado_json.constants import HTTP_METHODS
+from tornado_json.requesthandlers import APIHandler
 
 
 def _validate_example(rh, method, example_type):
@@ -12,11 +13,12 @@ def _validate_example(rh, method, example_type):
     :returns: Formatted example if example exists and validates, otherwise None
     :raises ValidationError: If example does not validate against the schema
     """
-    if not hasattr(method, example_type + "_example"):
-        return None
-
     example = getattr(method, example_type + "_example")
     schema = getattr(method, example_type + "_schema")
+
+    if example is None:
+        return None
+
     try:
         validate(example, schema)
     except ValidationError as e:
@@ -62,7 +64,7 @@ def api_doc_gen(routes):
         route_doc = """
 # {0}
 
-Content-Type: application/json
+    Content-Type: application/json
 
 {1}
 """.format(
@@ -113,7 +115,8 @@ Content-Type: application/json
         )
         # END ROUTE_DOC #
 
-        documentation.append(route_doc)
+        if issubclass(rh, APIHandler):
+            documentation.append(route_doc)
 
     # Documentation is written to the root folder
     with open("API_Documentation.md", "w+") as f:

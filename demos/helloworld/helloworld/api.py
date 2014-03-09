@@ -16,7 +16,7 @@ class HelloWorldHandler(APIHandler):
         output_example="Hello world!"
     )
     def get(self):
-        """"Shouts hello to the world!"""
+        """Shouts hello to the world!"""
         return "Hello world!"
 
 
