@@ -31,7 +31,7 @@ def _validate_example(rh, method, example_type):
     return json.dumps(example, indent=4)
 
 
-def get_rh_methods(rh):
+def _get_rh_methods(rh):
     """Yield all HTTP methods in ``rh`` that are decorated
     with schema.validate"""
     for k, v in vars(rh).items():
@@ -46,8 +46,7 @@ def get_rh_methods(rh):
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
-    provided information from ``apid`` class-variable
-    in each handler that provides one.
+    provided schemas in RequestHandler methods and their docstrings.
 
     :type  routes: [(url, RequestHandler), ...]
     :param routes: List of routes (this is ideally all possible routes of the
@@ -109,7 +108,7 @@ def api_doc_gen(routes):
 ```
 """.format(_validate_example(rh, method, "output")) if _validate_example(
             rh, method, "output") else "",
-        ) for method_name, method in get_rh_methods(rh)
+        ) for method_name, method in _get_rh_methods(rh)
                 ]
             )
         )

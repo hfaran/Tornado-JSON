@@ -61,6 +61,7 @@ Now comes the fun part where we develop the actual web app. We'll import
 and the ``schema.validate`` decorator which will validate input and output
 schema for us.
 
+
 .. code:: python
 
     from tornado_json.requesthandlers import APIHandler
@@ -68,29 +69,31 @@ schema for us.
 
     class HelloWorldHandler(APIHandler):
         """Hello!"""
-        # apid
-        # get(...)
+        @schema.validate(...)
+        def get(...):
+            ...
 
-Next, we'll define the ``apid`` class variable. ``apid`` is where we'll
-store the input and output schema for each HTTP method as well as the
-public API documentation for that route which will be automatically
+
+Next, we'll start writing our ``get`` method, but before writing the body,
+we'll define an output schema for it and pass it as an argument to the
+``schema.validate`` decorator which will automatically validate the output
+against the passed schema. In addition to the schema, the docstring
+for each HTTP method will be used by Tornado-JSON to generate public API
+documentation for that route which will be automatically
 generated when you run the app (see the Documentation Generation section
 for details). Input and output schemas are as per the `JSON
 Schema <http://json-schema.org/>`__ standard.
 
-.. code:: python
 
-        apid = {
-            "get": {
-                "input_schema": None,
-                "output_schema": {
-                    "type": "string",
-                },
-                "doc": "Shouts hello to the world!"
-            },
-        }
+.. code-block:: python
 
-Finally we'll write our ``get`` method which will write "Hello world!"
+        @schema.validate(output_schema={"type": "string"})
+        def get(self):
+        """Shouts hello to the world!"""
+            ...
+
+
+Finally we'll write our ``get`` method body which will write "Hello world!"
 back. Notice that rather than using ``self.write`` as we usually would,
 we simply return the data we want to write back, which will then be
 validated against the output schema and be written back according to the
@@ -98,11 +101,14 @@ validated against the output schema and be written back according to the
 ``schema.validate`` decorator handles all of this so be sure to decorate any
 HTTP methods with it.
 
-.. code:: python
 
-        @schema.validate
+.. code-block:: python
+
+        @schema.validate(output_schema={"type": "string"})
         def get(self):
+        """Shouts hello to the world!"""
             return "Hello world!"
+
 
 Running our Hello World app
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

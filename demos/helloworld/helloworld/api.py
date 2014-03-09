@@ -8,7 +8,7 @@ class HelloWorldHandler(APIHandler):
 
     # Decorate any HTTP methods with the `schema.validate` decorator
     #   to validate input to it and output from it as per the
-    #   the schema for the method defined in `apid`
+    #   the schema ``input_schema`` and ``output_schema`` arguments passed.
     # Simply use `return` rather than `self.write` to write back
     #   your output.
     @schema.validate(
