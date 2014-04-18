@@ -45,7 +45,6 @@ setup(
     url='https://github.com/hfaran/Tornado-JSON',
     license='MIT License',
     author='Hamza Faran',
-    author_email='hamza@hfaran.com',
     description=('A simple JSON API framework based on Tornado'),
     long_description=long_description,
     packages=['tornado_json'],
