@@ -49,7 +49,7 @@ sudo python setup.py install
 
 ## Dependencies
 
-*Python2.7 and Python3.3 are supported.*
+*Python{2.7, 3.3, 3.4} are supported.*
 
 These dependencies can be satisfied by running `pip install -r requirements.txt`
 
