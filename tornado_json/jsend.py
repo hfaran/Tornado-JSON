@@ -1,6 +1,3 @@
-"""Forked from: http://tornadogists.org/6612013/"""
-
-
 class JSendMixin(object):
 
     """http://labs.omniti.com/labs/jsend
