@@ -170,6 +170,9 @@ class TestJSendMixin(TestTornadoJSONBase):
         def write(self, data):
             self._buffer = data
 
+        def finish(self):
+            pass
+
     @classmethod
     @pytest.fixture(scope="class", autouse=True)
     def setup(cls):
