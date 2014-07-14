@@ -5,6 +5,12 @@ _
 ---------
 
 
+v0.41
+~~~~~
+
+* Fixed ``JSendMixin`` hanging if auto_finish was disabled
+
+
 v0.40 - Replace ``apid`` with parameterized ``schema.validate``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
