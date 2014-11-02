@@ -85,7 +85,6 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         :returns: List of arg names from method_name except ``self``
         :rtype: list
         """
-        # method = getattr(getattr(module, cls_name), method_name)
         wrapped_method = reduce(getattr, [module, cls_name, method_name])
         method = extract_method(wrapped_method)
         return [a for a in inspect.getargspec(method).args if a not in ["self"]]
