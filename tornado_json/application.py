@@ -21,9 +21,10 @@ class Application(tornado.web.Application):
         # Generate API Documentation
         api_doc_gen(routes)
 
-        # Unless gzip was specifically set to False in settings, enable it
-        if "gzip" not in list(settings.keys()):
-            settings["gzip"] = True
+        # Unless compress_response was specifically set to False in
+        # settings, enable it
+        if "compress_response" not in settings:
+            settings["compress_response"] = True
 
         tornado.web.Application.__init__(
             self,
