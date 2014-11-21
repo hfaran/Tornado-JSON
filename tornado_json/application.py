@@ -1,6 +1,7 @@
 import tornado.web
 
 from tornado_json.api_doc_gen import api_doc_gen
+from tornado_json.constants import TORNADO_MAJOR
 
 
 class Application(tornado.web.Application):
@@ -23,8 +24,9 @@ class Application(tornado.web.Application):
 
         # Unless compress_response was specifically set to False in
         # settings, enable it
-        if "compress_response" not in settings:
-            settings["compress_response"] = True
+        compress_response = "compress_response" if TORNADO_MAJOR >= 4 else "gzip"
+        if compress_response not in settings:
+            settings[compress_response] = True
 
         tornado.web.Application.__init__(
             self,
