@@ -3,6 +3,12 @@ import jsonschema
 
 from functools import wraps
 from tornado import gen
+from tornado.concurrent import Future
+try:
+    from tornado.concurrent import is_future
+except ImportError:
+    # For tornado 3.x.x
+    is_future = lambda x: isinstance(x, Future)
 
 from tornado_json.utils import container
 
@@ -61,7 +67,7 @@ def validate(input_schema=None, output_schema=None,
             output = rh_method(self, *args, **kwargs)
             # If the rh_method returned a Future a la `raise Return(value)`
             #   we grab the output.
-            if gen.is_future(output):
+            if is_future(output):
                 output = yield output
 
             if output_schema is not None:
