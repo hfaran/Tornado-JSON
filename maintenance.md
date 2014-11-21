@@ -19,5 +19,7 @@
 
 * Run tests from root project directory
 
-    ```$ py.test --cov="tornado_json" --cov-report=term --cov-report=html```
-    ```$ nosetests --with-cov --cov-report term-missing --cov tornado_json tests/```
+    * `py.test --cov="tornado_json" --cov-report=term --cov-report=html`
+    * `nosetests --with-cov --cov-report term-missing --cov tornado_json tests/`
+    * With `tox>=1.8.0` installed for both py27 and py34
+        * `sudo tox  # runs test matrix with py27,py34 and tornado322,402`
