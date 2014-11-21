@@ -55,3 +55,12 @@ These dependencies can be satisfied by running `pip install -r requirements.txt`
 
 * [tornado](http://www.tornadoweb.org/en/stable/)
 * [jsonschema](https://python-jsonschema.readthedocs.org/en/latest/)
+
+
+## Running Tests
+
+```bash
+sudo pip2 install tox
+sudo pip3 install tox
+sudo tox  # Will run test matrix
+```
