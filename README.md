@@ -1,10 +1,17 @@
 # Tornado-JSON
 
 [![Build Status](https://travis-ci.org/hfaran/Tornado-JSON.png?branch=master)](https://travis-ci.org/hfaran/Tornado-JSON)
-[![Documentation Status](https://readthedocs.org/projects/tornado-json/badge/?version=latest)](https://readthedocs.org/projects/tornado-json/?badge=latest)
-[![PyPI version](https://badge.fury.io/py/Tornado-JSON.png)](http://badge.fury.io/py/Tornado-JSON)
 [![Coverage Status](https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png)](https://coveralls.io/r/hfaran/Tornado-JSON?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/tornado-json/badge/?version=latest)](https://readthedocs.org/projects/tornado-json/?badge=latest)
 [![Stories in Ready](https://badge.waffle.io/hfaran/Tornado-JSON.png?label=In_Progress)](http://waffle.io/hfaran/Tornado-JSON)
+
+[![Latest Version](https://pypip.in/version/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Downloads](https://pypip.in/download/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Supported Python versions](https://pypip.in/py_versions/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Development Status](https://pypip.in/status/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Download format](https://pypip.in/format/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![License](https://pypip.in/license/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+
 
 ## Overview
 
@@ -16,6 +23,7 @@ Some of the key features the included modules provide:
 * **Automated route generation** with `routes.get_routes(package)`
 * **Automated [GFM](https://help.github.com/articles/github-flavored-markdown)-formatted API documentation** using schemas and provided descriptions
 * **Standardized JSON output** using the **[JSend](http://labs.omniti.com/labs/jsend)** specification
+
 
 ## Getting Started/FAQ
 
@@ -46,16 +54,6 @@ sudo python setup.py install
 **You completely changed the interface in a recent update; what gives?**
 
 * But newer is so much better! Seriously though, `Tornado-JSON` is, at the moment, still very much a work in progress. Updates will be made that will break the existing interface (and replace it with a shiny, new, much better one). All in the name of making it better! (And progress etc.)
-
-
-## Dependencies
-
-*Python{2.7, 3.3, 3.4} are supported.*
-
-These dependencies can be satisfied by running `pip install -r requirements.txt`
-
-* [tornado](http://www.tornadoweb.org/en/stable/)
-* [jsonschema](https://python-jsonschema.readthedocs.org/en/latest/)
 
 
 ## Running Tests
