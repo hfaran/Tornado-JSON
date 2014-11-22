@@ -13,7 +13,7 @@ def read(filename):
 
 
 install_requires = read("requirements.txt").split()
-long_description = read('README.rst')
+long_description = read('README.md')
 
 
 class Tox(TestCommand):
