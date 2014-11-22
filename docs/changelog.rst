@@ -5,6 +5,12 @@ _
 ---------
 
 
+1.0.0
+~~~~~
+
+* Compatibility updates for ``tornado>=4.0.0``
+
+
 v0.41
 ~~~~~
 
