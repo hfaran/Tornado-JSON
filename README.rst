@@ -1,5 +1,5 @@
 .. contents::
-   :depth: 3
+   :depth: 3.0
 ..
 
 Tornado-JSON
@@ -78,6 +78,15 @@ These dependencies can be satisfied by running
 
 -  `tornado <http://www.tornadoweb.org/en/stable/>`__
 -  `jsonschema <https://python-jsonschema.readthedocs.org/en/latest/>`__
+
+Running Tests
+-------------
+
+.. code:: bash
+
+    sudo pip2 install tox
+    sudo pip3 install tox
+    sudo tox  # Will run test matrix
 
 .. |Build Status| image:: https://travis-ci.org/hfaran/Tornado-JSON.png?branch=master
    :target: https://travis-ci.org/hfaran/Tornado-JSON
