@@ -19,4 +19,10 @@ dist
 *.pyc
 *.pyo
 *.tmp*
+
 .idea
+
+# Test artifacts
+.coverage
+.tox/
+API_Documentation.md
