@@ -5,7 +5,6 @@ from tornado_json.constants import TORNADO_MAJOR
 
 
 class Application(tornado.web.Application):
-
     """Entry-point for the app
 
     - Generate API documentation using provided routes

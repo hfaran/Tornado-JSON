@@ -1,5 +1,6 @@
 import sys
 import json
+
 from tornado.testing import AsyncHTTPTestCase
 
 try:
@@ -24,18 +25,14 @@ def jl(s):
 
 
 class DummyView(requesthandlers.ViewHandler):
-
     """Dummy ViewHandler for coverage"""
-
     def delete(self):
         # Reference db_conn to test for AttributeError
         self.db_conn
 
 
 class DBTestHandler(requesthandlers.APIHandler):
-
     """APIHandler for testing db_conn"""
-
     def get(self):
         # Set application.db_conn to test if db_conn BaseHandler
         #   property works

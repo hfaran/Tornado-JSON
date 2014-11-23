@@ -1,13 +1,13 @@
 import json
-import jsonschema
-
 from functools import wraps
-from tornado import gen
-from tornado.concurrent import Future
+
+import jsonschema
+import tornado.gen
 try:
     from tornado.concurrent import is_future
 except ImportError:
     # For tornado 3.x.x
+    from tornado.concurrent import Future
     is_future = lambda x: isinstance(x, Future)
 
 from tornado_json.utils import container
@@ -35,7 +35,7 @@ def validate(input_schema=None, output_schema=None,
             or malformed
         """
         @wraps(rh_method)
-        @gen.coroutine
+        @tornado.gen.coroutine
         def _wrapper(self, *args, **kwargs):
             # In case the specified input_schema is ``None``, we
             #   don't json.loads the input, but just set it to ``None``

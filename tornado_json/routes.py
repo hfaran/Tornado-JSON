@@ -5,7 +5,6 @@ import inspect
 from itertools import chain
 from functools import reduce
 
-
 from tornado_json.constants import HTTP_METHODS
 from tornado_json.utils import extract_method, is_method, is_handler_subclass
 

@@ -1,4 +1,5 @@
 import sys
+
 import pytest
 
 try:
@@ -36,12 +37,10 @@ class MockRequestHandler(object):
 
 
 class TestTornadoJSONBase(object):
-
     """Base class for all tornado_json test classes"""
 
 
 class TestRoutes(TestTornadoJSONBase):
-
     """Tests the routes module"""
 
     def test_get_routes(self):
@@ -85,7 +84,6 @@ class TestRoutes(TestTornadoJSONBase):
 
 
 class TestUtils(TestTornadoJSONBase):
-
     """Tests the utils module"""
 
     def test_api_assert(self):
@@ -96,7 +94,6 @@ class TestUtils(TestTornadoJSONBase):
         exceptions.api_assert(True, 400)
 
     class TerribleHandler(MockRequestHandler):
-
         """This 'handler' is used in test_validate"""
 
         @schema.validate(output_schema={"type": "number"})
@@ -109,7 +106,6 @@ class TestUtils(TestTornadoJSONBase):
             return "Fission mailed."
 
     class ReasonableHandler(MockRequestHandler):
-
         """This 'handler' is used in test_validate"""
 
         @schema.validate(output_schema={"type": "number"})
@@ -159,11 +155,9 @@ class TestUtils(TestTornadoJSONBase):
 
 
 class TestJSendMixin(TestTornadoJSONBase):
-
     """Tests the JSendMixin module"""
 
     class MockJSendMixinRH(jsend.JSendMixin):
-
         """Mock handler for testing JSendMixin"""
         _buffer = None
 
