@@ -1,5 +1,6 @@
 import json
 import inspect
+
 from jsonschema import validate, ValidationError
 
 from tornado_json.utils import is_method

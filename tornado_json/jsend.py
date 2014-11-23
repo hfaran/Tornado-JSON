@@ -1,5 +1,4 @@
 class JSendMixin(object):
-
     """http://labs.omniti.com/labs/jsend
 
     JSend is a specification that lays down some rules for how JSON

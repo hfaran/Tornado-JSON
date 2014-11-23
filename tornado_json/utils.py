@@ -1,6 +1,5 @@
 import types
 import pyclbr
-
 from functools import wraps
 
 

@@ -1,5 +1,3 @@
-import logging
-
 from tornado.web import RequestHandler
 from jsonschema import ValidationError
 
@@ -8,7 +6,6 @@ from tornado_json.exceptions import APIError
 
 
 class BaseHandler(RequestHandler):
-
     """BaseHandler for all other RequestHandlers"""
 
     __url_names__ = ["__self__"]
@@ -27,7 +24,6 @@ class BaseHandler(RequestHandler):
 
 
 class ViewHandler(BaseHandler):
-
     """Handler for views"""
 
     def initialize(self):
@@ -38,7 +34,6 @@ class ViewHandler(BaseHandler):
 
 
 class APIHandler(BaseHandler, JSendMixin):
-
     """RequestHandler for API calls
 
     - Sets header as ``application/json``
