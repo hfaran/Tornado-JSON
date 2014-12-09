@@ -200,6 +200,26 @@ def _get_rh_doc(rh):
     return res
 
 
+def _get_route_doc(url, rh):
+    # TODO: Content-type is hard-coded but ideally should be retrieved;
+    #  the hard part is, we don't know what it is without initializing
+    #  an instance, so just leave as-is for now
+
+    # BEGIN ROUTE_DOC #
+    route_doc = """
+# {0}
+
+    Content-Type: application/json
+
+{1}
+""".format(
+        _escape_markdown_literals(url),
+        _get_rh_doc(rh)
+    )
+    # END ROUTE_DOC #
+    return route_doc
+
+
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
@@ -213,24 +233,7 @@ def api_doc_gen(routes):
 
     documentation = []
     for url, rh in sorted(routes, key=lambda a: a[0]):
-        # TODO: Content-type is hard-coded but ideally should be retrieved;
-        #  the hard part is, we don't know what it is without initializing
-        #  an instance, so just leave as-is for now
-
-        # BEGIN ROUTE_DOC #
-        route_doc = """
-# {0}
-
-    Content-Type: application/json
-
-{1}
-""".format(
-            _escape_markdown_literals(url),
-            _get_rh_doc(rh)
-        )
-        # END ROUTE_DOC #
-
         if issubclass(rh, APIHandler):
-            documentation.append(route_doc)
+            documentation.append(_get_route_doc(url, rh))
 
     _write_docs_to_file(documentation)
