@@ -53,6 +53,7 @@ def _get_tuple_from_route(route):
     :raises TypeError: If ``route`` is not a tuple or URLSpec
     """
     if isinstance(route, tuple):
+        assert len(route) >= 2
         pattern, handler_class = route[:2]
     elif isinstance(route, tornado.web.URLSpec):
         pattern, handler_class = route.regex.pattern, route.handler_class
