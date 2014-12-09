@@ -7,10 +7,14 @@
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -18,6 +22,7 @@ null
     "type": "string"
 }
 ```
+
 
 **Output Example**
 ```json
@@ -48,10 +53,14 @@ Shouts hello to the world (asynchronously)!
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -59,6 +68,7 @@ null
     "type": "string"
 }
 ```
+
 
 **Output Example**
 ```json
@@ -80,10 +90,14 @@ Greets you.
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -91,6 +105,7 @@ null
     "type": "string"
 }
 ```
+
 
 **Output Example**
 ```json
@@ -112,6 +127,8 @@ Shouts hello to the world!
     Content-Type: application/json
 
 ## POST
+
+
 **Input Schema**
 ```json
 {
@@ -130,6 +147,7 @@ Shouts hello to the world!
 }
 ```
 
+
 **Input Example**
 ```json
 {
@@ -138,6 +156,7 @@ Shouts hello to the world!
     "title": "Very Important Post-It Note"
 }
 ```
+
 
 **Output Schema**
 ```json
@@ -150,6 +169,7 @@ Shouts hello to the world!
     }
 }
 ```
+
 
 **Output Example**
 ```json

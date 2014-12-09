@@ -117,7 +117,7 @@ def add_indent(string, indent):
     return "\n".join(lines)
 
 
-def _get_example(rh, method, type):
+def _get_example_doc(rh, method, type):
     assert type in ("input", "output")
 
     example = _validate_example(rh, method, type)
@@ -136,11 +136,32 @@ def _get_example(rh, method, type):
 
 
 def _get_input_example(rh, method):
-    return _get_example(rh, method, "input")
+    return _get_example_doc(rh, method, "input")
 
 
 def _get_output_example(rh, method):
-    return _get_example(rh, method, "output")
+    return _get_example_doc(rh, method, "output")
+
+
+def _get_schema_doc(schema, type):
+    res = """
+    **{type} Schema**
+    ```json
+    {schema}
+    ```
+    """.format(
+        schema=add_indent(json.dumps(schema, indent=4), 4),
+        type=type.capitalize()
+    )
+    return cleandoc(res)
+
+
+def _get_input_schema_doc(method):
+    return _get_schema_doc(method.input_schema, "input")
+
+
+def _get_output_schema_doc(method):
+    return _get_schema_doc(method.output_schema, "output")
 
 
 def api_doc_gen(routes):
@@ -172,15 +193,10 @@ def api_doc_gen(routes):
             "\n\n".join(
                 [
 """## {0}
-**Input Schema**
-```json
+
 {1}
-```
 {4}
-**Output Schema**
-```json
 {2}
-```
 {5}
 
 **Notes**
@@ -189,8 +205,8 @@ def api_doc_gen(routes):
 
 """.format(
             method_name.upper(),
-            json.dumps(method.input_schema, indent=4),
-            json.dumps(method.output_schema, indent=4),
+            _get_input_schema_doc(method),
+            _get_output_schema_doc(method),
             inspect.getdoc(method),
             _get_input_example(rh, method),
             _get_output_example(rh, method),
