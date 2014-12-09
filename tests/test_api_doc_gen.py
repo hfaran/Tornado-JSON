@@ -7,6 +7,8 @@ try:
     sys.path.append('.')
     from tornado_json.api_doc_gen import _get_tuple_from_route
 except ImportError as e:
+    from traceback import print_exc
+    print_exc()
     print("Please run `sudo tox` from the root project directory")
     exit(1)
 

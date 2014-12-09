@@ -1,3 +1,7 @@
+try:
+    from itertools import imap
+except ImportError:
+    imap = map
 import json
 import inspect
 
@@ -94,11 +98,10 @@ def api_doc_gen(routes):
     :param routes: List of routes (this is ideally all possible routes of the
         app)
     """
-    documentation = []
-    # Iterate over routes sorted by url
-    for route in sorted(routes, key=lambda a: a[0]):
-        url, rh = _get_tuple_from_route(route)
+    routes = imap(_get_tuple_from_route, routes)
 
+    documentation = []
+    for url, rh in sorted(routes, key=lambda a: a[0]):
         # TODO: Content-type is hard-coded but ideally should be retrieved;
         #  the hard part is, we don't know what it is without initializing
         #  an instance, so just leave as-is for now

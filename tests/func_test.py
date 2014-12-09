@@ -12,6 +12,8 @@ try:
     sys.path.append('demos/helloworld')
     import helloworld
 except ImportError as e:
+    from traceback import print_exc
+    print_exc()
     print("Please run `py.test` from the root project directory")
     exit(1)
 
