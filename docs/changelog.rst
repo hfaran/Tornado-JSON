@@ -5,6 +5,14 @@ _
 ---------
 
 
+
+1.1.0
+~~~~~
+
+* Handle routes as ``URLSpec`` and >2-tuple in ``api_doc_gen``
+* Refactor ``api_doc_gen``; now has public function ``get_api_doc`` for use
+
+
 1.0.0
 ~~~~~
 
