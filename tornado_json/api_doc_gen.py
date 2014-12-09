@@ -63,6 +63,17 @@ def _get_tuple_from_route(route):
     return pattern, handler_class
 
 
+def _write_docs_to_file(documentation):
+    # Documentation is written to the root folder
+    with open("API_Documentation.md", "w+") as f:
+        f.write(
+            "**This documentation is automatically generated.**\n\n" +
+            "**Output schemas only represent `data` and not the full output; "
+            "see output examples and the JSend specification.**\n" +
+            "\n<br>\n<br>\n".join(documentation)
+        )
+
+
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
@@ -139,11 +150,4 @@ def api_doc_gen(routes):
         if issubclass(rh, APIHandler):
             documentation.append(route_doc)
 
-    # Documentation is written to the root folder
-    with open("API_Documentation.md", "w+") as f:
-        f.write(
-            "**This documentation is automatically generated.**\n\n" +
-            "**Output schemas only represent `data` and not the full output; "
-            "see output examples and the JSend specification.**\n" +
-            "\n<br>\n<br>\n".join(documentation)
-        )
+    _write_docs_to_file(documentation)
