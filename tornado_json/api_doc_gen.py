@@ -200,24 +200,26 @@ def _get_rh_doc(rh):
     return res
 
 
-def _get_route_doc(url, rh):
-    # TODO: Content-type is hard-coded but ideally should be retrieved;
+def _get_content_type(rh):
+    # XXX: Content-type is hard-coded but ideally should be retrieved;
     #  the hard part is, we don't know what it is without initializing
     #  an instance, so just leave as-is for now
+    return "Content-Type: application/json"
 
-    # BEGIN ROUTE_DOC #
+
+def _get_route_doc(url, rh):
     route_doc = """
-# {0}
+    # {route_pattern}
 
-    Content-Type: application/json
+        {content_type}
 
-{1}
-""".format(
-        _escape_markdown_literals(url),
-        _get_rh_doc(rh)
+    {rh_doc}
+    """.format(
+        route_pattern=_escape_markdown_literals(url),
+        content_type=_get_content_type(rh),
+        rh_doc=add_indent(_get_rh_doc(rh), 4)
     )
-    # END ROUTE_DOC #
-    return route_doc
+    return cleandoc(route_doc)
 
 
 def api_doc_gen(routes):
