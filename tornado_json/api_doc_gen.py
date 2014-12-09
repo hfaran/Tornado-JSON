@@ -99,6 +99,16 @@ def _get_input_example(rh, method):
             rh, method, "input") else ""
 
 
+def _get_output_example(rh, method):
+    return """
+**Output Example**
+```json
+{}
+```
+""".format(_validate_example(rh, method, "output")) if _validate_example(
+            rh, method, "output") else ""
+
+
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
@@ -149,13 +159,7 @@ def api_doc_gen(routes):
             json.dumps(method.output_schema, indent=4),
             inspect.getdoc(method),
             _get_input_example(rh, method),
-"""
-**Output Example**
-```json
-{}
-```
-""".format(_validate_example(rh, method, "output")) if _validate_example(
-            rh, method, "output") else "",
+            _get_output_example(rh, method),
         ) for method_name, method in _get_rh_methods(rh)
                 ]
             )
