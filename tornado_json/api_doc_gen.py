@@ -89,6 +89,16 @@ def _escape_markdown_literals(string):
     return "".join(map(escape, string))
 
 
+def _get_input_example(rh, method):
+    return """
+**Input Example**
+```json
+{}
+```
+""".format(_validate_example(rh, method, "input")) if _validate_example(
+            rh, method, "input") else ""
+
+
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
@@ -138,13 +148,7 @@ def api_doc_gen(routes):
             json.dumps(method.input_schema, indent=4),
             json.dumps(method.output_schema, indent=4),
             inspect.getdoc(method),
-"""
-**Input Example**
-```json
-{}
-```
-""".format(_validate_example(rh, method, "input")) if _validate_example(
-            rh, method, "input") else "",
+            _get_input_example(rh, method),
 """
 **Output Example**
 ```json
