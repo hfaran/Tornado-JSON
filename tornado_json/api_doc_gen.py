@@ -176,8 +176,7 @@ def _get_notes(method):
 
 
 def _get_rh_doc(rh):
-    res = "\n\n".join(
-                [
+    res = "\n\n".join([
 """## {0}
 
 {1}
@@ -185,7 +184,8 @@ def _get_rh_doc(rh):
 {2}
 {5}
 {3}
-""".format(
+"""
+        .format(
             method_name.upper(),
             _get_input_schema_doc(method),
             _get_output_schema_doc(method),
@@ -193,8 +193,7 @@ def _get_rh_doc(rh):
             _get_input_example(rh, method),
             _get_output_example(rh, method),
         ) for method_name, method in _get_rh_methods(rh)
-                ]
-            )
+    ])
     return res
 
 
