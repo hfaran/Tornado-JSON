@@ -175,25 +175,28 @@ def _get_notes(method):
     return cleandoc(res)
 
 
-def _get_rh_doc(rh):
-    res = "\n\n".join([
-"""## {0}
+def _get_method_doc(rh, method_name, method):
+    res = """## {method_name}
 
-{1}
-{4}
-{2}
-{5}
-{3}
-"""
-        .format(
-            method_name.upper(),
-            _get_input_schema_doc(method),
-            _get_output_schema_doc(method),
-            _get_notes(method),
-            _get_input_example(rh, method),
-            _get_output_example(rh, method),
-        ) for method_name, method in _get_rh_methods(rh)
-    ])
+    {input_schema}
+    {input_example}
+    {output_schema}
+    {output_example}
+    {notes}
+    """.format(
+        method_name=method_name.upper(),
+        input_schema=_get_input_schema_doc(method),
+        output_schema=_get_output_schema_doc(method),
+        notes=_get_notes(method),
+        input_example=_get_input_example(rh, method),
+        output_example=_get_output_example(rh, method),
+    )
+    return cleandoc("\n".join([l.rstrip() for l in res.splitlines()]))
+
+
+def _get_rh_doc(rh):
+    res = "\n\n".join([_get_method_doc(rh, method_name, method)
+                       for method_name, method in _get_rh_methods(rh)])
     return res
 
 

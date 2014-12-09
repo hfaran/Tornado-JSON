@@ -132,14 +132,14 @@ Shouts hello to the world!
 **Input Schema**
 ```json
 {
-    "type": "object", 
+    "type": "object",
     "properties": {
         "body": {
             "type": "string"
-        }, 
+        },
         "index": {
             "type": "number"
-        }, 
+        },
         "title": {
             "type": "string"
         }
@@ -151,8 +151,8 @@ Shouts hello to the world!
 **Input Example**
 ```json
 {
-    "body": "Equally important message", 
-    "index": 0, 
+    "body": "Equally important message",
+    "index": 0,
     "title": "Very Important Post-It Note"
 }
 ```
@@ -161,7 +161,7 @@ Shouts hello to the world!
 **Output Schema**
 ```json
 {
-    "type": "object", 
+    "type": "object",
     "properties": {
         "message": {
             "type": "string"
