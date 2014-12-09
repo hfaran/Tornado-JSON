@@ -3,6 +3,8 @@ import json
 
 from tornado.testing import AsyncHTTPTestCase
 
+from .utils import handle_import_error
+
 try:
     sys.path.append('.')
     from tornado_json import routes
@@ -11,11 +13,8 @@ try:
     from tornado_json import requesthandlers
     sys.path.append('demos/helloworld')
     import helloworld
-except ImportError as e:
-    from traceback import print_exc
-    print_exc()
-    print("Please run `py.test` from the root project directory")
-    exit(1)
+except ImportError as err:
+    handle_import_error(err)
 
 
 def jd(obj):
