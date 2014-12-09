@@ -1,12 +1,12 @@
-try:
-    from itertools import imap
-except ImportError:
-    imap = map
 import json
 import inspect
 
 import tornado.web
 from jsonschema import validate, ValidationError
+try:
+    from itertools import imap as map
+except ImportError:
+    pass
 
 from tornado_json.utils import is_method
 from tornado_json.constants import HTTP_METHODS
@@ -98,7 +98,7 @@ def api_doc_gen(routes):
     :param routes: List of routes (this is ideally all possible routes of the
         app)
     """
-    routes = imap(_get_tuple_from_route, routes)
+    routes = map(_get_tuple_from_route, routes)
 
     documentation = []
     for url, rh in sorted(routes, key=lambda a: a[0]):
