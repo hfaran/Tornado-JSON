@@ -2,6 +2,8 @@ import sys
 
 import pytest
 
+from .utils import handle_import_error
+
 try:
     sys.path.append('.')
     from tornado_json import routes
@@ -12,9 +14,8 @@ try:
     sys.path.append('demos/rest_api')
     import helloworld
     import cars
-except ImportError as e:
-    print("Please run `sudo tox` from the root project directory")
-    exit(1)
+except ImportError as err:
+    handle_import_error(err)
 
 
 class SuccessException(Exception):
