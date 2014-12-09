@@ -1,6 +1,7 @@
 import json
 import inspect
 
+import tornado.web
 from jsonschema import validate, ValidationError
 
 from tornado_json.utils import is_method
@@ -44,6 +45,24 @@ def _get_rh_methods(rh):
             yield (k, v)
 
 
+def _get_tuple_from_route(route):
+    """Return (pattern, handler_class) tuple from ``route``
+
+    :type route: tuple|tornado.web.URLSpec
+    :rtype: tuple
+    :raises TypeError: If ``route`` is not a tuple or URLSpec
+    """
+    if isinstance(route, tuple):
+        assert len(route) >= 2
+        pattern, handler_class = route[:2]
+    elif isinstance(route, tornado.web.URLSpec):
+        pattern, handler_class = route.regex.pattern, route.handler_class
+    else:
+        raise TypeError("Unknown route type '{}'"
+                        .format(type(route).__name__))
+    return pattern, handler_class
+
+
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
@@ -55,8 +74,10 @@ def api_doc_gen(routes):
     """
     documentation = []
     # Iterate over routes sorted by url
-    for url, rh in sorted(routes, key=lambda a: a[0]):
-        # Content-type is hard-coded but ideally should be retrieved;
+    for route in sorted(routes, key=lambda a: a[0]):
+        url, rh = _get_tuple_from_route(route)
+
+        # TODO: Content-type is hard-coded but ideally should be retrieved;
         #  the hard part is, we don't know what it is without initializing
         #  an instance, so just leave as-is for now
 

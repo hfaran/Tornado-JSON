@@ -13,12 +13,11 @@ try:
     import helloworld
     import cars
 except ImportError as e:
-    print("Please run `py.test` from the root project directory")
+    print("Please run `sudo tox` from the root project directory")
     exit(1)
 
 
 class SuccessException(Exception):
-
     """Great success!"""
 
 
