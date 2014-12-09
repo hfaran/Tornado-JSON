@@ -35,7 +35,7 @@ def _validate_example(rh, method, example_type):
             )
         )
 
-    return json.dumps(example, indent=4)
+    return json.dumps(example, indent=4, sort_keys=True)
 
 
 def _get_rh_methods(rh):
@@ -66,17 +66,6 @@ def _get_tuple_from_route(route):
         raise TypeError("Unknown route type '{}'"
                         .format(type(route).__name__))
     return pattern, handler_class
-
-
-def _write_docs_to_file(documentation):
-    # Documentation is written to the root folder
-    with open("API_Documentation.md", "w+") as f:
-        f.write(
-            "**This documentation is automatically generated.**\n\n" +
-            "**Output schemas only represent `data` and not the full output; "
-            "see output examples and the JSend specification.**\n" +
-            "\n<br>\n<br>\n".join(documentation)
-        )
 
 
 def _escape_markdown_literals(string):
@@ -150,7 +139,7 @@ def _get_schema_doc(schema, type):
     {schema}
     ```
     """.format(
-        schema=add_indent(json.dumps(schema, indent=4), 4),
+        schema=add_indent(json.dumps(schema, indent=4, sort_keys=True), 4),
         type=type.capitalize()
     )
     return cleandoc(res)
@@ -222,7 +211,13 @@ def _get_route_doc(url, rh):
     return cleandoc(route_doc)
 
 
-def api_doc_gen(routes):
+def _write_docs_to_file(documentation):
+    # Documentation is written to the root folder
+    with open("API_Documentation.md", "w+") as f:
+        f.write(documentation)
+
+
+def get_api_docs(routes):
     """
     Generates GitHub Markdown formatted API documentation using
     provided schemas in RequestHandler methods and their docstrings.
@@ -230,6 +225,8 @@ def api_doc_gen(routes):
     :type  routes: [(url, RequestHandler), ...]
     :param routes: List of routes (this is ideally all possible routes of the
         app)
+    :rtype: str
+    :returns: generated GFM-formatted documentation
     """
     routes = map(_get_tuple_from_route, routes)
 
@@ -238,4 +235,16 @@ def api_doc_gen(routes):
         if issubclass(rh, APIHandler):
             documentation.append(_get_route_doc(url, rh))
 
+    documentation = (
+        "**This documentation is automatically generated.**\n\n" +
+        "**Output schemas only represent `data` and not the full output; " +
+        "see output examples and the JSend specification.**\n" +
+        "\n<br>\n<br>\n".join(documentation)
+    )
+    return documentation
+
+
+def api_doc_gen(routes):
+    """Get and write API documentation for ``routes`` to file"""
+    documentation = get_api_docs(routes)
     _write_docs_to_file(documentation)

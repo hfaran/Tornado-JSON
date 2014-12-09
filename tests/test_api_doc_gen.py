@@ -1,4 +1,5 @@
 import sys
+import os
 
 import pytest
 from tornado.web import URLSpec
@@ -8,6 +9,10 @@ from .utils import handle_import_error
 try:
     sys.path.append('.')
     from tornado_json.api_doc_gen import _get_tuple_from_route
+    from tornado_json.api_doc_gen import get_api_docs
+    from tornado_json.routes import get_routes
+    sys.path.append("demos/helloworld")
+    import helloworld
 except ImportError as err:
     handle_import_error(err)
 
@@ -30,3 +35,12 @@ def test__get_tuple_from_route():
     # Test malformed tuple (i.e., smaller length than 2)
     with pytest.raises(AssertionError):
         _get_tuple_from_route(("foobar",))
+
+
+
+def test__get_api_docs():
+    relative_dir = os.path.abspath(os.path.dirname(__file__))
+    filepath = os.path.join(relative_dir, "helloworld_API_documentation.md")
+    HELLOWORLD_DOC = open(filepath).read()
+
+    assert get_api_docs(get_routes(helloworld)) == HELLOWORLD_DOC
