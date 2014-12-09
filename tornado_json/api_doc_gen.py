@@ -74,6 +74,17 @@ def _write_docs_to_file(documentation):
         )
 
 
+def _escape_markdown_literals(string):
+    """Escape any markdown literals in ``string`` by prepending with \\
+
+    :type string: str
+    :rtype: str
+    """
+    literals = list("\\`*_{}[]()<>#+-.!:|")
+    escape = lambda c: '\\' + c if c in literals else c
+    return "".join(map(escape, string))
+
+
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
@@ -100,10 +111,7 @@ def api_doc_gen(routes):
 
 {1}
 """.format(
-            # Escape markdown literals
-            "".join(
-                ['\\' + c if c in list("\\`*_{}[]()<>#+-.!:|") else c
-                 for c in url]),
+            _escape_markdown_literals(url),
             "\n\n".join(
                 [
 """## {0}
