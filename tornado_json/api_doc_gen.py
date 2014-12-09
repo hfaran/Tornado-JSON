@@ -1,3 +1,4 @@
+import logging
 import json
 import inspect
 
@@ -90,10 +91,30 @@ def _escape_markdown_literals(string):
 
 
 def cleandoc(doc):
-    lines = doc.split("\n")
+    """Remove uniform indents from ``doc`` lines that are not empty
+
+    :returns: Cleaned ``doc``
+    """
     indent_length = lambda s: len(s) - len(s.lstrip(" "))
-    max_indent = max(map(indent_length, lines))
-    return "\n".join(s[max_indent:] for s in lines)
+    not_empty = lambda s: s != ""
+
+    lines = doc.split("\n")
+    indent = min(map(indent_length, filter(not_empty, lines)))
+
+    return "\n".join(s[indent:] for s in lines)
+
+
+def add_indent(string, indent):
+    """Add indent of ``indent`` spaces to ``string.split("\n")[1:]``
+
+    Useful for formatting in strings to already indented blocks
+    """
+    lines = string.split("\n")
+    first, lines = lines[0], lines[1:]
+    lines = ["{indent}{s}".format(indent=" "*indent, s=s)
+         for s in lines]
+    lines = [first] + lines
+    return "\n".join(lines)
 
 
 def _get_example(rh, method, type):
@@ -102,15 +123,16 @@ def _get_example(rh, method, type):
     example = _validate_example(rh, method, type)
     if not example:
         return ""
-    return """
-**{type} Example**
-```json
-{example}
-```
-""".format(
-            type=type.capitalize(),
-            example=example
-        )
+    res = """
+    **{type} Example**
+    ```json
+    {example}
+    ```
+    """.format(
+        type=type.capitalize(),
+        example=add_indent(example, 4)
+    )
+    return cleandoc(res)
 
 
 def _get_input_example(rh, method):
