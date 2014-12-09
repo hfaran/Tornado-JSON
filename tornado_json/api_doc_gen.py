@@ -89,24 +89,36 @@ def _escape_markdown_literals(string):
     return "".join(map(escape, string))
 
 
-def _get_input_example(rh, method):
+def cleandoc(doc):
+    lines = doc.split("\n")
+    indent_length = lambda s: len(s) - len(s.lstrip(" "))
+    max_indent = max(map(indent_length, lines))
+    return "\n".join(s[max_indent:] for s in lines)
+
+
+def _get_example(rh, method, type):
+    assert type in ("input", "output")
+
+    example = _validate_example(rh, method, type)
+    if not example:
+        return ""
     return """
-**Input Example**
+**{type} Example**
 ```json
-{}
+{example}
 ```
-""".format(_validate_example(rh, method, "input")) if _validate_example(
-            rh, method, "input") else ""
+""".format(
+            type=type.capitalize(),
+            example=example
+        )
+
+
+def _get_input_example(rh, method):
+    return _get_example(rh, method, "input")
 
 
 def _get_output_example(rh, method):
-    return """
-**Output Example**
-```json
-{}
-```
-""".format(_validate_example(rh, method, "output")) if _validate_example(
-            rh, method, "output") else ""
+    return _get_example(rh, method, "output")
 
 
 def api_doc_gen(routes):
