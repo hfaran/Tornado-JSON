@@ -164,6 +164,17 @@ def _get_output_schema_doc(method):
     return _get_schema_doc(method.output_schema, "output")
 
 
+def _get_notes(method):
+    res = """
+    **Notes**
+
+    {}
+    """.format(
+        add_indent(inspect.getdoc(method), 4)
+    )
+    return cleandoc(res)
+
+
 def api_doc_gen(routes):
     """
     Generates GitHub Markdown formatted API documentation using
@@ -198,16 +209,12 @@ def api_doc_gen(routes):
 {4}
 {2}
 {5}
-
-**Notes**
-
 {3}
-
 """.format(
             method_name.upper(),
             _get_input_schema_doc(method),
             _get_output_schema_doc(method),
-            inspect.getdoc(method),
+            _get_notes(method),
             _get_input_example(rh, method),
             _get_output_example(rh, method),
         ) for method_name, method in _get_rh_methods(rh)
