@@ -66,13 +66,13 @@ class TestRoutes(TestTornadoJSONBase):
         ])
 
     def test_gen_submodule_names(self):
-        """Tests routes._gen_submodule_names"""
-        assert list(routes._gen_submodule_names(helloworld)
+        """Tests routes.gen_submodule_names"""
+        assert list(routes.gen_submodule_names(helloworld)
                     ) == ['helloworld.api']
 
     def test_get_module_routes(self):
-        """Tests routes._get_module_routes"""
-        assert sorted(routes._get_module_routes(
+        """Tests routes.get_module_routes"""
+        assert sorted(routes.get_module_routes(
             "cars.api")) == sorted([
             ("/api/cars/?", cars.api.MakeListHandler),
             ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/?$",

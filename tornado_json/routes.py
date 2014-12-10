@@ -22,11 +22,11 @@ def get_routes(package):
     :returns: List of routes for all submodules of ``package``
     :rtype: [(url, RequestHandler), ... ]
     """
-    return list(chain(*[_get_module_routes(modname) for modname in
-                        _gen_submodule_names(package)]))
+    return list(chain(*[get_module_routes(modname) for modname in
+                        gen_submodule_names(package)]))
 
 
-def _gen_submodule_names(package):
+def gen_submodule_names(package):
     """Walk package and yield names of all submodules
 
     :type  package: package
@@ -41,7 +41,7 @@ def _gen_submodule_names(package):
         yield modname
 
 
-def _get_module_routes(module_name, custom_routes=None, exclusions=None):
+def get_module_routes(module_name, custom_routes=None, exclusions=None):
     """Create and return routes for module_name
 
     Routes are (url, RequestHandler) tuples
