@@ -208,7 +208,7 @@ the user assign class level __url_names__ and __urls__ themselves.
 """
 
 
-def route(title=None, pattern=None, no_auto_route=True):
+def route(pattern=None, end_pattern=None, no_auto_route=True):
     """Decorator for customized mapping of routes to a RequestHandler.
 
     This only adds attributes to the handlers indicating to
@@ -221,30 +221,30 @@ def route(title=None, pattern=None, no_auto_route=True):
     "/api/helloworld/helloworld/?$", and "/api/helloworld/foobar/?$" to the
     mock ``HelloWorld`` handler.
 
-        @route(title="foobar", keep_auto_route=True)
+        @route(end_pattern="foobar", keep_auto_route=True)
         class HelloWorld(RequestHandler):
             return "Hello World"
 
-        @route(title="helloworld", pattern=["/api/helloworld/foobar/?$"])
+        @route(end_pattern="helloworld", pattern=["/api/helloworld/foobar/?$"])
         class HelloWorldHandler(RequestHandler):
             return "foobar"
 
-        @route(title=["helloworld", "foobar"])
+        @route(end_pattern=["helloworld", "foobar"])
         class HelloWorldHandler(RequestHandler):
             return "foobar"
 
-    :type title: str|list
-    :param title: Setting this sets the final part of the URL, i.e., what
-                  would usually be set by the handler name. Example:
-                  if you were to decorate a handler
-                  ``api.helloworld.HelloWorld`` with ``title="foobar"``,
-                  the route mapped to the handler would be
-                  ``"/api/helloworld/foobar"``. This can also be set as a list
-                  of names which would map multiple routes to the handler, e.g.,
-                  ``title=["foo", "bar", "baz"]``
     :type pattern: str|list
     :param pattern: This can be a single, or a list of, entire URL patterns,
                     to map the handler being decorated.
+    :type end_pattern: str|list
+    :param end_pattern: Setting this sets the final part of the URL, i.e., what
+                  would usually be set by the handler name. Example:
+                  if you were to decorate a handler
+                  ``api.helloworld.HelloWorld`` with ``end_pattern="foobar"``,
+                  the route mapped to the handler would be
+                  ``"/api/helloworld/foobar"``. This can also be set as a list
+                  of names which would map multiple routes to the handler, e.g.,
+                  ``end_pattern=["foo", "bar", "baz"]``
     :type no_auto_route: bool
     :param no_auto_route: If this is set to ``False``, the automatically
                           generated route that would be generated for
@@ -263,7 +263,7 @@ def route(title=None, pattern=None, no_auto_route=True):
                             "or `list`)".format(type(attr).__name__, attr))
 
     def _route(handler):
-        handler._tj_title = _transform_attr(title)
+        handler._tj_title = _transform_attr(end_pattern)
         handler._tj_pattern = _transform_attr(pattern)
         handler._tj_no_auto_route = no_auto_route
         return handler
