@@ -40,12 +40,3 @@ tornado_json Package
     :members:
     :undoc-members:
     :show-inheritance:
-
-:mod:`utils` Module
--------------------
-
-.. automodule:: tornado_json.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:
-

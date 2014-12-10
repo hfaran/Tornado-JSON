@@ -79,7 +79,7 @@ def _escape_markdown_literals(string):
     return "".join(map(escape, string))
 
 
-def cleandoc(doc):
+def _cleandoc(doc):
     """Remove uniform indents from ``doc`` lines that are not empty
 
     :returns: Cleaned ``doc``
@@ -93,7 +93,7 @@ def cleandoc(doc):
     return "\n".join(s[indent:] for s in lines)
 
 
-def add_indent(string, indent):
+def _add_indent(string, indent):
     """Add indent of ``indent`` spaces to ``string.split("\n")[1:]``
 
     Useful for formatting in strings to already indented blocks
@@ -119,9 +119,9 @@ def _get_example_doc(rh, method, type):
     ```
     """.format(
         type=type.capitalize(),
-        example=add_indent(example, 4)
+        example=_add_indent(example, 4)
     )
-    return cleandoc(res)
+    return _cleandoc(res)
 
 
 def _get_input_example(rh, method):
@@ -139,10 +139,10 @@ def _get_schema_doc(schema, type):
     {schema}
     ```
     """.format(
-        schema=add_indent(json.dumps(schema, indent=4, sort_keys=True), 4),
+        schema=_add_indent(json.dumps(schema, indent=4, sort_keys=True), 4),
         type=type.capitalize()
     )
-    return cleandoc(res)
+    return _cleandoc(res)
 
 
 def _get_input_schema_doc(method):
@@ -159,9 +159,9 @@ def _get_notes(method):
 
     {}
     """.format(
-        add_indent(inspect.getdoc(method), 4)
+        _add_indent(inspect.getdoc(method), 4)
     )
-    return cleandoc(res)
+    return _cleandoc(res)
 
 
 def _get_method_doc(rh, method_name, method):
@@ -180,7 +180,7 @@ def _get_method_doc(rh, method_name, method):
         input_example=_get_input_example(rh, method),
         output_example=_get_output_example(rh, method),
     )
-    return cleandoc("\n".join([l.rstrip() for l in res.splitlines()]))
+    return _cleandoc("\n".join([l.rstrip() for l in res.splitlines()]))
 
 
 def _get_rh_doc(rh):
@@ -206,9 +206,9 @@ def _get_route_doc(url, rh):
     """.format(
         route_pattern=_escape_markdown_literals(url),
         content_type=_get_content_type(rh),
-        rh_doc=add_indent(_get_rh_doc(rh), 4)
+        rh_doc=_add_indent(_get_rh_doc(rh), 4)
     )
-    return cleandoc(route_doc)
+    return _cleandoc(route_doc)
 
 
 def _write_docs_to_file(documentation):
