@@ -25,13 +25,32 @@ Some of the key features the included modules provide:
 * **Standardized JSON output** using the **[JSend](http://labs.omniti.com/labs/jsend)** specification
 
 
-## Getting Started/FAQ
+## Usage
 
-**How do I use this thing?**
+Check out the [Hello World demo](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation. And then [**explore Tornado-JSON on readthedocs for the rest!**](http://tornado-json.readthedocs.org/en/latest/index.html#)
 
-* Check out the [Hello World demo](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation. And then [**explore Tornado-JSON on readthedocs for the rest!**](http://tornado-json.readthedocs.org/en/latest/index.html#)
+```python
+import json
 
-**Okay, but how do I install it?**
+import tornado.ioloop
+from tornado_json.routes import get_routes
+from tornado_json.application import Application
+
+import mywebapp
+
+
+def main():
+    routes = get_routes(mywebapp)
+    application = Application(routes=routes, settings={})
+    application.listen(8888)
+    tornado.ioloop.IOLoop.instance().start()
+
+
+if __name__ == '__main__':
+    main()
+```
+
+## Installation
 
 * For the possibly stable
 
@@ -47,13 +66,17 @@ cd Tornado-JSON
 sudo python setup.py install
 ```
 
-**Neat, but `x` sucks, `y` is ugly, and `z` could be better.**
 
-* You would be awesome for [opening an issue about it](https://github.com/hfaran/Tornado-JSON/issues/new), and I'll promise my best to take a look.
- 
-**You completely changed the interface in a recent update; what gives?**
+## Contributing
 
-* But newer is so much better! Seriously though, `Tornado-JSON` is, at the moment, still very much a work in progress. Updates will be made that will break the existing interface (and replace it with a shiny, new, much better one). All in the name of making it better! (And progress etc.)
+If there is something you would like to see improved, you would be awesome for [opening an issue about it](https://github.com/hfaran/Tornado-JSON/issues/new), and I'll promise my best to take a look.
+
+Pull requests are absolutely welcome as well!
+
+
+## License
+
+This project is licensed under the MIT License.
 
 
 ## Running Tests
