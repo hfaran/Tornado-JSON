@@ -192,3 +192,21 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
 
     routes = auto_routes + custom_routes
     return routes
+
+
+"""Idea for Issue #45
+
+For the special handlers that Misaka42 wanted (which make a lot of sense)
+to have, can have special decorators which denote the routes for those.
+
+This allows for naming flexibility and makes it "less magic" for the user.
+
+These decorators would be based off of a more general ``route`` decorator (yes,
+borrowing its name from Flask.route). This route decorator would be a replacement
+for the current rather unsightly implementation of URL Annotations which makes
+the user assign class level __url_names__ and __urls__ themselves.
+"""
+
+
+# def route(route):
+#     def _route
