@@ -1,13 +1,13 @@
-import logging
 import json
 import inspect
 
-import tornado.web
-from jsonschema import validate, ValidationError
 try:
-    from itertools import imap as map
+    from itertools import imap as map  # PY2
 except ImportError:
     pass
+
+import tornado.web
+from jsonschema import validate, ValidationError
 
 from tornado_json.utils import is_method
 from tornado_json.constants import HTTP_METHODS
@@ -100,8 +100,8 @@ def add_indent(string, indent):
     """
     lines = string.split("\n")
     first, lines = lines[0], lines[1:]
-    lines = ["{indent}{s}".format(indent=" "*indent, s=s)
-         for s in lines]
+    lines = ["{indent}{s}".format(indent=" " * indent, s=s)
+             for s in lines]
     lines = [first] + lines
     return "\n".join(lines)
 
