@@ -54,13 +54,13 @@ if __name__ == '__main__':
 
 * For the possibly stable
 
-```
+```bash
 pip install Tornado-JSON
 ```
 
 * For the latest and greatest
 
-```
+```bash
 git clone https://github.com/hfaran/Tornado-JSON.git
 cd Tornado-JSON
 sudo python setup.py install
