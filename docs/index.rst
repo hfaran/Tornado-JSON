@@ -37,11 +37,6 @@ Some of the key features the included modules provide:
    tornado_json
 
 
-\ *Warning: Tornado-JSON is still very much a work in progress. No
-guarantees on backwards-compatibility made, however, I try not to do
-that since, as a user, I hate breaking it at least as much as you. That
-being said, use it at your own risk.*\
-
 
 Indices and tables
 ==================
