@@ -5,7 +5,7 @@ import inspect
 from itertools import chain
 from functools import reduce
 
-from tornado_json.constants import HTTP_METHODS
+from tornado_json.constants import HTTP_METHODS, basestring
 from tornado_json.utils import extract_method, is_method, is_handler_subclass
 
 
@@ -208,5 +208,63 @@ the user assign class level __url_names__ and __urls__ themselves.
 """
 
 
-# def route(route):
-#     def _route
+def route(title=None, pattern=None, no_auto_route=True):
+    """Decorator for customized mapping of routes to a RequestHandler.
+
+    This only adds attributes to the handlers indicating to
+    :func:`get_routes` how to generate request routes.
+    Usage of :func:`get_routes` to generate routes and pass to the
+    application is still required as per the documentation to get your
+    Tornado application to actually recognize route requests to handlers.
+
+    The following examples all route two URLs:
+    "/api/helloworld/helloworld/?$", and "/api/helloworld/foobar/?$" to the
+    mock ``HelloWorld`` handler.
+
+        @route(title="foobar", keep_auto_route=True)
+        class HelloWorld(RequestHandler):
+            return "Hello World"
+
+        @route(title="helloworld", pattern=["/api/helloworld/foobar/?$"])
+        class HelloWorldHandler(RequestHandler):
+            return "foobar"
+
+        @route(title=["helloworld", "foobar"])
+        class HelloWorldHandler(RequestHandler):
+            return "foobar"
+
+    :type title: str|list
+    :param title: Setting this sets the final part of the URL, i.e., what
+                  would usually be set by the handler name. Example:
+                  if you were to decorate a handler
+                  ``api.helloworld.HelloWorld`` with ``title="foobar"``,
+                  the route mapped to the handler would be
+                  ``"/api/helloworld/foobar"``. This can also be set as a list
+                  of names which would map multiple routes to the handler, e.g.,
+                  ``title=["foo", "bar", "baz"]``
+    :type pattern: str|list
+    :param pattern: This can be a single, or a list of, entire URL patterns,
+                    to map the handler being decorated.
+    :type no_auto_route: bool
+    :param no_auto_route: If this is set to ``False``, the automatically
+                          generated route that would be generated for
+                          the handler being decorated by this, is kept
+                          along with the additional routes.
+    """
+    def _transform_attr(attr):
+        if isinstance(attr, basestring):
+            return [attr]
+        elif isinstance(attr, (tuple, list)):
+            return list(attr)
+        elif attr is None:
+            return []
+        else:
+            raise TypeError("Unsupported type {} for {}; expected `str` "
+                            "or `list`)".format(type(attr).__name__, attr))
+
+    def _route(handler):
+        handler._tj_title = _transform_attr(title)
+        handler._tj_pattern = _transform_attr(pattern)
+        handler._tj_no_auto_route = no_auto_route
+        return handler
+    return _route
