@@ -30,8 +30,6 @@ Some of the key features the included modules provide:
 Check out the [Hello World demo](https://github.com/hfaran/Tornado-JSON/tree/master/demos/helloworld) for a quick example and the [accompanying walkthrough](http://tornado-json.readthedocs.org/en/latest/using_tornado_json.html) in the documentation. And then [**explore Tornado-JSON on readthedocs for the rest!**](http://tornado-json.readthedocs.org/en/latest/index.html#)
 
 ```python
-import json
-
 import tornado.ioloop
 from tornado_json.routes import get_routes
 from tornado_json.application import Application
@@ -39,15 +37,12 @@ from tornado_json.application import Application
 import mywebapp
 
 
-def main():
-    routes = get_routes(mywebapp)
-    application = Application(routes=routes, settings={})
-    application.listen(8888)
-    tornado.ioloop.IOLoop.instance().start()
-
-
-if __name__ == '__main__':
-    main()
+ # Automatically generate routes for your webapp
+routes = get_routes(mywebapp)
+# Create and start application
+application = Application(routes=routes, settings={})
+application.listen(8888)
+tornado.ioloop.IOLoop.instance().start()
 ```
 
 ## Installation
