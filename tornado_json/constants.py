@@ -19,7 +19,10 @@ TORNADO_MAJOR, TORNADO_MINOR, TORNADO_PATCH = tornado_version_info[:3]
 if PY3:
      unicode = str
      basestring = (str, bytes)
+     bytes = bytes
 elif PY2:
+     unicode = unicode
+     basestring = basestring
      bytes = str
 
 

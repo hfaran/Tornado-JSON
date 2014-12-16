@@ -7,8 +7,11 @@ from functools import reduce
 from functools import partial
 from collections import namedtuple
 
-from tornado_json.constants import HTTP_METHODS, basestring
-from tornado_json.utils import extract_method, is_method, is_handler_subclass
+from tornado_json.constants import HTTP_METHODS
+from tornado_json.constants import basestring
+from tornado_json.utils import extract_method
+from tornado_json.utils import is_handler_subclass
+from tornado_json.utils import is_method
 from tornado_json.utils import ensure_endswith
 
 
@@ -229,19 +232,22 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
     return routes
 
 
-"""Idea for Issue #45
+# Idea for Issue #45
+#
+# For the special handlers that Misaka42 wanted (which make a lot of sense)
+# to have, can have special decorators which denote the routes for those.
+#
+# This allows for naming flexibility and makes it "less magic" for the user.
+#
+# These decorators would be based off of a more general ``route`` decorator (yes,
+# borrowing its name from Flask.route). This route decorator would be a replacement
+# for the current rather unsightly implementation of URL Annotations which makes
+# the user assign class level __url_names__ and __urls__ themselves.
 
-For the special handlers that Misaka42 wanted (which make a lot of sense)
-to have, can have special decorators which denote the routes for those.
 
-This allows for naming flexibility and makes it "less magic" for the user.
-
-These decorators would be based off of a more general ``route`` decorator (yes,
-borrowing its name from Flask.route). This route decorator would be a replacement
-for the current rather unsightly implementation of URL Annotations which makes
-the user assign class level __url_names__ and __urls__ themselves.
-"""
-
+##############
+# Decorators #
+##############
 
 def route(pattern=None, end_pattern=None, no_auto_route=True):
     """Decorator for customized mapping of routes to a RequestHandler.
@@ -287,11 +293,26 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
                           along with the additional routes.
     """
     def _sanitize_pattern(p):
+        """Ensure that pattern ends with '/?$'"""
+        # We need to ABSOLUTELY make sure that the pattern ends with "$"
+        # and that there isn't one just randomly jammed in somewhere
+        # because it signifies the end of the regex. ``ensure_endswith``
+        # does not have that additional guarantee (and nor can we expect
+        # it to because it's an additional requirement) so we strip
+        # "$" first, then ensure ``p`` endswith "/?" and THEN add
+        # "$" back on.
         p = p.rstrip("$")
         p = ensure_endswith(p, "/?")
         return "{p}$".format(p=p)
 
     def _transform_attr(attr):
+        """Transforms ``attr`` to a list
+
+        :rtype: list
+        :raises TypeError: if ``attr`` is an unknown type, i.e.,
+                           not either a ``basestring``, ``(list, tuple)``
+                           or ``None``.
+        """
         if isinstance(attr, basestring):
             return [attr]
         elif isinstance(attr, (tuple, list)):
@@ -303,6 +324,7 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
                             "or `list`)".format(type(attr).__name__, attr))
 
     def _route(handler):
+        """Assign ``handler`` attributes"""
         handler._tj_end_pattern = _transform_attr(end_pattern)
         handler._tj_pattern = map(_sanitize_pattern, _transform_attr(pattern))
         handler._tj_no_auto_route = no_auto_route
