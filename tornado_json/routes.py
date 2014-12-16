@@ -225,7 +225,7 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
         class HelloWorld(RequestHandler):
             return "Hello World"
 
-        @route(end_pattern="helloworld", pattern=["/api/helloworld/foobar/?$"])
+        @route(end_pattern="helloworld", pattern=["/api/helloworld/foobar"])
         class HelloWorldHandler(RequestHandler):
             return "foobar"
 
@@ -268,3 +268,20 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
         handler._tj_no_auto_route = no_auto_route
         return handler
     return _route
+
+
+def baseroute(handler):
+    """Route requests for the current module's path to the handler decorated
+    with this.
+
+    This allows you to have handlers handle base paths for resources, e.g.,
+    ``handlers.images.ImagesHandler -> /api/images`` or,
+    ``handlers.images.ImageHandler -> /api/images/(.*)`` if that is the
+    specified pattern for the argspec of an HTTP method in your handler.
+
+    You can leave additional handlers, such as
+    ``handlers.images.PopularHandler -> /api/images/popular``
+    to be automatically handled as expected by the routing system.
+    """
+    handler._tj_route_base = True
+    return handler
