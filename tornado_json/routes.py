@@ -9,6 +9,7 @@ from collections import namedtuple
 
 from tornado_json.constants import HTTP_METHODS, basestring
 from tornado_json.utils import extract_method, is_method, is_handler_subclass
+from tornado_json.utils import ensure_endswith
 
 
 AutoURL = namedtuple('AutoURL', ['type'])
@@ -286,14 +287,9 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
                           along with the additional routes.
     """
     def _sanitize_pattern(p):
-        p = p.strip("$")
-        if not p.endswith("/?"):
-            if p.endswith("/"):
-                p += "?"
-            else:
-                p += "/?"
-        p += "$"
-        return p
+        p = p.rstrip("$")
+        p = ensure_endswith(p, "/?")
+        return "{p}$".format(p=p)
 
     def _transform_attr(attr):
         if isinstance(attr, basestring):

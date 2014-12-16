@@ -56,3 +56,42 @@ def is_handler_subclass(cls, classnames=("ViewHandler", "APIHandler")):
                 cls
             )
         )
+
+
+def ensure_endswith(s, sub):
+    """Ensures that ``s`` ends with ``sub``
+
+    :type s: str
+    :type sub: str
+
+    Strategy:
+    Start checking if ``s`` ends with characters from ``sub`` in reverse.
+    If a match is found for a character from ``sub``, we keep checking
+    to ensure that a substring of ``sub`` exists at the end of ``s``, such
+    that ``s.endswith(sub[:n])`` is True where ``1<=n<len(sub)``. As we check
+    we strip this character from ``s``. If the above condition is not
+    satisfied for the entirety of the loop; give up and suffix ``sub``
+    entirely to ``s``; otherwise, we strip off the substring of ``sub``
+    that exists at the end of ``s`` and then append the entirety of ``sub``
+    to it and return.
+
+    >>> ensure_endswith("/api/?", "/?")
+    '/api/?'
+    >>> ensure_endswith("/api?", "/?")
+    '/api?/?'
+    >>> ensure_endswith("/api/", "/?")
+    '/api/?'
+    >>> ensure_endswith("/api/foobar", "/?")
+    '/api/foobar/?'
+    """
+    new_s = s
+    match_started = False
+    for c in reversed(sub):
+        if new_s.endswith(c):
+            match_started = True
+            new_s = new_s[:-1]
+        else:
+            if match_started is True:
+                new_s = s
+                break
+    return new_s + sub
