@@ -86,7 +86,14 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         """
         wrapped_method = reduce(getattr, [module, cls_name, method_name])
         method = extract_method(wrapped_method)
-        return [a for a in inspect.getargspec(method).args if a not in ["self"]]
+
+        # If using tornado_json.gen.coroutine, original args are annotated...
+        argspec_args = getattr(method, "__argspec_args", None)
+        # otherwise just grab them from the method
+        if argspec_args is None:
+            argspec_args = inspect.getargspec(method).args
+
+        return [a for a in argspec_args if a not in ["self"]]
 
     def generate_auto_route(module, module_name, cls_name, method_name, url_name):
         """Generate URL for auto_route
