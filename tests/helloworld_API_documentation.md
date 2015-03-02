@@ -2,7 +2,7 @@
 
 **Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**
 
-# /api/asynchelloworld/?
+# /api/asynchelloworld/\(?P\<name\>\[a\-zA\-Z0\-9\_\]\+\)/?$
 
     Content-Type: application/json
 
@@ -26,7 +26,7 @@ null
 
 **Output Example**
 ```json
-"Hello (asynchronous) world!"
+"Hello (asynchronous) world! My name is Fred."
 ```
 
 
