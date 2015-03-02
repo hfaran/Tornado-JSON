@@ -93,12 +93,12 @@ class APIFunctionalTest(AsyncHTTPTestCase):
 
     def test_asynchronous_handler(self):
         r = self.fetch(
-            "/api/asynchelloworld"
+            "/api/asynchelloworld/name"
         )
         self.assertEqual(r.code, 200)
         self.assertEqual(
             jl(r.body)["data"],
-            "Hello (asynchronous) world!"
+            "Hello (asynchronous) world! My name is name."
         )
 
     def test_post_request(self):

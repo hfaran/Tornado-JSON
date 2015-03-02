@@ -26,7 +26,7 @@ null
 
 **Output Example**
 ```json
-"Hello (asynchronous) world!"
+"Hello (asynchronous) world! My name is Fred."
 ```
 
 

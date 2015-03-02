@@ -81,11 +81,11 @@ class Greeting(APIHandler):
 class AsyncHelloWorld(APIHandler):
 
     def hello(self, name, callback=None):
-        callback("Hello (asynchronous) world! My name is {}".format(name))
+        callback("Hello (asynchronous) world! My name is {}.".format(name))
 
     @schema.validate(
         output_schema={"type": "string"},
-        output_example="Hello (asynchronous) world!"
+        output_example="Hello (asynchronous) world! My name is Fred."
     )
     # ``tornado_json.gen.coroutine`` must be used for coroutines
     # ``tornado.gen.coroutine`` CANNOT be used directly
