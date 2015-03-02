@@ -117,12 +117,16 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         if handler._tj_route_base is True:
             yield gen_route(url_name=AutoURL('module'))
 
-    def generate_route(module, module_name, cls_name, method_name, url_name):
+    def generate_route(module, module_name, cls_name, method_name,
+                       url_name=None, handler_partial=None):
         """Generate URL for current context given ``url_name``
 
         :rtype: str
         :returns: Constructed URL based on given arguments
         """
+        # Only one of either can be given
+        assert sum(map(bool, [url_name, handler_partial])) == 1
+
         def get_handler_name():
             """Get handler identifier for URL
 
@@ -275,8 +279,14 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
             return "foobar"
 
     :type pattern: str|list
-    :param pattern: This can be a single, or a list of, entire URL patterns,
-                    to map the handler being decorated.
+    :param pattern: This can be a single, or a list of, URL patterns,
+                    to map the handler being decorated; note that this
+                    does **not** form the entire URL; the entire route
+                    is composed of two partials
+                    "<handler_partial><argspec_partial>" where the argspec
+                    partial is per HTTP method. Therefore, please
+                    **do not** end this with "/?" or "$" to close
+                    off the regex because this is not the end of it.
     :type end_pattern: str|list
     :param end_pattern: Setting this sets the final part of the URL, i.e., what
                   would usually be set by the handler name. Example:
@@ -292,18 +302,35 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
                           the handler being decorated by this, is kept
                           along with the additional routes.
     """
-    def _sanitize_pattern(p):
-        """Ensure that pattern ends with '/?$'"""
-        # We need to ABSOLUTELY make sure that the pattern ends with "$"
-        # and that there isn't one just randomly jammed in somewhere
-        # because it signifies the end of the regex. ``ensure_endswith``
-        # does not have that additional guarantee (and nor can we expect
-        # it to because it's an additional requirement) so we strip
-        # "$" first, then ensure ``p`` endswith "/?" and THEN add
-        # "$" back on.
-        p = p.rstrip("$")
-        p = ensure_endswith(p, "/?")
-        return "{p}$".format(p=p)
+    # def _sanitize_pattern(p):
+    #     """Ensure that pattern ends with '/?$'"""
+    #     # We need to ABSOLUTELY make sure that the pattern ends with "$"
+    #     # and that there isn't one just randomly jammed in somewhere
+    #     # because it signifies the end of the regex. ``ensure_endswith``
+    #     # does not have that additional guarantee (and nor can we expect
+    #     # it to because it's an additional requirement) so we strip
+    #     # "$" first, then ensure ``p`` endswith "/?" and THEN add
+    #     # "$" back on.
+    #     p = p.rstrip("$")
+    #     p = ensure_endswith(p, "/?")
+    #     return "{p}$".format(p=p)
+
+    def _verify_pattern(p):
+        endswith = None
+        for s in ("/?", "$"):
+            if p.endswith(s):
+                endswith = s
+                break
+
+        if endswith is not None:
+            raise ValueError("'{p}' ends with '{endswith}'; partial handler "
+                             " URLs cannot"
+                             " close off the regex because the argspec partials"
+                             " take care of this. Please remove '{endswith}'"
+                             " from the end of '{p}'.".format(
+                p=p,
+                endswith=endswith
+            ))
 
     def _transform_attr(attr):
         """Transforms ``attr`` to a list
@@ -326,7 +353,7 @@ def route(pattern=None, end_pattern=None, no_auto_route=True):
     def _route(handler):
         """Assign ``handler`` attributes"""
         handler._tj_end_pattern = _transform_attr(end_pattern)
-        handler._tj_pattern = map(_sanitize_pattern, _transform_attr(pattern))
+        handler._tj_pattern = map(_verify_pattern, _transform_attr(pattern))
         handler._tj_no_auto_route = no_auto_route
         return handler
     return _route
