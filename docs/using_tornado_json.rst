@@ -126,7 +126,7 @@ Further Examples
 See `helloworld <https://github.com/hfaran/Tornado-JSON/blob/master/demos/helloworld/helloworld/api.py>`__
 for further RequestHandler examples with features including:
 
-* Asynchronous methods in RequestHandlers
-* POSTing (or PUTing, PATCHing etc.) data; `self.body`
+* Asynchronous methods in RequestHandlers (must use ``tornado_json.gen.coroutine`` rather than ``tornado.gen.coroutine``)
+* POSTing (or PUTing, PATCHing etc.) data; ``self.body``
 * How to generate routes with URL patterns for RequestHandler methods with arguments
 * and possibly more!

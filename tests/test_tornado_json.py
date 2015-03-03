@@ -48,7 +48,7 @@ class TestRoutes(TestTornadoJSONBase):
         assert sorted(routes.get_routes(
             helloworld)) == sorted([
             ("/api/helloworld/?", helloworld.api.HelloWorldHandler),
-            ("/api/asynchelloworld/?", helloworld.api.AsyncHelloWorld),
+            ("/api/asynchelloworld/(?P<name>[a-zA-Z0-9_]+)/?$", helloworld.api.AsyncHelloWorld),
             ("/api/postit/?", helloworld.api.PostIt),
             ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/"
              "(?P<lname>[a-zA-Z0-9_]+)/?$",
