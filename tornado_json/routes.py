@@ -88,10 +88,9 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         method = extract_method(wrapped_method)
 
         # If using tornado_json.gen.coroutine, original args are annotated...
-        argspec_args = getattr(method, "__argspec_args", None)
-        # otherwise just grab them from the method
-        if argspec_args is None:
-            argspec_args = inspect.getargspec(method).args
+        argspec_args = getattr(method, "__argspec_args",
+                               # otherwise just grab them from the method
+                               inspect.getargspec(method).args)
 
         return [a for a in argspec_args if a not in ["self"]]
 
