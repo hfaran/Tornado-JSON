@@ -5,6 +5,12 @@ _
 ---------
 
 
+1.2.0
+~~~~~
+
+* Implement ``tornado_json.gen.coroutine``
+    * As a fix for `#59 <https://github.com/hfaran/Tornado-JSON/issues/59>`_, a custom wrapper for the ``tornado.gen.coroutine`` wrapper has been implemented. This was necessary as we lose the original argspec through it because the wrapper simply has ``(*args, **kwargs)`` as its signature. Here, we annotate the original argspec as an attribute to the wrapper so it can be referenced later by Tornado-JSON when generating routes.
+
 
 1.1.0
 ~~~~~
