@@ -89,7 +89,7 @@ Schema <http://json-schema.org/>`__ standard.
 
         @schema.validate(output_schema={"type": "string"})
         def get(self):
-        """Shouts hello to the world!"""
+            """Shouts hello to the world!"""
             ...
 
 
@@ -106,7 +106,7 @@ HTTP methods with it.
 
         @schema.validate(output_schema={"type": "string"})
         def get(self):
-        """Shouts hello to the world!"""
+            """Shouts hello to the world!"""
             return "Hello world!"
 
 
