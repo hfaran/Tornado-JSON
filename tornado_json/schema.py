@@ -70,6 +70,13 @@ def validate(input_schema=None, output_schema=None,
             if is_future(output):
                 output = yield output
 
+            if self._finished:
+                # Request already finished.
+                # This can happen for example if rh_method() outputted error
+                # with `self.error()`.
+                # Skip output checking.
+                return
+
             if output_schema is not None:
                 # We wrap output in an object before validating in case
                 #  output is a string (and ergo not a validatable JSON object)
