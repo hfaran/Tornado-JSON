@@ -14,7 +14,12 @@ from tornado_json.utils import container
 
 
 def validate(input_schema=None, output_schema=None,
-             input_example=None, output_example=None):
+             input_example=None, output_example=None,
+             format_checker=None):
+    """Parameterized decorator for schema validation
+
+    :type format_checker: jsonschema.FormatChecker or None
+    """
     @container
     def _validate(rh_method):
         """Decorator for RequestHandler schema validation
@@ -55,7 +60,8 @@ def validate(input_schema=None, output_schema=None,
                 # Validate the received input
                 jsonschema.validate(
                     input_,
-                    input_schema
+                    input_schema,
+                    format_checker=format_checker
                 )
             else:
                 input_ = None
