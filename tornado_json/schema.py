@@ -3,6 +3,9 @@ from functools import wraps
 
 import jsonschema
 import tornado.gen
+
+from tornado_json.exceptions import APIError
+
 try:
     from tornado.concurrent import is_future
 except ImportError:
@@ -75,6 +78,10 @@ def validate(input_schema=None, output_schema=None,
             #   we grab the output.
             if is_future(output):
                 output = yield output
+            
+            # if output is empty, auto return the error 404.
+            if not output:
+                raise APIError(404,"Resource not found.")
 
             if output_schema is not None:
                 # We wrap output in an object before validating in case
