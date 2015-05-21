@@ -79,10 +79,10 @@ def validate(input_schema=None, output_schema=None,
             #   we grab the output.
             if is_future(output):
                 output = yield output
-            
+
             # if output is empty, auto return the error 404.
             if not output and on_empty_404:
-                raise APIError(404,"Resource not found.")
+                raise APIError(404, "Resource not found.")
 
             if output_schema is not None:
                 # We wrap output in an object before validating in case
