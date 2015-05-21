@@ -18,7 +18,7 @@ from tornado_json.utils import container
 
 def validate(input_schema=None, output_schema=None,
              input_example=None, output_example=None,
-             format_checker=None):
+             format_checker=None, on_empty_404=False):
     """Parameterized decorator for schema validation
 
     :type format_checker: jsonschema.FormatChecker or None
@@ -33,6 +33,7 @@ def validate(input_schema=None, output_schema=None,
             - Calls the ``rh_method`` and gets output from it
             - Validates output against output schema of the method
             - Calls ``JSendMixin.success`` to write the validated output
+            - Raise 404 if output is empty and on_empty_404 is True
 
         :type  rh_method: function
         :param rh_method: The RequestHandler method to be decorated
@@ -80,7 +81,7 @@ def validate(input_schema=None, output_schema=None,
                 output = yield output
             
             # if output is empty, auto return the error 404.
-            if not output:
+            if not output and on_empty_404:
                 raise APIError(404,"Resource not found.")
 
             if output_schema is not None:
