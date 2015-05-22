@@ -65,6 +65,7 @@ class ExplodingHandler(requesthandlers.APIHandler):
         """This handler is used for testing purposes and is explosive."""
         return "Fission mailed."
 
+
 class NotFoundHandler(requesthandlers.APIHandler):
 
     @schema.validate(**{
@@ -76,6 +77,23 @@ class NotFoundHandler(requesthandlers.APIHandler):
     def get(self):
         """This handler is used for testing empty output."""
         return 0
+
+    @schema.validate(**{
+        "input_schema": {
+            "type": "number",
+        },
+        "output_schema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"}
+            },
+            "required": ["name", ]
+        },
+        "on_empty_404": False
+    })
+    def post(self):
+        """This handler is used for testing empty json output."""
+        return {}
 
 
 class APIFunctionalTest(AsyncHTTPTestCase):
@@ -171,6 +189,17 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         self.assertEqual(
             jl(r.body)["status"],
             "fail"
+        )
+        # Test empty output on_empty_404 is False
+        r = self.fetch(
+            "/api/notfoundhandler",
+            method="POST",
+            body="1"
+        )
+        self.assertEqual(r.code, 500)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "error"
         )
 
     def test_view_db_conn(self):

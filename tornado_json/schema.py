@@ -22,6 +22,9 @@ def validate(input_schema=None, output_schema=None,
     """Parameterized decorator for schema validation
 
     :type format_checker: jsonschema.FormatChecker or None
+    :type on_empty_404: bool
+    :param on_empty_404: If this is set, and the result from the
+        decorated method is a falsy value, a 404 will be raised.
     """
     @container
     def _validate(rh_method):
@@ -33,7 +36,6 @@ def validate(input_schema=None, output_schema=None,
             - Calls the ``rh_method`` and gets output from it
             - Validates output against output schema of the method
             - Calls ``JSendMixin.success`` to write the validated output
-            - Raise 404 if output is empty and on_empty_404 is True
 
         :type  rh_method: function
         :param rh_method: The RequestHandler method to be decorated
@@ -42,9 +44,8 @@ def validate(input_schema=None, output_schema=None,
             or malformed
         :raises TypeError: If the output is invalid as per the schema
             or malformed
-        :raises APIError 404 not found: If the output is empty and 
-            on_empty_404 is True
-            warning: Number 0 is empty value in Python.
+        :raises APIError: If the output is a falsy value and
+            on_empty_404 is True, an HTTP 404 error is returned
         """
         @wraps(rh_method)
         @tornado.gen.coroutine
