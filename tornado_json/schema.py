@@ -42,6 +42,9 @@ def validate(input_schema=None, output_schema=None,
             or malformed
         :raises TypeError: If the output is invalid as per the schema
             or malformed
+        :raises APIError 404 not found: If the output is empty and 
+            on_empty_404 is True
+            warning: Number 0 is empty value in Python.
         """
         @wraps(rh_method)
         @tornado.gen.coroutine

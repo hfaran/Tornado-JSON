@@ -65,6 +65,18 @@ class ExplodingHandler(requesthandlers.APIHandler):
         """This handler is used for testing purposes and is explosive."""
         return "Fission mailed."
 
+class NotFoundHandler(requesthandlers.APIHandler):
+
+    @schema.validate(**{
+        "output_schema": {
+            "type": "number",
+        },
+        "on_empty_404": True
+    })
+    def get(self):
+        """This handler is used for testing empty output."""
+        return 0
+
 
 class APIFunctionalTest(AsyncHTTPTestCase):
 
@@ -72,6 +84,7 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         rts = routes.get_routes(helloworld)
         rts += [
             ("/api/explodinghandler", ExplodingHandler),
+            ("/api/notfoundhandler", NotFoundHandler),
             ("/views/someview", DummyView),
             ("/api/dbtest", DBTestHandler)
         ]
@@ -144,6 +157,17 @@ class APIFunctionalTest(AsyncHTTPTestCase):
             body='"Yup", "this is going to end badly."]'
         )
         self.assertEqual(r.code, 400)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "fail"
+        )
+
+    def test_empty_resource(self):
+        # Test empty output
+        r = self.fetch(
+            "/api/notfoundhandler"
+        )
+        self.assertEqual(r.code, 404)
         self.assertEqual(
             jl(r.body)["status"],
             "fail"
