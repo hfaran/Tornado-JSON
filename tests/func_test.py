@@ -66,12 +66,43 @@ class ExplodingHandler(requesthandlers.APIHandler):
         return "Fission mailed."
 
 
+class NotFoundHandler(requesthandlers.APIHandler):
+
+    @schema.validate(**{
+        "output_schema": {
+            "type": "number",
+        },
+        "on_empty_404": True
+    })
+    def get(self):
+        """This handler is used for testing empty output."""
+        return 0
+
+    @schema.validate(**{
+        "input_schema": {
+            "type": "number",
+        },
+        "output_schema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"}
+            },
+            "required": ["name", ]
+        },
+        "on_empty_404": False
+    })
+    def post(self):
+        """This handler is used for testing empty json output."""
+        return {}
+
+
 class APIFunctionalTest(AsyncHTTPTestCase):
 
     def get_app(self):
         rts = routes.get_routes(helloworld)
         rts += [
             ("/api/explodinghandler", ExplodingHandler),
+            ("/api/notfoundhandler", NotFoundHandler),
             ("/views/someview", DummyView),
             ("/api/dbtest", DBTestHandler)
         ]
@@ -147,6 +178,28 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         self.assertEqual(
             jl(r.body)["status"],
             "fail"
+        )
+
+    def test_empty_resource(self):
+        # Test empty output
+        r = self.fetch(
+            "/api/notfoundhandler"
+        )
+        self.assertEqual(r.code, 404)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "fail"
+        )
+        # Test empty output on_empty_404 is False
+        r = self.fetch(
+            "/api/notfoundhandler",
+            method="POST",
+            body="1"
+        )
+        self.assertEqual(r.code, 500)
+        self.assertEqual(
+            jl(r.body)["status"],
+            "error"
         )
 
     def test_view_db_conn(self):

@@ -3,6 +3,9 @@ from functools import wraps
 
 import jsonschema
 import tornado.gen
+
+from tornado_json.exceptions import APIError
+
 try:
     from tornado.concurrent import is_future
 except ImportError:
@@ -15,10 +18,13 @@ from tornado_json.utils import container
 
 def validate(input_schema=None, output_schema=None,
              input_example=None, output_example=None,
-             format_checker=None):
+             format_checker=None, on_empty_404=False):
     """Parameterized decorator for schema validation
 
     :type format_checker: jsonschema.FormatChecker or None
+    :type on_empty_404: bool
+    :param on_empty_404: If this is set, and the result from the
+        decorated method is a falsy value, a 404 will be raised.
     """
     @container
     def _validate(rh_method):
@@ -38,6 +44,8 @@ def validate(input_schema=None, output_schema=None,
             or malformed
         :raises TypeError: If the output is invalid as per the schema
             or malformed
+        :raises APIError: If the output is a falsy value and
+            on_empty_404 is True, an HTTP 404 error is returned
         """
         @wraps(rh_method)
         @tornado.gen.coroutine
@@ -75,6 +83,10 @@ def validate(input_schema=None, output_schema=None,
             #   we grab the output.
             if is_future(output):
                 output = yield output
+
+            # if output is empty, auto return the error 404.
+            if not output and on_empty_404:
+                raise APIError(404, "Resource not found.")
 
             if output_schema is not None:
                 # We wrap output in an object before validating in case
