@@ -88,8 +88,7 @@ class NotFoundHandler(requesthandlers.APIHandler):
                 "name": {"type": "string"}
             },
             "required": ["name", ]
-        },
-        "on_empty_404": False
+        }
     })
     def post(self):
         """This handler is used for testing empty json output."""
