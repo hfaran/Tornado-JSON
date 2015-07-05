@@ -81,5 +81,4 @@ class APIHandler(BaseHandler, JSendMixin):
                 message="{}{}".format(self._reason,
                     "; {}".format(get_exc_message(exception)) if \
                         self.settings.get("debug") else "")
-                code=status_code
             )
