@@ -78,8 +78,8 @@ class APIHandler(BaseHandler, JSendMixin):
             self.fail(get_exc_message(exception))
         else:
             self.error(
-                message=self._reason,
-                data=get_exc_message(exception) if self.settings.get("debug")
+                data=self._reason,
+                message=get_exc_message(exception) if self.settings.get("debug")
                 else None,
                 code=status_code
             )
