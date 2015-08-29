@@ -81,5 +81,5 @@ This project is licensed under the MIT License.
 ```bash
 sudo pip2 install tox
 sudo pip3 install tox
-sudo tox  # Will run test matrix
+tox  # Will run test matrix
 ```

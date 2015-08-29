@@ -10,6 +10,7 @@ try:
     sys.path.append('.')
     from tornado_json.api_doc_gen import _get_tuple_from_route
     from tornado_json.api_doc_gen import get_api_docs
+    from tornado_json.api_doc_gen import _get_notes
     from tornado_json.routes import get_routes
     sys.path.append("demos/helloworld")
     import helloworld
@@ -44,3 +45,16 @@ def test__get_api_docs():
     HELLOWORLD_DOC = open(filepath).read()
 
     assert get_api_docs(get_routes(helloworld)) == HELLOWORLD_DOC
+
+
+def test___get_notes():
+    def test_no_doc():
+        pass
+
+    assert _get_notes(test_no_doc) is None
+
+    def test_doc():
+        """This is not a drill"""
+        pass
+
+    assert test_doc.__doc__ in _get_notes(test_doc)
