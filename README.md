@@ -47,6 +47,12 @@ application.listen(8888)
 tornado.ioloop.IOLoop.instance().start()
 ```
 
+### Example Projects That Use Tornado-JSON
+
+* https://github.com/hfaran/CitySportsLeague-Server
+* https://github.com/hfaran/LivesPool
+
+
 ## Installation
 
 * For the possibly stable
