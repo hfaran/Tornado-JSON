@@ -154,13 +154,14 @@ def _get_output_schema_doc(method):
 
 
 def _get_notes(method):
+    doc = inspect.getdoc(method)
+    if doc is None:
+        return None
     res = """
     **Notes**
 
     {}
-    """.format(
-        _add_indent(inspect.getdoc(method), 4)
-    )
+    """.format(_add_indent(doc, 4))
     return _cleandoc(res)
 
 
@@ -176,7 +177,7 @@ def _get_method_doc(rh, method_name, method):
         method_name=method_name.upper(),
         input_schema=_get_input_schema_doc(method),
         output_schema=_get_output_schema_doc(method),
-        notes=_get_notes(method),
+        notes=_get_notes(method) or "",
         input_example=_get_input_example(rh, method),
         output_example=_get_output_example(rh, method),
     )
