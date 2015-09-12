@@ -41,7 +41,8 @@ def gen_submodule_names(package):
         yield modname
 
 
-def get_module_routes(module_name, custom_routes=None, exclusions=None):
+def get_module_routes(module_name, custom_routes=None, exclusions=None,
+                      arg_pattern=r'(?P<{}>[a-zA-Z0-9_\-]+)'):
     """Create and return routes for module_name
 
     Routes are (url, RequestHandler) tuples
@@ -56,9 +57,10 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
         ``/api/helloworld``.
         Additionally, if a method has extra arguments aside from ``self`` in
         its signature, routes with URL patterns will be generated to
-        match ``r"(?P<{}>[a-zA-Z0-9_]+)".format(argname)`` for each
+        match ``r"(?P<{}>[a-zA-Z0-9_\-]+)".format(argname)`` for each
         argument. The aforementioned regex will match ONLY values
-        with alphanumeric+underscore characters.
+        with alphanumeric, hyphen and underscore characters. You can provide
+        your own pattern by setting a ``arg_pattern`` param.
     :rtype: [(url, RequestHandler), ... ]
     :type  module_name: str
     :param module_name: Name of the module to get routes for
@@ -68,6 +70,8 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
     :type  exclusions: [str, str, ...]
     :param exclusions: List of RequestHandler names that routes should not be
         generated for
+    :type  arg_pattern: str
+    :param arg_pattern: Default pattern for extra arguments of any method
     """
     def has_method(module, cls_name, method_name):
         return all([
@@ -126,7 +130,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None):
             """
             if yield_args(module, cls_name, method_name):
                 return "/{}/?$".format("/".join(
-                    ["(?P<{}>[a-zA-Z0-9_]+)".format(argname) for argname
+                    [arg_pattern.format(argname) for argname
                      in yield_args(module, cls_name, method_name)]
                 ))
             return r"/?"

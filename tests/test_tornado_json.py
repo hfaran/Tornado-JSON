@@ -48,21 +48,21 @@ class TestRoutes(TestTornadoJSONBase):
         assert sorted(routes.get_routes(
             helloworld)) == sorted([
             ("/api/helloworld/?", helloworld.api.HelloWorldHandler),
-            ("/api/asynchelloworld/(?P<name>[a-zA-Z0-9_]+)/?$", helloworld.api.AsyncHelloWorld),
+            ("/api/asynchelloworld/(?P<name>[a-zA-Z0-9_\\-]+)/?$", helloworld.api.AsyncHelloWorld),
             ("/api/postit/?", helloworld.api.PostIt),
-            ("/api/greeting/(?P<fname>[a-zA-Z0-9_]+)/"
-             "(?P<lname>[a-zA-Z0-9_]+)/?$",
+            ("/api/greeting/(?P<fname>[a-zA-Z0-9_\\-]+)/"
+             "(?P<lname>[a-zA-Z0-9_\\-]+)/?$",
              helloworld.api.Greeting),
             ("/api/freewilled/?", helloworld.api.FreeWilledHandler)
         ])
         assert sorted(routes.get_routes(
             cars)) == sorted([
             ("/api/cars/?", cars.api.MakeListHandler),
-            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/?$",
+            ("/api/cars/(?P<make>[a-zA-Z0-9_\\-]+)/(?P<model>[a-zA-Z0-9_\\-]+)/?$",
              cars.api.ModelHandler),
-            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/"
-             "(?P<year>[a-zA-Z0-9_]+)/?$", cars.api.YearHandler),
-            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/?$", cars.api.MakeHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_\\-]+)/(?P<model>[a-zA-Z0-9_\\-]+)/"
+             "(?P<year>[a-zA-Z0-9_\\-]+)/?$", cars.api.YearHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_\\-]+)/?$", cars.api.MakeHandler),
         ])
 
     def test_gen_submodule_names(self):
@@ -75,11 +75,11 @@ class TestRoutes(TestTornadoJSONBase):
         assert sorted(routes.get_module_routes(
             "cars.api")) == sorted([
             ("/api/cars/?", cars.api.MakeListHandler),
-            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/?$",
+            ("/api/cars/(?P<make>[a-zA-Z0-9_\\-]+)/(?P<model>[a-zA-Z0-9_\\-]+)/?$",
              cars.api.ModelHandler),
-            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/"
-             "(?P<year>[a-zA-Z0-9_]+)/?$", cars.api.YearHandler),
-            ("/api/cars/(?P<make>[a-zA-Z0-9_]+)/?$", cars.api.MakeHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_\\-]+)/(?P<model>[a-zA-Z0-9_\\-]+)/"
+             "(?P<year>[a-zA-Z0-9_\\-]+)/?$", cars.api.YearHandler),
+            ("/api/cars/(?P<make>[a-zA-Z0-9_\\-]+)/?$", cars.api.MakeHandler),
         ])
 
 

@@ -102,15 +102,15 @@ class YearHandler(CarsAPIHandler):
 #     "<class 'cars.api.MakeListHandler'>"
 #   ],
 #   [
-#     "/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/?$",
+#     "/api/cars/(?P<make>[a-zA-Z0-9_\-]+)/(?P<model>[a-zA-Z0-9_\-]+)/?$",
 #     "<class 'cars.api.ModelHandler'>"
 #   ],
 #   [
-#     "/api/cars/(?P<make>[a-zA-Z0-9_]+)/(?P<model>[a-zA-Z0-9_]+)/(?P<year>[a-zA-Z0-9_]+)/?$",
+#     "/api/cars/(?P<make>[a-zA-Z0-9_\-]+)/(?P<model>[a-zA-Z0-9_\-]+)/(?P<year>[a-zA-Z0-9_\-]+)/?$",
 #     "<class 'cars.api.YearHandler'>"
 #   ],
 #   [
-#     "/api/cars/(?P<make>[a-zA-Z0-9_]+)/?$",
+#     "/api/cars/(?P<make>[a-zA-Z0-9_\-]+)/?$",
 #     "<class 'cars.api.MakeHandler'>"
 #   ]
 # ]
