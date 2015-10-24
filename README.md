@@ -66,7 +66,7 @@ pip install Tornado-JSON
 ```bash
 git clone https://github.com/hfaran/Tornado-JSON.git
 cd Tornado-JSON
-sudo python setup.py install
+python setup.py develop
 ```
 
 
