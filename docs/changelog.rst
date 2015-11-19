@@ -5,6 +5,16 @@ _
 ---------
 
 
+1.2.1
+~~~~~
+
+* arg_pattern now contains hyphen
+* Handle case where server would crash when generating docs for methods with
+no docstring
+* Add support for tornado==3.x.x gen.coroutine
+* Add format_checker kwarg to schema.validate
+
+
 1.2.0
 ~~~~~
 
