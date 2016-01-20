@@ -24,7 +24,7 @@ def main():
         indent=2)
     )
     # Create the application by passing routes and any settings
-    application = Application(routes=routes, settings={})
+    application = Application(routes=routes, settings={}, generate_docs=True)
 
     # Start the application on port 8888
     application.listen(8888)
