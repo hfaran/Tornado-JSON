@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 # ---- The following so demo can be run without having to install package ----#
 import sys
