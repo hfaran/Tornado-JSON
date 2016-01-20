@@ -5,6 +5,12 @@ _
 ---------
 
 
+1.2.2
+~~~~~
+
+* `generate_docs` parameter added to `Application` for optional API documentation generation
+
+
 1.2.1
 ~~~~~
 
