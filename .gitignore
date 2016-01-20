@@ -3,6 +3,7 @@
 *.egg
 *.EGG
 *.EGG-INFO
+.cache
 bin
 build
 develop-eggs
