@@ -2,7 +2,7 @@
 
 **Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**
 
-# /api/asynchelloworld/\(?P\<name\>\[a\-zA\-Z0\-9\_\]\+\)/?$
+# /api/asynchelloworld/\(?P\<name\>\[a\-zA\-Z0\-9\_\\\-\]\+\)/?$
 
     Content-Type: application/json
 
@@ -48,7 +48,7 @@ Shouts hello to the world (asynchronously)!
 <br>
 <br>
 
-# /api/greeting/\(?P\<fname\>\[a\-zA\-Z0\-9\_\]\+\)/\(?P\<lname\>\[a\-zA\-Z0\-9\_\]\+\)/?$
+# /api/greeting/\(?P\<fname\>\[a\-zA\-Z0\-9\_\\\-\]\+\)/\(?P\<lname\>\[a\-zA\-Z0\-9\_\\\-\]\+\)/?$
 
     Content-Type: application/json
 
