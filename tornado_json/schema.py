@@ -15,20 +15,73 @@ except ImportError:
     from tornado.concurrent import Future
     is_future = lambda x: isinstance(x, Future)
 
-from tornado_json.utils import container
+from tornado_json.utils import container, deep_update
+
+
+class NoObjectDefaults(Exception):
+    pass
+
+
+def get_object_defaults(object_schema):
+    default = {}
+    for k, schema in object_schema.get('properties', {}).items():
+
+        if schema.get('type') == 'object':
+            if 'default' in schema:
+                default[k] = schema['default']
+
+            try:
+                object_defaults = get_object_defaults(schema)
+            except NoObjectDefaults:
+                if 'default' not in schema:
+                    raise NoObjectDefaults
+            else:
+                if 'default' not in schema:
+                    default[k] = {}
+
+                default[k].update(object_defaults)
+        else:
+            if 'default' in schema:
+                default[k] = schema['default']
+
+    if default:
+        return default
+
+    raise NoObjectDefaults
+
+
+def input_schema_clean(input_, input_schema):
+    if input_schema.get('type') == 'object':
+        try:
+            defaults = get_object_defaults(input_schema)
+        except NoObjectDefaults:
+            pass
+        else:
+            return deep_update(defaults, input_)
+    return input_
 
 
 def validate(input_schema=None, output_schema=None,
              input_example=None, output_example=None,
              validator_cls=None,
-             format_checker=None, on_empty_404=False):
-    """Parameterized decorator for schema validation.
+             format_checker=None, on_empty_404=False,
+             input_schema_use_defaults=False):
+    """Parameterized decorator for schema validation
 
     :type validator_cls: IValidator class
     :type format_checker: jsonschema.FormatChecker or None
     :type on_empty_404: bool
     :param on_empty_404: If this is set, and the result from the
         decorated method is a falsy value, a 404 will be raised.
+
+    :type input_schema_use_defaults: bool
+    :param input_schema_use_defaults: If this is set, will put 'default' keys
+    from schema to self.body (If schema type is object). Example:
+        {
+            'published': {'type': 'bool', 'default': False}
+        }
+    self.body will contains 'published' key with value False if no one comes
+    from request, also works with nested schemas.
     """
     @container
     def _validate(rh_method):
@@ -69,6 +122,10 @@ def validate(input_schema=None, output_schema=None,
                     raise jsonschema.ValidationError(
                         "Input is malformed; could not decode JSON object."
                     )
+
+                if input_schema_use_defaults:
+                    input_ = input_schema_clean(input_, input_schema)
+
                 # Validate the received input
                 jsonschema.validate(
                     input_,
