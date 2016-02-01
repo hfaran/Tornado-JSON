@@ -63,7 +63,7 @@ class PeopleHandler(requesthandlers.APIHandler):
 
 
 class FoobarHandler(requesthandlers.APIHandler):
-    """ No input_schema_use_defaults defined, so it will raise errors normally
+    """ No use_defaults defined, so it will raise errors normally
     despite default key being declared in the schema.
     """
     @schema.validate(
@@ -89,7 +89,7 @@ class EchoContentHandler(requesthandlers.APIHandler):
                 "published": {'type': "boolean", "default": False},
             }
         },
-        input_schema_use_defaults=True
+        use_defaults=True
     )
     def post(self):
         return self.body
@@ -200,7 +200,7 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         )
         self.assertEqual(r.code, 400)
 
-    def test_post_input_schema_use_defaults(self):
+    def test_post_use_defaults(self):
         r = self.fetch(
             "/api/echocontent",
             method="POST",
@@ -217,7 +217,7 @@ class APIFunctionalTest(AsyncHTTPTestCase):
             }
         )
 
-    def test_post_input_schema_use_defaults_no_need_of_default(self):
+    def test_post_use_defaults_no_need_of_default(self):
         r = self.fetch(
             "/api/echocontent",
             method="POST",
