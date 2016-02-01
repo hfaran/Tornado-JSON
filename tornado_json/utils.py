@@ -8,6 +8,9 @@ def deep_update(source, overrides):
     """Update a nested dictionary or similar mapping.
 
     Modify ``source`` in place.
+
+    :type source: collections.Mapping
+    :type overrides: collections.Mapping
     """
     for key, value in overrides.items():
         if isinstance(value, collections.Mapping) and value:

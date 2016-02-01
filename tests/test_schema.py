@@ -1,7 +1,8 @@
 import unittest
 
-from tornado_json.schema import get_object_defaults, NoObjectDefaults, \
-    input_schema_clean
+from tornado_json.schema import get_object_defaults
+from tornado_json.schema import input_schema_clean
+from tornado_json.schema import NoObjectDefaults
 
 
 class TestSchemaMethods(unittest.TestCase):

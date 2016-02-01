@@ -19,10 +19,19 @@ from tornado_json.utils import container, deep_update
 
 
 class NoObjectDefaults(Exception):
-    pass
+    """ Raised when a schema type object ({"type": "object"}) has no "default"
+    key and one of their properties also don't have a "default" key.
+    """
 
 
 def get_object_defaults(object_schema):
+    """
+    Extracts default values dict (nested) from an type object schema.
+
+    :param object_schema: Schema type object
+    :type  object_schema: dict
+    :returns: Nested dict with defaults values
+    """
     default = {}
     for k, schema in object_schema.get('properties', {}).items():
 
@@ -51,6 +60,15 @@ def get_object_defaults(object_schema):
 
 
 def input_schema_clean(input_, input_schema):
+    """
+    Updates schema default values with input data.
+
+    :param input_: Input data
+    :type  input_: dict
+    :param input_schema: Input schema
+    :type  input_schema: dict
+    :returns: Nested dict with data (defaul values updated with input data)
+    """
     if input_schema.get('type') == 'object':
         try:
             defaults = get_object_defaults(input_schema)
@@ -65,7 +83,7 @@ def validate(input_schema=None, output_schema=None,
              input_example=None, output_example=None,
              validator_cls=None,
              format_checker=None, on_empty_404=False,
-             input_schema_use_defaults=False):
+             use_defaults=False):
     """Parameterized decorator for schema validation
 
     :type validator_cls: IValidator class
@@ -74,8 +92,8 @@ def validate(input_schema=None, output_schema=None,
     :param on_empty_404: If this is set, and the result from the
         decorated method is a falsy value, a 404 will be raised.
 
-    :type input_schema_use_defaults: bool
-    :param input_schema_use_defaults: If this is set, will put 'default' keys
+    :type use_defaults: bool
+    :param use_defaults: If this is set, will put 'default' keys
     from schema to self.body (If schema type is object). Example:
         {
             'published': {'type': 'bool', 'default': False}
@@ -123,7 +141,7 @@ def validate(input_schema=None, output_schema=None,
                         "Input is malformed; could not decode JSON object."
                     )
 
-                if input_schema_use_defaults:
+                if use_defaults:
                     input_ = input_schema_clean(input_, input_schema)
 
                 # Validate the received input
