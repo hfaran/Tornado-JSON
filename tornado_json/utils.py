@@ -1,6 +1,6 @@
 import collections
-import types
 import pyclbr
+import types
 from functools import wraps
 
 
