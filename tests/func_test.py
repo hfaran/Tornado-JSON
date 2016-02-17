@@ -1,5 +1,7 @@
-import sys
 import json
+import sys
+
+from jsonschema.validators import Draft4Validator, create
 
 from tornado.testing import AsyncHTTPTestCase
 
@@ -30,6 +32,36 @@ class DummyView(requesthandlers.ViewHandler):
     def delete(self):
         # Reference db_conn to test for AttributeError
         self.db_conn
+
+meta_schema = Draft4Validator.META_SCHEMA.copy()
+meta_schema['definitions']["simpleTypes"]['enum'].append('int')
+
+default_types = Draft4Validator.DEFAULT_TYPES.copy()
+default_types['int'] = int
+
+
+ExtendedDraft4Validator = \
+    create(meta_schema,
+           Draft4Validator.VALIDATORS,
+           default_types=default_types)
+
+
+class PeopleHandler(requesthandlers.APIHandler):
+    """Example handler with input schema validation that uses custom Validator.
+    """
+    @schema.validate(
+        input_schema={
+            "type": "object",
+            "properties": {
+                "name": {'type': "string"},
+                "age": {'type': "int"},
+            },
+            'required': ['name', 'age'],
+        },
+        validator_cls=ExtendedDraft4Validator
+    )
+    def post(self):
+        return self.body['name']
 
 
 class DBTestHandler(requesthandlers.APIHandler):
@@ -100,16 +132,29 @@ class APIFunctionalTest(AsyncHTTPTestCase):
     def get_app(self):
         rts = routes.get_routes(helloworld)
         rts += [
+            ("/api/people", PeopleHandler),
             ("/api/explodinghandler", ExplodingHandler),
             ("/api/notfoundhandler", NotFoundHandler),
             ("/views/someview", DummyView),
-            ("/api/dbtest", DBTestHandler)
+            ("/api/dbtest", DBTestHandler),
         ]
         return application.Application(
             routes=rts,
             settings={"debug": True},
             db_conn=None
         )
+
+    def test_post_custom_validator_class(self):
+        """"""
+        r = self.fetch(
+            "/api/people",
+            method="POST",
+            body=jd({
+                'name': "Paulo",
+                'age': 29,
+            })
+        )
+        self.assertEqual(r.code, 200)
 
     def test_synchronous_handler(self):
         r = self.fetch(
