@@ -1,5 +1,5 @@
-import inspect
 import json
+import inspect
 import re
 
 try:
@@ -7,13 +7,12 @@ try:
 except ImportError:
     pass
 
+import tornado.web
 from jsonschema import ValidationError, validate
 
-import tornado.web
-
+from tornado_json.utils import extract_method, is_method
 from tornado_json.constants import HTTP_METHODS
 from tornado_json.requesthandlers import APIHandler
-from tornado_json.utils import extract_method, is_method
 
 
 def _validate_example(rh, method, example_type):
@@ -53,7 +52,7 @@ def _get_rh_methods(rh):
 
 
 def _get_tuple_from_route(route):
-    """Return (pattern, handler_class) tuple from ``route``
+    """Return (pattern, handler_class, methods) tuple from ``route``
 
     :type route: tuple|tornado.web.URLSpec
     :rtype: tuple
