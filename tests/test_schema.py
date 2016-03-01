@@ -18,19 +18,31 @@ class TestSchemaMethods(unittest.TestCase):
     def test_input_schema_clean(self):
         self.assertEqual(
             input_schema_clean(
-                {},
+                {'publishing': {'publish_date': '2012-12-12'}},
                 {
                     'type': "object",
                     'properties': {
-                        'published': {
-                            'default': True,
-                            'type': 'boolean',
+                        'publishing': {
+                            'type': 'object',
+                            'properties': {
+                                'publish_date': {
+                                    'type': 'string',
+                                },
+
+                                'published': {
+                                    'default': True,
+                                    'type': 'boolean',
+                                },
+                            },
                         },
                     }
                 }
             ),
             {
-                'published': True,
+                'publishing': {
+                    'published': True,
+                    'publish_date': '2012-12-12',
+                },
             }
         )
 
@@ -53,7 +65,14 @@ class TestSchemaMethods(unittest.TestCase):
             get_object_defaults({
                 'type': 'object',
                 'properties': {
-                    'title': {"type": 'string'},
+                    'address': {
+                        "type": 'object',
+                        'properties': {
+                            'street': {
+                                'type': 'string',
+                            }
+                        }
+                    },
                 }
             })
 
@@ -64,6 +83,15 @@ class TestSchemaMethods(unittest.TestCase):
                 'properties': {
                     'title': {"type": 'string'},
                     'published': {"type": 'boolean', "default": True},
+                    'address': {
+                        'type': 'object',
+                        'properties': {
+                            'country': {
+                                'type': 'string',
+                                'default': "Brazil",
+                            },
+                        },
+                    },
                     'driver_license': {
                         'default': {'category': "C"},
                         'type': 'object',
@@ -83,6 +111,9 @@ class TestSchemaMethods(unittest.TestCase):
             }),
             {
                 'published': True,
+                'address': {
+                    'country': "Brazil",
+                },
                 'driver_license': {
                     "category": "C",
                     "shipping_city": "Belo Horizonte",
