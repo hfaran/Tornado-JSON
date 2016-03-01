@@ -1,5 +1,4 @@
 import json
-
 from functools import wraps
 
 import jsonschema

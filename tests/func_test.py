@@ -1,8 +1,7 @@
-import json
 import sys
+import json
 
 from jsonschema.validators import Draft4Validator, create
-
 from tornado.testing import AsyncHTTPTestCase
 
 from .utils import handle_import_error
@@ -40,10 +39,9 @@ default_types = Draft4Validator.DEFAULT_TYPES.copy()
 default_types['int'] = int
 
 
-ExtendedDraft4Validator = \
-    create(meta_schema,
-           Draft4Validator.VALIDATORS,
-           default_types=default_types)
+ExtendedDraft4Validator = create(meta_schema,
+                                 Draft4Validator.VALIDATORS,
+                                 default_types=default_types)
 
 
 class PeopleHandler(requesthandlers.APIHandler):
@@ -136,7 +134,7 @@ class APIFunctionalTest(AsyncHTTPTestCase):
             ("/api/explodinghandler", ExplodingHandler),
             ("/api/notfoundhandler", NotFoundHandler),
             ("/views/someview", DummyView),
-            ("/api/dbtest", DBTestHandler),
+            ("/api/dbtest", DBTestHandler)
         ]
         return application.Application(
             routes=rts,
@@ -145,7 +143,8 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         )
 
     def test_post_custom_validator_class(self):
-        """"""
+        """It should not raise errors because ExtendedDraft4Validator is used,
+        so schema type 'int' is allowed. """
         r = self.fetch(
             "/api/people",
             method="POST",
