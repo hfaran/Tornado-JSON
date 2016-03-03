@@ -2,7 +2,9 @@ import json
 from functools import wraps
 
 import jsonschema
+
 import tornado.gen
+
 
 from tornado_json.exceptions import APIError
 
@@ -18,9 +20,11 @@ from tornado_json.utils import container
 
 def validate(input_schema=None, output_schema=None,
              input_example=None, output_example=None,
+             validator_cls=None,
              format_checker=None, on_empty_404=False):
-    """Parameterized decorator for schema validation
+    """Parameterized decorator for schema validation.
 
+    :type validator_cls: IValidator class
     :type format_checker: jsonschema.FormatChecker or None
     :type on_empty_404: bool
     :param on_empty_404: If this is set, and the result from the
@@ -69,6 +73,7 @@ def validate(input_schema=None, output_schema=None,
                 jsonschema.validate(
                     input_,
                     input_schema,
+                    cls=validator_cls,
                     format_checker=format_checker
                 )
             else:
