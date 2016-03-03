@@ -1,5 +1,6 @@
 import json
 import inspect
+import re
 
 try:
     from itertools import imap as map  # PY2
@@ -7,9 +8,9 @@ except ImportError:
     pass
 
 import tornado.web
-from jsonschema import validate, ValidationError
+from jsonschema import ValidationError, validate
 
-from tornado_json.utils import is_method
+from tornado_json.utils import extract_method, is_method
 from tornado_json.constants import HTTP_METHODS
 from tornado_json.requesthandlers import APIHandler
 
@@ -51,7 +52,7 @@ def _get_rh_methods(rh):
 
 
 def _get_tuple_from_route(route):
-    """Return (pattern, handler_class) tuple from ``route``
+    """Return (pattern, handler_class, methods) tuple from ``route``
 
     :type route: tuple|tornado.web.URLSpec
     :rtype: tuple
@@ -65,7 +66,21 @@ def _get_tuple_from_route(route):
     else:
         raise TypeError("Unknown route type '{}'"
                         .format(type(route).__name__))
-    return pattern, handler_class
+
+    methods = []
+    route_re = re.compile(pattern)
+    route_params = set(list(route_re.groupindex.keys()) + ['self'])
+    for http_method in HTTP_METHODS:
+        method = getattr(handler_class, http_method, None)
+        if method:
+            method = extract_method(method)
+            method_params = set(getattr(method, "__argspec_args",
+                                        inspect.getargspec(method).args))
+            if route_params.issubset(method_params) and \
+                    method_params.issubset(route_params):
+                methods.append(http_method)
+
+    return pattern, handler_class, methods
 
 
 def _escape_markdown_literals(string):
@@ -184,9 +199,10 @@ def _get_method_doc(rh, method_name, method):
     return _cleandoc("\n".join([l.rstrip() for l in res.splitlines()]))
 
 
-def _get_rh_doc(rh):
+def _get_rh_doc(rh, methods):
     res = "\n\n".join([_get_method_doc(rh, method_name, method)
-                       for method_name, method in _get_rh_methods(rh)])
+                       for method_name, method in _get_rh_methods(rh)
+                       if method_name in methods])
     return res
 
 
@@ -197,7 +213,7 @@ def _get_content_type(rh):
     return "Content-Type: application/json"
 
 
-def _get_route_doc(url, rh):
+def _get_route_doc(url, rh, methods):
     route_doc = """
     # {route_pattern}
 
@@ -207,7 +223,7 @@ def _get_route_doc(url, rh):
     """.format(
         route_pattern=_escape_markdown_literals(url),
         content_type=_get_content_type(rh),
-        rh_doc=_add_indent(_get_rh_doc(rh), 4)
+        rh_doc=_add_indent(_get_rh_doc(rh, methods), 4)
     )
     return _cleandoc(route_doc)
 
@@ -230,11 +246,10 @@ def get_api_docs(routes):
     :returns: generated GFM-formatted documentation
     """
     routes = map(_get_tuple_from_route, routes)
-
     documentation = []
-    for url, rh in sorted(routes, key=lambda a: a[0]):
+    for url, rh, methods in sorted(routes, key=lambda a: a[0]):
         if issubclass(rh, APIHandler):
-            documentation.append(_get_route_doc(url, rh))
+            documentation.append(_get_route_doc(url, rh, methods))
 
     documentation = (
         "**This documentation is automatically generated.**\n\n" +

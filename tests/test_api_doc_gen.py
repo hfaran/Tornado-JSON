@@ -20,9 +20,19 @@ except ImportError as err:
 
 def test__get_tuple_from_route():
     """Test tornado_json.api_doc_gen._get_tuple_from_route"""
+
+    class handler_class(object):
+        def post(self):
+            pass
+
+        def get(self, pk):
+            pass
+
+        def delete(self, pk):
+            pass
+
     pattern = r"/$"
-    handler_class = object
-    expected_output = (pattern, handler_class)
+    expected_output = (pattern, handler_class, ['post'])
 
     # Test 2-tuple
     assert _get_tuple_from_route((pattern, handler_class)) == expected_output
@@ -30,6 +40,16 @@ def test__get_tuple_from_route():
     assert _get_tuple_from_route((pattern, handler_class, None)) == expected_output
     # Test URLSpec
     assert _get_tuple_from_route(URLSpec(pattern, handler_class)) == expected_output
+
+    pattern = r"/(?P<pk>[a-zA-Z0-9_\\-]+)/$"
+    expected_output = (pattern, handler_class, ['get', 'delete'])
+    # Test 2-tuple
+    assert _get_tuple_from_route((pattern, handler_class)) == expected_output
+    # Test 3-tuple (with the extra arg as kwarg(s)
+    assert _get_tuple_from_route((pattern, handler_class, None)) == expected_output
+    # Test URLSpec
+    assert _get_tuple_from_route(URLSpec(pattern, handler_class)) == expected_output
+
     # Test invalid type
     with pytest.raises(TypeError):
         _get_tuple_from_route([])
