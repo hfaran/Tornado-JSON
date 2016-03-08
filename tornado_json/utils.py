@@ -11,6 +11,7 @@ def deep_update(source, overrides):
 
     :type source: collections.Mapping
     :type overrides: collections.Mapping
+    :rtype: collections.Mapping
     """
     for key, value in overrides.items():
         if isinstance(value, collections.Mapping) and value:
