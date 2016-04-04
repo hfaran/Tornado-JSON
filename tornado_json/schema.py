@@ -1,10 +1,15 @@
 import json
+
+try:
+    from UserDict import UserDict
+except ImportError:
+    from collections import UserDict
+
 from functools import wraps
 
 import jsonschema
 
 import tornado.gen
-
 
 from tornado_json.exceptions import APIError
 
@@ -16,6 +21,116 @@ except ImportError:
     is_future = lambda x: isinstance(x, Future)
 
 from tornado_json.utils import container
+
+
+def schemahelpers_as_dict(schema, requesthandler):
+    """Return schema copy with all (nested too) SchemaHelper processed as a
+    dict."""
+    d = {}
+    for k, v in schema.items():
+        if isinstance(v, SchemaHelper):
+            d[k] = v.as_dict(requesthandler)
+        elif isinstance(v, dict):
+            d[k] = schemahelpers_as_dict(v, requesthandler)
+        else:
+            d[k] = v
+    return d
+
+
+class SchemaHelper(UserDict):
+    """Helper class to create dynamic schemas in an elegant way.
+
+    SchemaHelper is a just an extend dict with method "as_dict", this methods
+    returns the dict itself updated the result of all methods that match the
+    pattern above:
+
+    get_%(key)s_key as dict[%(key)s]
+
+    :Example:
+
+    >>> class MySchema(SchemaHelper):
+    ...     def get_type_key(self):
+    ...         return "object"
+    >>>
+    >>> myschema = MySchema()
+    >>> myschema.as_dict()
+    {"type": "object"}
+    """
+
+    def as_dict(self, requesthandler=None):
+        """Return a dict containing the SchemaHelper processed methods.
+
+        :param requesthandler: Tornado request handler instance
+        :type tornado.web.RequestHandler:
+        :returns: dict to be used on jsonschema
+        :rtype: dict
+        """
+        d = {}
+
+        for attrname in dir(self):
+            if attrname.startswith("get_") and attrname.endswith("_key"):
+                method = getattr(self, attrname)
+                if callable(method):
+                    k = attrname[4:-4]
+                    v = method(requesthandler)
+                    if isinstance(v, SchemaHelper):
+                        v = v.as_dict(requesthandler)
+                    d[k] = v
+
+        d = schemahelpers_as_dict(d, requesthandler)
+
+        return d
+
+
+@tornado.gen.coroutine
+def evaluate_schema_callbacks(schema):
+    """Return schema with all schema callbacks evaluated.
+
+    :param schema: schema with callback(s)
+    :type schema: dict
+    :returns: schema evaluated
+    :rtype: dict
+    """
+    d = {}
+    for k, v in schema.items():
+        if isinstance(v, SchemaCallback):
+            v = v()
+        elif isinstance(v, dict):
+            v = yield evaluate_schema_callbacks(v)
+        d[k] = v
+    raise tornado.gen.Return(d)
+
+
+def detect_schemacallback(schema):
+    """Check recursively if the schema has a SchemaCallback instance."""
+    for k, v in schema.items():
+        if isinstance(v, SchemaCallback):
+            return True
+        elif isinstance(v, dict):
+            if detect_schemacallback(v):
+                return True
+
+    return False
+
+
+class SchemaCallback(object):
+    """Class to create dynamic key values on schemas."""
+
+    def __init__(self, func, *args, **kwargs):
+        """Store the callable with args and kwargs.
+
+        :param func: callable method
+        :param args: args to be passsed to func
+        :params kwargs: kwargs to be passed to func
+        :type func: callable
+        """
+        self.func = func
+        self.args = args
+        self.kwargs = kwargs
+
+    def __call__(self):
+        """Call the function asynchronously trought tornado.gen.Task class."""
+        return self.func(*self.args, **self.kwargs)
 
 
 def validate(input_schema=None, output_schema=None,
@@ -30,6 +145,11 @@ def validate(input_schema=None, output_schema=None,
     :param on_empty_404: If this is set, and the result from the
         decorated method is a falsy value, a 404 will be raised.
     """
+
+    input_schema_has_callback = False
+    if input_schema is not None:
+        input_schema_has_callback = detect_schemacallback(input_schema)
+
     @container
     def _validate(rh_method):
         """Decorator for RequestHandler schema validation
@@ -57,6 +177,7 @@ def validate(input_schema=None, output_schema=None,
             # In case the specified input_schema is ``None``, we
             #   don't json.loads the input, but just set it to ``None``
             #   instead.
+            input_schema = _wrapper.input_schema
             if input_schema is not None:
                 # Attempt to json.loads the input
                 try:
@@ -69,6 +190,14 @@ def validate(input_schema=None, output_schema=None,
                     raise jsonschema.ValidationError(
                         "Input is malformed; could not decode JSON object."
                     )
+
+                # if isinstance(input_schema, SchemaHelper):
+                #     input_schema = input_schema.as_dict(self, *args, **kw)
+
+                if input_schema_has_callback:
+                    input_schema = \
+                        yield evaluate_schema_callbacks(input_schema)
+
                 # Validate the received input
                 jsonschema.validate(
                     input_,

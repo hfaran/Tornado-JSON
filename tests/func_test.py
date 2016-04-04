@@ -1,5 +1,5 @@
-import sys
 import json
+import sys
 
 from jsonschema.validators import Draft4Validator, create
 from tornado.testing import AsyncHTTPTestCase
@@ -57,6 +57,27 @@ class PeopleHandler(requesthandlers.APIHandler):
             'required': ['name', 'age'],
         },
         validator_cls=ExtendedDraft4Validator
+    )
+    def post(self):
+        return self.body['name']
+
+
+def get_countries():
+    return ['Brazil', 'Argentina']
+
+
+class MemberHandler(requesthandlers.APIHandler):
+    """Example handler with input schema validation that uses SchemaCallback
+    """
+    @schema.validate(
+        input_schema={
+            "type": "object",
+            "properties": {
+                "name": {'type': "string"},
+                "country": {'enum': schema.SchemaCallback(get_countries)}
+            },
+            "required": ['name', 'country'],
+        }
     )
     def post(self):
         return self.body['name']
@@ -130,11 +151,12 @@ class APIFunctionalTest(AsyncHTTPTestCase):
     def get_app(self):
         rts = routes.get_routes(helloworld)
         rts += [
+            ("/api/member", PeopleHandler),
             ("/api/people", PeopleHandler),
             ("/api/explodinghandler", ExplodingHandler),
             ("/api/notfoundhandler", NotFoundHandler),
             ("/views/someview", DummyView),
-            ("/api/dbtest", DBTestHandler)
+            ("/api/dbtest", DBTestHandler),
         ]
         return application.Application(
             routes=rts,
@@ -142,11 +164,23 @@ class APIFunctionalTest(AsyncHTTPTestCase):
             db_conn=None
         )
 
+    def test_post_schemacallback(self):
+        """ Test if SchemaCallback will be evalued
+        """
+        r = self.fetch(
+            "/api/people",
+            method="POST",
+            body=jd({
+                'name': "Paulo",
+            })
+        )
+        self.assertEqual(r.code, 400)
+
     def test_post_custom_validator_class(self):
         """It should not raise errors because ExtendedDraft4Validator is used,
         so schema type 'int' is allowed. """
         r = self.fetch(
-            "/api/people",
+            "/api/member",
             method="POST",
             body=jd({
                 'name': "Paulo",
