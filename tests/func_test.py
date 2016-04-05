@@ -62,6 +62,39 @@ class PeopleHandler(requesthandlers.APIHandler):
         return self.body['name']
 
 
+class FoobarHandler(requesthandlers.APIHandler):
+    """ No use_defaults defined, so it will raise errors normally
+    despite default key being declared in the schema.
+    """
+    @schema.validate(
+        input_schema={
+            "type": "object",
+            "properties": {
+                "times": {'type': "integer", "default": 1},
+            },
+            "required": ['times'],
+        }
+    )
+    def post(self):
+        return self.body['times'] * "foobar"
+
+
+class EchoContentHandler(requesthandlers.APIHandler):
+
+    @schema.validate(
+        input_schema={
+            "type": "object",
+            "properties": {
+                "title": {'type': "string"},
+                "published": {'type': "boolean", "default": False},
+            }
+        },
+        use_defaults=True
+    )
+    def post(self):
+        return self.body
+
+
 class DBTestHandler(requesthandlers.APIHandler):
     """APIHandler for testing db_conn"""
     def get(self):
@@ -131,6 +164,8 @@ class APIFunctionalTest(AsyncHTTPTestCase):
         rts = routes.get_routes(helloworld)
         rts += [
             ("/api/people", PeopleHandler),
+            ("/api/foobar", FoobarHandler),
+            ("/api/echocontent", EchoContentHandler),
             ("/api/explodinghandler", ExplodingHandler),
             ("/api/notfoundhandler", NotFoundHandler),
             ("/views/someview", DummyView),
@@ -154,6 +189,51 @@ class APIFunctionalTest(AsyncHTTPTestCase):
             })
         )
         self.assertEqual(r.code, 200)
+
+    def test_post_schema_with_default_but_use_defaults_false(self):
+        """ Test if defaul key will be used when use_defaults its set o False.
+        """
+        r = self.fetch(
+            "/api/foobar",
+            method="POST",
+            body=jd({})
+        )
+        self.assertEqual(r.code, 400)
+
+    def test_post_use_defaults(self):
+        r = self.fetch(
+            "/api/echocontent",
+            method="POST",
+            body=jd({
+                "title": "Exciting News !",
+            })
+        )
+        self.assertEqual(r.code, 200)
+        self.assertEqual(
+            jl(r.body)["data"],
+            {
+                'title': "Exciting News !",
+                'published': False,
+            }
+        )
+
+    def test_post_use_defaults_no_need_of_default(self):
+        r = self.fetch(
+            "/api/echocontent",
+            method="POST",
+            body=jd({
+                "title": "Breaking News !",
+                "published": True,
+            })
+        )
+        self.assertEqual(r.code, 200)
+        self.assertEqual(
+            jl(r.body)["data"],
+            {
+                'title': "Breaking News !",
+                'published': True,
+            }
+        )
 
     def test_synchronous_handler(self):
         r = self.fetch(
