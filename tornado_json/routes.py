@@ -1,4 +1,3 @@
-import pyclbr
 import pkgutil
 import importlib
 import inspect
@@ -152,8 +151,8 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None,
     # Generate list of RequestHandler names in custom_routes
     custom_routes_s = [c.__name__ for r, c in custom_routes]
 
-    # rhs is a dict of {classname: pyclbr.Class} key, value pairs
-    rhs = pyclbr.readmodule(module_name)
+    rhs = {cls_name: cls for (cls_name, cls) in
+           inspect.getmembers(module, inspect.isclass)}
 
     # You better believe this is a list comprehension
     auto_routes = list(chain(*[

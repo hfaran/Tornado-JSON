@@ -1,5 +1,5 @@
 import collections
-import pyclbr
+import inspect
 import types
 from functools import wraps
 
@@ -58,19 +58,14 @@ def is_method(method):
 
 
 def is_handler_subclass(cls, classnames=("ViewHandler", "APIHandler")):
-    """Determines if ``cls`` is indeed a subclass of ``classnames``
-
-    This function should only be used with ``cls`` from ``pyclbr.readmodule``
-    """
-    if isinstance(cls, pyclbr.Class):
-        return is_handler_subclass(cls.super)
-    elif isinstance(cls, list):
-        return any(is_handler_subclass(s) for s in cls)
-    elif isinstance(cls, str):
-        return cls in classnames
+    """Determines if ``cls`` is indeed a subclass of ``classnames``"""
+    if isinstance(cls, list):
+        return any(is_handler_subclass(c) for c in cls)
+    elif isinstance(cls, type):
+        return any(c.__name__ in classnames for c in inspect.getmro(cls))
     else:
         raise TypeError(
-            "Unexpected pyclbr.Class.super type `{}` for class `{}`".format(
+            "Unexpected type `{}` for class `{}`".format(
                 type(cls),
                 cls
             )
