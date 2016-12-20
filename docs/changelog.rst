@@ -5,6 +5,15 @@ _
 ---------
 
 
+1.3.0
+~~~~~
+
+* Added use_defaults support for schema.validate
+* Added support for custom validators
+* Bugfix: Fixed api_doc_gen duplicated entries
+* Bugfix: Remove pyclbr and use inspect instead for module introspection
+
+
 1.2.2
 ~~~~~
 
