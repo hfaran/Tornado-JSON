@@ -5,6 +5,12 @@ _
 ---------
 
 
+1.3.2
+~~~~~
+
+* Recovery release for PyPI (1.3.1 had an incomplete module included accidentally)
+
+
 1.3.1
 ~~~~~
 
