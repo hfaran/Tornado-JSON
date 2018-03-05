@@ -7,12 +7,12 @@
 [![Documentation Status](https://readthedocs.org/projects/tornado-json/badge/?version=latest)](https://readthedocs.org/projects/tornado-json/?badge=latest)
 [![Stories in Ready](https://badge.waffle.io/hfaran/Tornado-JSON.png?label=In_Progress)](http://waffle.io/hfaran/Tornado-JSON)
 
-[![Latest Version](https://pypip.in/version/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
-[![Downloads](https://pypip.in/download/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
-[![Supported Python versions](https://pypip.in/py_versions/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
-[![Development Status](https://pypip.in/status/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
-[![Download format](https://pypip.in/format/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
-[![License](https://pypip.in/license/Tornado-JSON/badge.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Latest Version](https://img.shields.io/pypi/v/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Downloads](https://img.shields.io/pypi/dm/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Development Status](https://img.shields.io/pypi/status/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![Download format](https://img.shields.io/pypi/format/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
+[![License](https://img.shields.io/pypi/l/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
 
 
 ## Overview
