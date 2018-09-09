@@ -1,10 +1,6 @@
 **This is just a list of commands I've found useful for project maintenance**
 
 
-* Update README.rst
-
-    ```pandoc -s -t rst --toc README.md -o README.rst```
-
 * Install project with files.txt record
 
     ```sudo python setup.py install --record files.txt```
