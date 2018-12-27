@@ -15,5 +15,5 @@ def coroutine(func, replace_callback=True):
         wrapper = gen.coroutine(func)
     else:
         wrapper = gen.coroutine(func, replace_callback)
-    wrapper.__argspec_args = inspect.getargspec(func).args
+    wrapper.__argspec_args = inspect.getfullargspec(func).args
     return wrapper
