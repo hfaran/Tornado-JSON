@@ -9,8 +9,8 @@ env:
 install:
     - "pip install -r requirements.txt"
     - "pip install tornado>=$TORNADO_VERSION"
-    - "pip install pytest<4.0"
-    - "pip install pytest-cov<=2.6"
+    - "pip install 'pytest<4.0'"
+    - "pip install 'pytest-cov<=2.6'"
     - "pip install coverage"
     - "pip install coveralls"
     - "pip install mock"
