@@ -1,2 +1,2 @@
-tornado>=3.2.2
-jsonschema>=2.3.0
+tornado>=3.2.2,<6.0
+jsonschema>=2.3.0,<3.0
