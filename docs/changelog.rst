@@ -5,6 +5,13 @@ _
 ---------
 
 
+1.3.4
+~~~~~
+
+* Fix regression in 1.3.3
+* Pin versions for supported set of dependencies
+
+
 1.3.3
 ~~~~~
 
