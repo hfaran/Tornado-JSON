@@ -254,7 +254,6 @@ class APIFunctionalTest(AsyncHTTPTestCase):
             "/api/asynchelloworld/name"
         )
         self.assertEqual(r.code, 200)
-        test = r.body
         self.assertEqual(
             jl(r.body)["data"],
             "Hello (asynchronous) world! My name is name."
