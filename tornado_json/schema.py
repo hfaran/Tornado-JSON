@@ -151,7 +151,8 @@ def validate(input_schema=None, output_schema=None,
             setattr(self, "body", input_)
             # Call the requesthandler method
             output = rh_method(self, *args, **kwargs)
-            #   or a python 3 coroutine we grab the output.
+            # If the rh_method returned a Future a la `raise Return(value)`
+            # or a python 3 coroutine we grab the output.
             if is_future(output) or iscoroutine(output):
                 output = yield output
 
