@@ -94,9 +94,7 @@ class AsyncHelloWorld(APIHandler):
     async def get(self, name):
         """Shouts hello to the world (asynchronously)!"""
         # Asynchronously yield a result from a method
-        res = await IOLoop.current().run_in_executor(None, self.hello, name)
-
-        return res
+        return await IOLoop.current().run_in_executor(None, self.hello, name)
 
 
 class FreeWilledHandler(APIHandler):
