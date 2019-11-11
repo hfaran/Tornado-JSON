@@ -5,7 +5,6 @@
 [![Build Status](https://travis-ci.org/hfaran/Tornado-JSON.png?branch=master)](https://travis-ci.org/hfaran/Tornado-JSON)
 [![Coverage Status](https://coveralls.io/repos/hfaran/Tornado-JSON/badge.png)](https://coveralls.io/r/hfaran/Tornado-JSON?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/tornado-json/badge/?version=latest)](https://readthedocs.org/projects/tornado-json/?badge=latest)
-[![Stories in Ready](https://badge.waffle.io/hfaran/Tornado-JSON.png?label=In_Progress)](http://waffle.io/hfaran/Tornado-JSON)
 
 [![Latest Version](https://img.shields.io/pypi/v/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/Tornado-JSON.svg)](https://pypi.python.org/pypi/Tornado-JSON/)
