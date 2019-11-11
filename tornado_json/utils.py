@@ -1,7 +1,7 @@
-from collections.abc import Mapping
 import inspect
 import types
 from functools import wraps
+from collections.abc import Mapping
 
 
 def deep_update(source, overrides):
