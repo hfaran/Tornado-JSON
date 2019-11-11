@@ -75,7 +75,7 @@ def _get_tuple_from_route(route):
         if method:
             method = extract_method(method)
             method_params = set(getattr(method, "__argspec_args",
-                                        inspect.getargspec(method).args))
+                                        inspect.getfullargspec(method).args))
             if route_params.issubset(method_params) and \
                     method_params.issubset(route_params):
                 methods.append(http_method)

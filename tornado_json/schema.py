@@ -1,19 +1,12 @@
 import json
+from asyncio import iscoroutine
 from functools import wraps
 
 import jsonschema
 import tornado.gen
-
+from tornado.concurrent import is_future
 
 from tornado_json.exceptions import APIError
-
-try:
-    from tornado.concurrent import is_future
-except ImportError:
-    # For tornado 3.x.x
-    from tornado.concurrent import Future
-    is_future = lambda x: isinstance(x, Future)
-
 from tornado_json.utils import container, deep_update
 
 
@@ -159,8 +152,8 @@ def validate(input_schema=None, output_schema=None,
             # Call the requesthandler method
             output = rh_method(self, *args, **kwargs)
             # If the rh_method returned a Future a la `raise Return(value)`
-            #   we grab the output.
-            if is_future(output):
+            # or a python 3 coroutine we grab the output.
+            if is_future(output) or iscoroutine(output):
                 output = yield output
 
             # if output is empty, auto return the error 404.

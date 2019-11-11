@@ -32,16 +32,20 @@ class DummyView(requesthandlers.ViewHandler):
         # Reference db_conn to test for AttributeError
         self.db_conn
 
+
+def is_int(_, instance):
+    return (
+        isinstance(instance, int)
+    )
+
+
 meta_schema = Draft4Validator.META_SCHEMA.copy()
 meta_schema['definitions']["simpleTypes"]['enum'].append('int')
 
-default_types = Draft4Validator.DEFAULT_TYPES.copy()
-default_types['int'] = int
-
-
+type_checker = Draft4Validator.TYPE_CHECKER.redefine('int', is_int)
 ExtendedDraft4Validator = create(meta_schema,
                                  Draft4Validator.VALIDATORS,
-                                 default_types=default_types)
+                                 type_checker=type_checker)
 
 
 class PeopleHandler(requesthandlers.APIHandler):

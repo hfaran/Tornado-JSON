@@ -1,8 +1,8 @@
-import pkgutil
 import importlib
 import inspect
-from itertools import chain
+import pkgutil
 from functools import reduce
+from itertools import chain
 
 from tornado_json.constants import HTTP_METHODS
 from tornado_json.utils import extract_method, is_method, is_handler_subclass
@@ -34,15 +34,15 @@ def gen_submodule_names(package):
     :rtype: Iterator that yields ``str``
     """
     for importer, modname, ispkg in pkgutil.walk_packages(
-        path=package.__path__,
-        prefix=package.__name__ + '.',
+            path=package.__path__,
+            prefix=package.__name__ + '.',
             onerror=lambda x: None):
         yield modname
 
 
 def get_module_routes(module_name, custom_routes=None, exclusions=None,
                       arg_pattern=r'(?P<{}>[a-zA-Z0-9_\-]+)'):
-    """Create and return routes for module_name
+    r"""Create and return routes for module_name
 
     Routes are (url, RequestHandler) tuples
 
@@ -72,6 +72,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None,
     :type  arg_pattern: str
     :param arg_pattern: Default pattern for extra arguments of any method
     """
+
     def has_method(module, cls_name, method_name):
         return all([
             method_name in vars(getattr(module, cls_name)),
@@ -93,7 +94,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None,
         # If using tornado_json.gen.coroutine, original args are annotated...
         argspec_args = getattr(method, "__argspec_args",
                                # otherwise just grab them from the method
-                               inspect.getargspec(method).args)
+                               inspect.getfullargspec(method).args)
 
         return [a for a in argspec_args if a not in ["self"]]
 
@@ -103,6 +104,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None,
         :rtype: str
         :returns: Constructed URL based on given arguments
         """
+
         def get_handler_name():
             """Get handler identifier for URL
 
@@ -120,7 +122,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None,
                 return url_name
 
         def get_arg_route():
-            """Get remainder of URL determined by method argspec
+            r"""Get remainder of URL determined by method argspec
 
             :returns: Remainder of URL which matches `\w+` regex
                 with groups named by the method's argument spec.
@@ -190,7 +192,7 @@ def get_module_routes(module_name, custom_routes=None, exclusions=None,
         #    * the requesthandler isn't already paired in custom_routes
         #    * the requesthandler isn't manually excluded
         if is_handler_subclass(cls)
-        and cls_name not in (custom_routes_s + exclusions)
+           and cls_name not in (custom_routes_s + exclusions)
     ]))
 
     routes = auto_routes + custom_routes

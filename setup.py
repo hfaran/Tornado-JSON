@@ -41,19 +41,18 @@ setup(
     description=('A simple JSON API framework based on Tornado'),
     long_description=long_description,
     packages=['tornado_json'],
-    install_requires = install_requires,
+    install_requires=install_requires,
     tests_require=['pytest'],
     cmdclass = {'test': Pytest},
     data_files=[
         # Populate this with any files config files etc.
     ],
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 6 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
     ]

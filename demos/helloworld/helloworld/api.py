@@ -1,4 +1,5 @@
 from tornado import gen
+from tornado.ioloop import IOLoop
 
 from tornado_json.requesthandlers import APIHandler
 from tornado_json import schema
@@ -81,7 +82,7 @@ class Greeting(APIHandler):
 class AsyncHelloWorld(APIHandler):
 
     def hello(self, name, callback=None):
-        callback("Hello (asynchronous) world! My name is {}.".format(name))
+        return "Hello (asynchronous) world! My name is {}.".format(name)
 
     @schema.validate(
         output_schema={"type": "string"},
@@ -89,23 +90,11 @@ class AsyncHelloWorld(APIHandler):
     )
     # ``tornado_json.gen.coroutine`` must be used for coroutines
     # ``tornado.gen.coroutine`` CANNOT be used directly
-    @coroutine
-    def get(self, name):
+
+    async def get(self, name):
         """Shouts hello to the world (asynchronously)!"""
         # Asynchronously yield a result from a method
-        res = yield gen.Task(self.hello, name)
-
-        # When using the `schema.validate` decorator asynchronously,
-        #   we can return the output desired by raising
-        #   `tornado.gen.Return(value)` which returns a
-        #   Future that the decorator will yield.
-        # In Python 3.3, using `raise Return(value)` is no longer
-        #   necessary and can be replaced with simply `return value`.
-        #   For details, see:
-        # http://www.tornadoweb.org/en/branch3.2/gen.html#tornado.gen.Return
-
-        # return res  # Python 3.3
-        raise gen.Return(res)  # Python 2.7
+        return await IOLoop.current().run_in_executor(None, self.hello, name)
 
 
 class FreeWilledHandler(APIHandler):

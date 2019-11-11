@@ -1,7 +1,7 @@
-import collections
 import inspect
 import types
 from functools import wraps
+from collections.abc import Mapping
 
 
 def deep_update(source, overrides):
@@ -14,7 +14,7 @@ def deep_update(source, overrides):
     :rtype: collections.Mapping
     """
     for key, value in overrides.items():
-        if isinstance(value, collections.Mapping) and value:
+        if isinstance(value, Mapping) and value:
             returned = deep_update(source.get(key, {}), value)
             source[key] = returned
         else:

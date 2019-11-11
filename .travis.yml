@@ -1,16 +1,16 @@
 language: python
 python:
-    - "2.7"
+    - "3.5"
     - "3.6"
+    - "3.7"
+    - "3.8"
 env:
-    - TORNADO_VERSION=5.0
-    - TORNADO_VERSION=4.5.3
-    - TORNADO_VERSION=3.2.2
+    - TORNADO_VERSION=6.0.3
 install:
     - "pip install -r requirements.txt"
     - "pip install tornado==$TORNADO_VERSION"
-    - "pip install 'pytest<4.0'"
-    - "pip install 'pytest-cov<=2.6'"
+    - "pip install 'pytest'"
+    - "pip install 'pytest-cov'"
     - "pip install coverage"
     - "pip install coveralls"
     - "pip install mock"

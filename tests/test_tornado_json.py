@@ -167,11 +167,11 @@ class TestJSendMixin(TestTornadoJSONBase):
         def finish(self):
             pass
 
-    @classmethod
+    @staticmethod
     @pytest.fixture(scope="class", autouse=True)
-    def setup(cls):
+    def setup(request):
         """Create mock handler instance"""
-        cls.jsend_rh = cls.MockJSendMixinRH()
+        request.cls.jsend_rh = TestJSendMixin.MockJSendMixinRH()
 
     def test_success(self):
         """Tests JSendMixin.success"""
