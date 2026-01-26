@@ -62,7 +62,8 @@ def test__get_tuple_from_route():
 def test__get_api_docs():
     relative_dir = os.path.abspath(os.path.dirname(__file__))
     filepath = os.path.join(relative_dir, "helloworld_API_documentation.md")
-    HELLOWORLD_DOC = open(filepath).read()
+    with open (filepath) as f:
+        HELLOWORLD_DOC = f.read()
 
     assert get_api_docs(get_routes(helloworld)) == HELLOWORLD_DOC
 
