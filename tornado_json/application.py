@@ -1,11 +1,12 @@
 import tornado.web
 
+from tornado_json.apidocjs.output import generate_apidoc_skeleton
 from tornado_json.api_doc_gen import api_doc_gen
 from tornado_json.constants import TORNADO_MAJOR
 
 
 class Application(tornado.web.Application):
-    """Entry-point for the app
+    """Entry-point for the app.
 
     - Generate API documentation using provided routes
     - Initialize the application
@@ -18,17 +19,25 @@ class Application(tornado.web.Application):
     :param bool generate_docs: If set, will generate API documentation for
         provided ``routes``. Documentation is written as API_Documentation.md
         in the cwd.
+    :param apidocjs: If a valid dict is passed, apidocjs docs will be generated
+    :type  apidocjs: dict
     """
 
     def __init__(self, routes, settings, db_conn=None,
-                 generate_docs=False):
+                 generate_docs=False, apidocjs=None):
+
+        self.apidocjs = apidocjs
+        if apidocjs:
+            generate_apidoc_skeleton(routes, **apidocjs)
+
         if generate_docs:
             # Generate API Documentation
             api_doc_gen(routes)
 
         # Unless compress_response was specifically set to False in
         # settings, enable it
-        compress_response = "compress_response" if TORNADO_MAJOR >= 4 else "gzip"
+        compress_response = \
+            "compress_response" if TORNADO_MAJOR >= 4 else "gzip"
         if compress_response not in settings:
             settings[compress_response] = True
 
