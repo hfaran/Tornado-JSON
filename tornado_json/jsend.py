@@ -17,8 +17,9 @@ class JSendMixin(object):
         :param data: Acts as the wrapper for any data returned by the API
             call. If the call returns no data, data should be set to null.
         """
-        self.write({'status': 'success', 'data': data})
-        self.finish()
+        if not self._finished:
+            self.write({'status': 'success', 'data': data})
+            self.finish()
 
     def fail(self, data):
         """There was a problem with the data submitted, or some pre-condition
@@ -29,8 +30,9 @@ class JSendMixin(object):
             failed. If the reasons for failure correspond to POST values,
             the response object's keys SHOULD correspond to those POST values.
         """
-        self.write({'status': 'fail', 'data': data})
-        self.finish()
+        if not self._finished:
+            self.write({'status': 'fail', 'data': data})
+            self.finish()
 
     def error(self, message, data=None, code=None):
         """An error occurred in processing the request, i.e. an exception was
@@ -46,10 +48,11 @@ class JSendMixin(object):
         :type  code: int
         :param code: A numeric code corresponding to the error, if applicable
         """
-        result = {'status': 'error', 'message': message}
-        if data:
-            result['data'] = data
-        if code:
-            result['code'] = code
-        self.write(result)
-        self.finish()
+        if not self._finished:
+            result = {'status': 'error', 'message': message}
+            if data:
+                result['data'] = data
+            if code:
+                result['code'] = code
+            self.write(result)
+            self.finish()

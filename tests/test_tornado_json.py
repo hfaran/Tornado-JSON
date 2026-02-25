@@ -160,12 +160,13 @@ class TestJSendMixin(TestTornadoJSONBase):
     class MockJSendMixinRH(jsend.JSendMixin):
         """Mock handler for testing JSendMixin"""
         _buffer = None
+        _finished = False
 
         def write(self, data):
             self._buffer = data
 
         def finish(self):
-            pass
+            self._finished = True
 
     @staticmethod
     @pytest.fixture(scope="class", autouse=True)
